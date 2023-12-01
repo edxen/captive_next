@@ -1,0 +1,19 @@
+{
+    "languages": {
+        "en": "English"
+    },
+    "translations": {
+        "en": {
+            "error": {
+                "blank_credentials": "Room Number and Last Name is required",
+                "invalid_credentials": "Room Numer / Last Name is incorrect"
+            },
+            "credentials": {
+                "welcome_message": "Welcome to DisCafe!",
+                "room_number": "Room Number",
+                "last_name": "Last Name",
+                "sign_in": "Sign in"
+            }
+        }
+    }
+}

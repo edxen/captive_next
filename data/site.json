@@ -1,17 +1,15 @@
-[
-    {
-        "login_options": {
-            "authentication": true,
-            "access_code": true
-        },
-        "bill_plans": {},
-        "signed_in": {
-            "status": false,
-            "guest": {}
-        },
-        "connected": {
-            "status": false,
-            "bill_plan": {}
-        }
-    }
-]
+{
+  "login_options": {
+    "authentication": true,
+    "access_code": true
+  },
+  "bill_plans": {},
+  "signed_in": {
+    "status": false,
+    "guest": {}
+  },
+  "connected": {
+    "status": false,
+    "bill_plan": {}
+  }
+}

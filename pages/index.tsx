@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
+
 import Authentication from './templates/authentication';
 import { useState, useEffect } from 'react';
 import { Site, Guest } from './components/inteface';
@@ -10,9 +11,13 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Home() {
   const [site, setSite] = useState<Site | null>(null);
 
-  const fetchSignedIn = async () => {
+  interface FetchSite {
+    method: string;
+  }
+
+  const fetchSite = async ({ method }: FetchSite) => {
     try {
-      const response = await fetch('../api/site');
+      const response = await fetch('../api/site', { method });
       if (response.ok) {
         const data = await response.json();
         setSite(data.site);
@@ -23,26 +28,12 @@ export default function Home() {
       console.error(`There was an error: ${error}`);
     }
   };
+
+  const handleSignOut = () => fetchSite({ method: 'POST' });
 
   useEffect(() => {
-    fetchSignedIn();
+    fetchSite({ method: 'GET' });
   }, [site?.signed_in]);
-
-  const handleSignOut = async () => {
-    try {
-      const response = await fetch('../api/site', {
-        method: 'POST'
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setSite(data.site);
-      } else {
-        throw new Error('Error fetching data');
-      }
-    } catch (error) {
-      console.error(`There was an error: ${error}`);
-    }
-  };
 
   const guest = site ? site.signed_in.guest as Guest : null;
 
@@ -60,7 +51,7 @@ export default function Home() {
             <Authentication />
           ) : (
             <>
-              <h2>Welcome {guest && guest.first_name}! You are signed in!</h2>
+              <h2>Welcome {guest?.first_name}! You are signed in!</h2>
               <button onClick={handleSignOut}>Sign Out</button>
             </>
           )

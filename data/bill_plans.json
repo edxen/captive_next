@@ -1,0 +1,46 @@
+[
+    {
+        "uuid": 10001,
+        "plan_name": "free plan",
+        "duration": 60,
+        "type": "free",
+        "amount": 0,
+        "bandwidth": {
+            "download": 2048,
+            "upload": 2048
+        }
+    },
+    {
+        "uuid": 10002,
+        "plan_name": "paid plan",
+        "duration": 120,
+        "type": "paid",
+        "amount": 10,
+        "bandwidth": {
+            "download": 5120,
+            "upload": 5120
+        }
+    },
+    {
+        "uuid": 10003,
+        "plan_name": "voucher plan",
+        "duration": 30,
+        "type": "voucher",
+        "amount": 0,
+        "bandwidth": {
+            "download": 1024,
+            "upload": 1024
+        }
+    },
+    {
+        "uuid": 10004,
+        "plan_name": "premium voucher plan",
+        "duration": 60,
+        "type": "voucher",
+        "amount": 0,
+        "bandwidth": {
+            "download": 5120,
+            "upload": 5120
+        }
+    }
+]

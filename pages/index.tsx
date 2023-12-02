@@ -3,8 +3,8 @@ import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 
 import Authentication from './templates/authentication';
-import fetchAPI from './components/fetchAPI';
-
+import Layout from './components/layout';
+import { fetchAPI } from './components/fetchAPI';
 import { useState, useEffect } from 'react';
 import { BillPlan, Site } from './components/inteface';
 
@@ -14,7 +14,7 @@ export default function Home() {
   const [site, setSite] = useState<Site | null>(null);
 
   const fetchSite = async () => {
-    const data = await fetchAPI({ target: "site", method: "GET" });
+    const data = await fetchAPI({ target: "handler", method: "GET" });
     if (data) setSite(data.site);
   };
 
@@ -24,9 +24,8 @@ export default function Home() {
 
   const handleDisconnect = async () => {
     const params = {
-      target: "site",
+      target: "handler",
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: {
         action: "disconnect",
       }
@@ -49,14 +48,13 @@ export default function Home() {
           !site.connected.status
             ? <Authentication />
             : (
-              <>
+              <Layout>
                 <h2>You are now connected</h2>
                 <h4>{billPlan.name}</h4>
                 <button onClick={handleDisconnect}>
                   Disconnect
                 </button>
-              </>
-
+              </Layout>
             )
         ) : (
           <h2>Loading</h2>

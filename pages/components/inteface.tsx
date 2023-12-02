@@ -1,4 +1,4 @@
-type StringKey = {
+export type StringKey = {
     [key: string]: string;
 };
 

@@ -5,17 +5,19 @@ interface FetchAPI {
     body?: { [key: string]: string; };
 }
 
-const fetchAPI = async ({ target, method, headers, body }: FetchAPI) => {
-
+export const fetchAPI = async ({ target, method, headers, body }: FetchAPI) => {
+    const headersString = headers || { "Content-Type": "application/json" };
     const bodyString = JSON.stringify(body);
 
     try {
-        const response = await fetch(`../api/${target}`, { method, headers, body: bodyString });
-        if (response.ok) return await response.json();
-        else throw new Error('Error fetching data');
+        const response = await fetch(`../api/${target}`, { method, headers: headersString, body: bodyString });
+        if (response.ok) {
+            return await response.json();
+        } else {
+            throw new Error('Error fetching data');
+        }
     } catch (error) {
         console.error(`There was an error: ${error}`);
     }
 };
 
-export default fetchAPI;

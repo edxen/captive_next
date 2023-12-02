@@ -3,7 +3,7 @@ import Translations from '../components/translation.json';
 import { useState, useEffect, ChangeEvent } from 'react';
 import InputGroup from "../components/inputGroup";
 import { Site, Texts, Credentials, BillPlan } from "../components/inteface";
-import fetchAPI from "../components/fetchAPI";
+import { fetchAPI } from "../components/fetchAPI";
 
 const jsonData: Texts = Translations;
 const currentLanguage = 'en';
@@ -19,9 +19,8 @@ const Authentication = () => {
 
     const fetchPMS = async () => {
         const params = {
-            target: "pms",
+            target: "handler",
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: {
                 action: "signin",
                 room_number: String(credentials.room_number),
@@ -47,14 +46,13 @@ const Authentication = () => {
     const [selectedPlan, setSelectedPlan] = useState<string>("");
 
     const fetchSite = async ({ method, body }: { method: string, body?: { [key: string]: string; }; }) => {
-        const data = await fetchAPI({ target: "site", method, body });
+        const data = await fetchAPI({ target: "handler", method, body });
         if (data) setSite(data.site);
     };
     const handleSignOut = async () => {
         const params = {
-            target: "site",
+            target: "handler",
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: {
                 action: "signout",
             }
@@ -66,8 +64,6 @@ const Authentication = () => {
             room_number: undefined,
             last_name: ''
         });
-
-
     };
 
     useEffect(() => {
@@ -86,9 +82,8 @@ const Authentication = () => {
             setErrorMessage(texts.error.no_plan_selected);
         } else {
             const params = {
-                target: "site",
+                target: "handler",
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: {
                     action: "connect",
                     plan_uuid: selectedPlan

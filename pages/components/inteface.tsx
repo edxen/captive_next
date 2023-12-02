@@ -1,6 +1,27 @@
+type StringKey = {
+    [key: string]: string;
+};
+
+export interface Translations {
+    credentials: StringKey;
+    error: StringKey;
+}
+
+export interface Texts {
+    languages: StringKey;
+    translations: {
+        en: Translations;
+    };
+}
+
+export interface Credentials {
+    room_number: number | undefined;
+    last_name: string;
+}
+
 export interface BillPlan {
     uuid: number,
-    plan_name: string,
+    name: string,
     duration: number,
     type: string,
     amount: number,

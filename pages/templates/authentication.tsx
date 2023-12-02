@@ -1,31 +1,13 @@
 import Layout from "../components/layout";
 import Translations from '../components/translation.json';
-import { ChangeEvent, useState } from 'react';
-
-type StringKey = {
-    [key: string]: string;
-};
-
-interface Translations {
-    credentials: StringKey;
-    error: StringKey;
-}
-
-interface Texts {
-    languages: StringKey;
-    translations: {
-        en: Translations;
-    };
-}
+import { useState, useEffect, ChangeEvent } from 'react';
+import InputGroup from "../components/inputGroup";
+import { Site, Texts, Credentials, BillPlan } from "../components/inteface";
+import fetchAPI from "../components/fetchAPI";
 
 const jsonData: Texts = Translations;
 const currentLanguage = 'en';
 const texts = jsonData.translations[currentLanguage];
-
-interface Credentials {
-    room_number: number | undefined;
-    last_name: string;
-}
 
 const Authentication = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -35,66 +17,120 @@ const Authentication = () => {
     });
     const updateCredentials = (value: Partial<Credentials>) => setCredentials((prevCredentials: Credentials) => ({ ...prevCredentials, ...value }));
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const fetchPMS = async () => {
+        const params = {
+            target: "pms",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: {
+                action: "signin",
+                room_number: String(credentials.room_number),
+                last_name: credentials.last_name
+            }
+        };
+        return await fetchAPI({ ...params });
+    };
+
+    const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setErrorMessage('');
         if (credentials.room_number === undefined || credentials.last_name === '') {
             setErrorMessage(texts.error.blank_credentials);
         } else {
-            try {
-                const response = await fetch('../api/pms', {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(credentials)
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (!data.success) setErrorMessage(texts.error.invalid_credentials);
-                } else {
-                    throw new Error('error fetching data');
-                }
-            } catch (error) {
-                console.error(`there was an error: ${error}`);
+            const data = await fetchPMS();
+            if (!data.success) setErrorMessage(texts.error.invalid_credentials);
+        }
+    };
+
+    const [site, setSite] = useState<Site | null>(null);
+    const [selectedPlan, setSelectedPlan] = useState<string>("");
+
+    const fetchSite = async ({ method, body }: { method: string, body?: { [key: string]: string; }; }) => {
+        const data = await fetchAPI({ target: "site", method, body });
+        if (data) setSite(data.site);
+    };
+    const handleSignOut = async () => {
+        const params = {
+            target: "site",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: {
+                action: "signout",
             }
+        };
+        await fetchAPI({ ...params });
+
+        setSelectedPlan("");
+        setCredentials({
+            room_number: undefined,
+            last_name: ''
+        });
+
+
+    };
+
+    useEffect(() => {
+        fetchSite({ method: "GET" });
+    }, [site?.signed_in]);
+
+    // const guest = site ? site.signed_in.guest as Guest : null;
+    const billPlans = site ? site.bill_plans as [BillPlan] : null;
+
+    const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
+        setSelectedPlan(event.target.id.replace('plan_', ''));
+    };
+
+    const handleConnect = async () => {
+        if (selectedPlan === "") {
+            setErrorMessage(texts.error.no_plan_selected);
+        } else {
+            const params = {
+                target: "site",
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: {
+                    action: "connect",
+                    plan_uuid: selectedPlan
+                }
+            };
+            await fetchAPI({ ...params });
         }
     };
 
     return (
         <>
             <Layout>
-                <form onSubmit={handleSubmit}>
-                    <h2>This is Authentication</h2>
-                    <InputGroup label={texts.credentials.room_number} htmlFor='room_number' updateCredentials={updateCredentials} />
-                    <InputGroup label={texts.credentials.last_name} htmlFor='last_name' updateCredentials={updateCredentials} />
-                    <div>{errorMessage}</div>
-                    <button>{texts.credentials.sign_in}</button>
-                </form>
+                {!site?.signed_in.status
+                    ? (
+                        <form onSubmit={handleSignIn}>
+                            <h2>This is Authentication</h2>
+                            <InputGroup value={credentials.room_number} label={texts.credentials.room_number} htmlFor='room_number' updateCredentials={updateCredentials} />
+                            <InputGroup value={credentials.last_name} label={texts.credentials.last_name} htmlFor='last_name' updateCredentials={updateCredentials} />
+                            <div>{errorMessage}</div>
+                            <button>{texts.credentials.sign_in}</button>
+                        </form>
+                    )
+                    : (
+                        <div>
+                            <h2>You are now signed in</h2>
+                            {billPlans?.map((plan) =>
+                                <li key={plan.uuid}>
+                                    <label>
+                                        <input type="radio" id={`plan_${plan.uuid}`} name="bill_plans" onClick={handleSelect}></input>
+                                        {plan.name} {plan.amount} $
+                                    </label>
+                                </li>
+                            )}
+                            <div>{errorMessage}</div>
+                            <button onClick={handleSignOut}>{texts.credentials.sign_out}</button>
+                            <button onClick={handleConnect}>{texts.credentials.connect}</button>
+                        </div>
+                    )
+                }
             </Layout>
         </>
     );
 };
 
 export default Authentication;
-
-interface InputGroupProps {
-    label: string;
-    htmlFor: any;
-    updateCredentials: (value: Partial<Credentials>) => void;
-}
-
-const InputGroup: React.FC<InputGroupProps> = ({ label, htmlFor, updateCredentials }) => {
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const partialUpdate: Partial<Credentials> = {
-            [htmlFor]: e.target.value
-        };
-        updateCredentials(partialUpdate);
-    };
-
-    return (
-        <div>
-            <label htmlFor={htmlFor}>{label}</label>
-            <input onChange={handleChange} />
-        </div>
-    );
-};

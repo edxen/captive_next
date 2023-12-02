@@ -6,13 +6,16 @@
         "en": {
             "error": {
                 "blank_credentials": "Room Number and Last Name is required",
-                "invalid_credentials": "Room Numer / Last Name is incorrect"
+                "invalid_credentials": "Room Numer / Last Name is incorrect",
+                "no_plan_selected": "No bill plan selected"
             },
             "credentials": {
                 "welcome_message": "Welcome to DisCafe!",
                 "room_number": "Room Number",
                 "last_name": "Last Name",
-                "sign_in": "Sign in"
+                "sign_in": "Sign in",
+                "sign_out": "Sign out",
+                "connect": "Connect"
             }
         }
     }

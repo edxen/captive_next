@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import { Guest } from '../components/inteface';
+import { BillPlan, Guest } from '../components/inteface';
 
 const app = express();
 app.use(express.json());
@@ -20,7 +20,7 @@ export default function handler(
 
     if (req.method === "POST") {
         try {
-            const { room_number, last_name } = req.body;
+            const { action, room_number, last_name } = req.body;
 
             const pmsPath = path.join(process.cwd(), 'data', 'pms.json');
             const pmsRef = fs.readFileSync(pmsPath, 'utf-8');
@@ -35,6 +35,11 @@ export default function handler(
                     status: true,
                     guest: guest
                 };
+                const billPlanPath = path.join(process.cwd(), 'data', 'bill_plans.json');
+                const billPlanRef = fs.readFileSync(billPlanPath, 'utf-8');
+                const billPlanData = JSON.parse(billPlanRef);
+                siteData.bill_plans = billPlanData.filter((billPlan: BillPlan) => billPlan.type !== 'voucher');
+                console.log(siteData);
                 fs.writeFileSync(sitePath, JSON.stringify(siteData, null, 2));
             }
             res.status(200).json({ message: 'this is a POST Request', success });

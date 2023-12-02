@@ -3,39 +3,38 @@ import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 
 import Authentication from './templates/authentication';
+import fetchAPI from './components/fetchAPI';
+
 import { useState, useEffect } from 'react';
-import { Site, Guest } from './components/inteface';
+import { BillPlan, Site } from './components/inteface';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
   const [site, setSite] = useState<Site | null>(null);
 
-  interface FetchSite {
-    method: string;
-  }
-
-  const fetchSite = async ({ method }: FetchSite) => {
-    try {
-      const response = await fetch('../api/site', { method });
-      if (response.ok) {
-        const data = await response.json();
-        setSite(data.site);
-      } else {
-        throw new Error('Error fetching data');
-      }
-    } catch (error) {
-      console.error(`There was an error: ${error}`);
-    }
+  const fetchSite = async () => {
+    const data = await fetchAPI({ target: "site", method: "GET" });
+    if (data) setSite(data.site);
   };
 
-  const handleSignOut = () => fetchSite({ method: 'POST' });
-
   useEffect(() => {
-    fetchSite({ method: 'GET' });
-  }, [site?.signed_in]);
+    fetchSite();
+  }, [site?.connected]);
 
-  const guest = site ? site.signed_in.guest as Guest : null;
+  const handleDisconnect = async () => {
+    const params = {
+      target: "site",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: {
+        action: "disconnect",
+      }
+    };
+    await fetchAPI({ ...params });
+  };
+
+  const billPlan = site?.connected.bill_plan as BillPlan || null;
 
   return (
     <>
@@ -47,14 +46,18 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         {site ? (
-          !site.signed_in.status ? (
-            <Authentication />
-          ) : (
-            <>
-              <h2>Welcome {guest?.first_name}! You are signed in!</h2>
-              <button onClick={handleSignOut}>Sign Out</button>
-            </>
-          )
+          !site.connected.status
+            ? <Authentication />
+            : (
+              <>
+                <h2>You are now connected</h2>
+                <h4>{billPlan.name}</h4>
+                <button onClick={handleDisconnect}>
+                  Disconnect
+                </button>
+              </>
+
+            )
         ) : (
           <h2>Loading</h2>
         )}

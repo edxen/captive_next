@@ -15,7 +15,7 @@ export interface Texts {
 }
 
 export interface Credentials {
-    room_number: number | undefined;
+    room_number: string;
     last_name: string;
 }
 

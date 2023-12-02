@@ -7,7 +7,8 @@
             "error": {
                 "blank_credentials": "Room Number and Last Name is required",
                 "invalid_credentials": "Room Numer / Last Name is incorrect",
-                "no_plan_selected": "No bill plan selected"
+                "no_plan_selected": "No bill plan selected",
+                "blank_access_code": "Access Code is required"
             },
             "credentials": {
                 "welcome_message": "Welcome to DisCafe!",
@@ -15,6 +16,10 @@
                 "last_name": "Last Name",
                 "sign_in": "Sign in",
                 "sign_out": "Sign out",
+                "connect": "Connect"
+            },
+            "access_code": {
+                "label": "Access Code",
                 "connect": "Connect"
             }
         }

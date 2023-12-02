@@ -2,18 +2,15 @@ import { ChangeEvent } from 'react';
 import { Credentials } from './inteface';
 
 interface InputGroupProps {
-    value: string | number | undefined;
+    value: string;
     label: string;
     htmlFor: any;
-    updateCredentials: (value: Partial<Credentials>) => void;
+    updateData: any;
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({ value, label, htmlFor, updateCredentials }) => {
+const InputGroup: React.FC<InputGroupProps> = ({ value, label, htmlFor, updateData }) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const partialUpdate: Partial<Credentials> = {
-            [htmlFor]: e.target.value
-        };
-        updateCredentials(partialUpdate);
+        updateData({ [htmlFor]: e.target.value });
     };
 
     return (

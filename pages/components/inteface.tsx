@@ -5,6 +5,7 @@ export type StringKey = {
 export interface Translations {
     credentials: StringKey;
     error: StringKey;
+    access_code: StringKey;
 }
 
 export interface Texts {
@@ -14,13 +15,18 @@ export interface Texts {
     };
 }
 
+export interface Voucher {
+    [key: string]: string;
+}
+
 export interface Credentials {
     room_number: string;
     last_name: string;
 }
 
 export interface BillPlan {
-    uuid: number,
+    uuid: string,
+    code: string,
     name: string,
     duration: number,
     type: string,
@@ -29,8 +35,8 @@ export interface BillPlan {
 }
 
 export interface Guest {
-    uuid: number;
-    room_number: number;
+    uuid: string;
+    room_number: string;
     full_name: string;
     first_name: string;
     last_name: string;

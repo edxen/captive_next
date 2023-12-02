@@ -6,6 +6,8 @@ import Layout from "../components/layout";
 import InputGroup from "../components/inputGroup";
 import Translations from '../components/translation.json';
 
+import Link from 'next/link';
+
 const jsonData: Texts = Translations;
 const currentLanguage = 'en';
 const texts = jsonData.translations[currentLanguage];
@@ -59,7 +61,7 @@ const Authentication = () => {
         if (selectedPlan === "") {
             setErrorMessage(texts.error.no_plan_selected);
         } else {
-            const body = { action: "connect", plan_uuid: selectedPlan };
+            const body = { action: "connect", type: "bill_plan", plan_uuid: selectedPlan };
             await fetchAPI({ target: "handler", method: "POST", body });
         }
     };
@@ -73,8 +75,8 @@ const Authentication = () => {
                     ? (
                         <form onSubmit={handleSignIn}>
                             <h2>This is Authentication</h2>
-                            <InputGroup value={credentials.room_number} label={texts.credentials.room_number} htmlFor='room_number' updateCredentials={updateCredentials} />
-                            <InputGroup value={credentials.last_name} label={texts.credentials.last_name} htmlFor='last_name' updateCredentials={updateCredentials} />
+                            <InputGroup value={credentials.room_number} label={texts.credentials.room_number} htmlFor='room_number' updateData={updateCredentials} />
+                            <InputGroup value={credentials.last_name} label={texts.credentials.last_name} htmlFor='last_name' updateData={updateCredentials} />
                             <div>{errorMessage}</div>
                             <button>{texts.credentials.sign_in}</button>
                         </form>
@@ -96,6 +98,9 @@ const Authentication = () => {
                         </div>
                     )
                 }
+                <Link href="/templates/access_code">
+                    <button>Connect with Access Code</button>
+                </Link>
             </Layout>
         </>
     );

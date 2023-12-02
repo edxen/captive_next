@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
-import { Site, BillPlan, Guest, StringKey } from '../components/inteface';
+import { Site, BillPlan, Voucher, Guest, StringKey } from '../components/inteface';
 
 type Data = {
     message: string;
@@ -28,11 +28,13 @@ export default function handler(
         pms: setPath('pms'),
         site: setPath('site'),
         bill_plans: setPath('bill_plans'),
+        voucher: setPath('voucher'),
     };
     const data: any = {
         pms: readJSONFile(paths.pms),
         site: readJSONFile(paths.site),
-        bill_plans: readJSONFile(paths.bill_plans)
+        bill_plans: readJSONFile(paths.bill_plans),
+        voucher: readJSONFile(paths.voucher)
     };
 
     try {
@@ -50,7 +52,7 @@ export default function handler(
                 switch (action) {
                     case "signin":
                         const { room_number, last_name } = req.body;
-                        const guest = data.pms.filter((data: Guest) => data.room_number === Number(room_number))[0];
+                        const guest = data.pms.filter((data: Guest) => data.room_number === room_number)[0];
                         const success = (guest?.last_name === last_name) ? true : false;
                         if (success) {
                             const getGuestPlans = data.bill_plans.filter((billPlan: BillPlan) => billPlan.type !== 'voucher');
@@ -67,14 +69,31 @@ export default function handler(
                         break;
 
                     case "connect":
-                        const { plan_uuid } = req.body;
+                        const { type } = req.body;
 
-                        clearBillPlans();
-                        const getSelectedPlan = data.bill_plans.filter((billplan: BillPlan) => billplan.uuid === Number(plan_uuid))[0];
-                        data.site.connected = {
-                            status: true,
-                            bill_plan: getSelectedPlan
-                        };
+                        const getSelectedPlan = (uuid: string) => data.bill_plans.filter((billplan: BillPlan) => billplan.uuid === uuid)[0];
+
+                        switch (type) {
+                            case "bill_plan":
+                                const { plan_uuid }: { plan_uuid: string; } = req.body;
+                                clearBillPlans();
+                                data.site.connected = {
+                                    status: true,
+                                    bill_plan: getSelectedPlan(plan_uuid)
+                                };
+                                break;
+                            case "access_code":
+                                const { access_code }: { access_code: string; } = req.body;
+                                const found = data.voucher.filter((voucher: Voucher) => voucher.code === access_code)[0];
+                                if (found) {
+                                    data.site.connected = {
+                                        status: true,
+                                        bill_plan: getSelectedPlan(found.uuid)
+                                    };
+                                    data.site.connected.bill_plan.code = access_code;
+                                }
+                                break;
+                        }
                         break;
 
                     case "disconnect":

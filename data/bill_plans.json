@@ -1,6 +1,6 @@
 [
     {
-        "uuid": 10001,
+        "uuid": "10001",
         "name": "free plan",
         "duration": 60,
         "type": "free",
@@ -11,7 +11,7 @@
         }
     },
     {
-        "uuid": 10002,
+        "uuid": "10002",
         "name": "paid plan",
         "duration": 120,
         "type": "paid",
@@ -22,7 +22,7 @@
         }
     },
     {
-        "uuid": 10003,
+        "uuid": "10003",
         "name": "voucher plan",
         "duration": 30,
         "type": "voucher",
@@ -33,7 +33,7 @@
         }
     },
     {
-        "uuid": 10004,
+        "uuid": "10004",
         "name": "premium voucher plan",
         "duration": 60,
         "type": "voucher",

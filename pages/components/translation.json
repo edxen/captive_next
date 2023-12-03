@@ -13,8 +13,10 @@
             },
             "credentials": {
                 "welcome_message": "Welcome to DisCafe!",
-                "room_number": "Room Number",
-                "last_name": "Last Name"
+                "label_room_number": "Room Number",
+                "label_last_name": "Last Name",
+                "placeholder_room_number": "Enter Room Number",
+                "placeholder_last_name": "Enter Last Name"
             },
             "buttons": {
                 "sign_in": "Sign in",

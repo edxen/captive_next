@@ -47,12 +47,10 @@ export default function handler(
 
                 switch (action) {
                     case "signin":
-                        const { room_number, last_name } = req.body.credentials;
+                        const { room_number, last_name } = req.body;
                         const guest: Guest = data.pms.filter((data) => data.room_number === room_number)[0];
 
-                        if (guest?.last_name === last_name) {
-                            success = true;
-                        }
+                        if (guest?.last_name === last_name) success = true;
 
                         if (success) {
                             const getGuestPlans = data.bill_plans.filter((billPlan) => billPlan.type !== 'voucher');

@@ -52,62 +52,16 @@ const Authentication = () => {
         }
     };
 
-    const handleSignOut = async () => {
-        await fetchAPI({ target: "handler", method: "POST", body: { action: 'signout' } });
-
-        setSelectedPlan("");
-        setCredentials({ room_number: "", last_name: "" });
-    };
-
-    const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
-        setSelectedPlan(event.target.value.replace('plan_', ''));
-    };
-
-    const handleConnect = async () => {
-        if (selectedPlan === "") {
-            setErrorMessage(texts.error.no_plan_selected);
-        } else {
-            const body: FetchAPI['body'] = { action: "connect", type: "bill_plan", bill_plan: selectedPlan };
-            const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
-            if (data.success) {
-                router.push('./connected');
-            }
-
-        }
-    };
-
-    const billPlans = site ? site.bill_plans as [BillPlan] : null;
-
     return (
         <>
             <Layout>
-                {!site?.signed_in.status
-                    ? (
-                        <form onSubmit={handleSignIn}>
-                            <h2>This is Authentication</h2>
-                            <InputGroup value={credentials.room_number} label={texts.credentials.room_number} htmlFor='room_number' updateData={updateCredentials} />
-                            <InputGroup value={credentials.last_name} label={texts.credentials.last_name} htmlFor='last_name' updateData={updateCredentials} />
-                            <div>{errorMessage}</div>
-                            <button>{texts.credentials.sign_in}</button>
-                        </form>
-                    )
-                    : (
-                        <div>
-                            <h2>You are now signed in</h2>
-                            {billPlans?.map((plan) =>
-                                <li key={plan.uuid}>
-                                    <label>
-                                        <input type="radio" value={`plan_${plan.uuid}`} name="bill_plans" onChange={handleSelect}></input>
-                                        {plan.name} {plan.amount} $
-                                    </label>
-                                </li>
-                            )}
-                            <div>{errorMessage}</div>
-                            <button onClick={handleSignOut}>{texts.credentials.sign_out}</button>
-                            <button onClick={handleConnect}>{texts.credentials.connect}</button>
-                        </div>
-                    )
-                }
+                <form onSubmit={handleSignIn}>
+                    <h2>This is Authentication</h2>
+                    <InputGroup value={credentials.room_number} label={texts.credentials.room_number} htmlFor='room_number' updateData={updateCredentials} />
+                    <InputGroup value={credentials.last_name} label={texts.credentials.last_name} htmlFor='last_name' updateData={updateCredentials} />
+                    <div>{errorMessage}</div>
+                    <button>{texts.credentials.sign_in}</button>
+                </form>
                 <Link href="/templates/access_code">
                     <button>Connect with Access Code</button>
                 </Link>

@@ -8,6 +8,7 @@ import { Site, Data } from "../components/inteface";
 const texts = getCurrentTranslation();
 
 const BillPlan = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [site, setSite] = useState<Site | null>(null);
     const [plan, setPlan] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -29,10 +30,13 @@ const BillPlan = () => {
         if (plan === "") {
             setErrorMessage(texts.error.no_plan_selected);
         } else {
+            setIsLoading(true);
             const body: FetchAPI['body'] = { action: "connect", type: "bill_plan", bill_plan: plan };
             const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
             if (data.success) {
                 router.push('./connected');
+            } else {
+                setIsLoading(false);
             }
         }
     };
@@ -41,16 +45,17 @@ const BillPlan = () => {
         const fetchSite = async () => {
             const data = await fetchAPI({ target: "handler", method: 'GET' });
             if (data) {
+                setIsLoading(false);
                 setSite(data.site);
             }
         };
         fetchSite();
-    }, [site?.signed_in]);
+    }, []);
 
     const billPlans = (site?.bill_plans) && site.bill_plans;
 
     return (
-        <Layout>
+        <Layout isLoading={isLoading}>
             <h2>This is Bill plan page</h2>
 
             <div>

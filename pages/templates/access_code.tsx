@@ -9,6 +9,7 @@ import { fetchAPI, FetchAPI, getCurrentTranslation } from '../components/utils';
 const texts = getCurrentTranslation();
 
 const AccessCode = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [inputAccessCode, setInputAccessCode] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>('');
     const router = useRouter();
@@ -17,22 +18,28 @@ const AccessCode = () => {
         setInputAccessCode(e.target.value);
     };
 
+    const handleClick = () => {
+        setIsLoading(true);
+    };
+
     const handleConnect = async () => {
         if (inputAccessCode === "") {
             setErrorMessage(texts.error.blank_access_code);
         } else {
+            setIsLoading(true);
             const body: FetchAPI['body'] = { action: "connect", type: "access_code", access_code: inputAccessCode };
             const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
             if (data.success) {
                 router.push('./connected');
             } else {
+                setIsLoading(false);
                 setErrorMessage(texts.error.invalid_access_code);
             }
         }
     };
 
     return (
-        <Layout>
+        <Layout isLoading={isLoading}>
             <h2>This is Access Code</h2>
             <div>
                 <label>{texts.access_code.label}</label>
@@ -42,7 +49,7 @@ const AccessCode = () => {
             </div>
 
             <Link href="/templates/authentication">
-                <button>{texts.buttons.login_guest}</button>
+                <button onClick={handleClick}>{texts.buttons.login_guest}</button>
             </Link>
         </Layout>
     );

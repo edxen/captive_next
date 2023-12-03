@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 import { fetchAPI } from './components/utils';
 import { Site, Data } from './components/inteface';
+import Layout from './components/layout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -41,9 +42,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        {!site && (
-          <h2>Loading</h2>
-        )}
+        <Layout isLoading={true} />
       </main>
     </>
   );

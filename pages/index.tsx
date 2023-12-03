@@ -2,38 +2,35 @@ import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 
-import Authentication from './templates/authentication';
-import Layout from './components/layout';
-import { fetchAPI } from './components/fetchAPI';
 import { useState, useEffect } from 'react';
-import { BillPlan, Site } from './components/inteface';
+import { useRouter } from 'next/router';
+
+import { fetchAPI } from './components/fetchAPI';
+import { Site, Data } from './components/inteface';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const router = useRouter();
+
   const [site, setSite] = useState<Site | null>(null);
 
   const fetchSite = async () => {
-    const data = await fetchAPI({ target: "handler", method: "GET" });
-    if (data) setSite(data.site);
+    const data = await fetchAPI({ target: "handler", method: "GET" }) as Data;
+    if (data) {
+      setSite(data.site);
+
+      if (!site?.connected.status) {
+        router.push('/templates/authentication');
+      } else {
+        router.push('/templates/connected');
+      }
+    }
   };
 
   useEffect(() => {
     fetchSite();
   }, [site?.connected]);
-
-  const handleDisconnect = async () => {
-    const params = {
-      target: "handler",
-      method: "POST",
-      body: {
-        action: "disconnect",
-      }
-    };
-    await fetchAPI({ ...params });
-  };
-
-  const billPlan = site?.connected.bill_plan as BillPlan || null;
 
   return (
     <>
@@ -44,19 +41,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        {site ? (
-          !site.connected.status
-            ? <Authentication />
-            : (
-              <Layout>
-                <h2>You are now connected</h2>
-                <h4>{billPlan.name}</h4>
-                <button onClick={handleDisconnect}>
-                  Disconnect
-                </button>
-              </Layout>
-            )
-        ) : (
+        {!site && (
           <h2>Loading</h2>
         )}
       </main>

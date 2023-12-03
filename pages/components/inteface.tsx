@@ -24,6 +24,12 @@ export interface Credentials {
     last_name: string;
 }
 
+export interface Data {
+    message: string;
+    success: boolean;
+    site: Site;
+}
+
 export interface BillPlan {
     uuid: string,
     code: string,

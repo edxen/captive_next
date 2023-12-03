@@ -8,7 +8,8 @@
                 "blank_credentials": "Room Number and Last Name is required",
                 "invalid_credentials": "Room Numer / Last Name is incorrect",
                 "no_plan_selected": "No bill plan selected",
-                "blank_access_code": "Access Code is required"
+                "blank_access_code": "Access Code is required",
+                "invalid_access_code": "Access Code is invalid"
             },
             "credentials": {
                 "welcome_message": "Welcome to DisCafe!",
@@ -20,6 +21,7 @@
             },
             "access_code": {
                 "label": "Access Code",
+                "placeholder": "Enter Access Code",
                 "connect": "Connect"
             }
         }

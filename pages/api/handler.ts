@@ -6,7 +6,7 @@ import { Site, BillPlan, Voucher, Guest, StringKey } from '../components/intefac
 
 type Data = {
     message: string;
-    success?: boolean;
+    success: boolean;
     site?: Site;
 };
 
@@ -38,9 +38,10 @@ export default function handler(
     };
 
     try {
+        let success = false;
         switch (req.method) {
             case "GET":
-                res.status(200).json({ message: 'this is a GET Request', site: data.site });
+                res.status(200).json({ message: 'this is a GET Request', success: true, site: data.site });
                 break;
             case "POST":
                 const { action } = req.body;
@@ -53,19 +54,19 @@ export default function handler(
                     case "signin":
                         const { room_number, last_name } = req.body;
                         const guest = data.pms.filter((data: Guest) => data.room_number === room_number)[0];
-                        const success = (guest?.last_name === last_name) ? true : false;
+                        success = (guest?.last_name === last_name) ? true : false;
                         if (success) {
                             const getGuestPlans = data.bill_plans.filter((billPlan: BillPlan) => billPlan.type !== 'voucher');
                             data.site.bill_plans = getGuestPlans;
                             data.site.signed_in = { status: true, guest };
                         }
                         writeJSONFile(paths.site, data.site);
-                        res.status(200).json({ message: 'this is a POST Request', success });
                         break;
 
                     case "signout":
                         clearSignedIn();
                         clearBillPlans();
+                        success = true;
                         break;
 
                     case "connect":
@@ -81,11 +82,13 @@ export default function handler(
                                     status: true,
                                     bill_plan: getSelectedPlan(plan_uuid)
                                 };
+                                success = true;
                                 break;
                             case "access_code":
                                 const { access_code }: { access_code: string; } = req.body;
                                 const found = data.voucher.filter((voucher: Voucher) => voucher.code === access_code)[0];
                                 if (found) {
+                                    success = true;
                                     data.site.connected = {
                                         status: true,
                                         bill_plan: getSelectedPlan(found.uuid)
@@ -100,10 +103,11 @@ export default function handler(
                         clearBillPlans();
                         clearSignedIn();
                         clearConnected();
+                        success = true;
                 };
 
                 writeJSONFile(paths.site, data.site);
-                if (action !== "signin") res.status(200).json({ message: 'this is a POST Request', site: data.site });
+                if (action !== "signin") res.status(200).json({ message: 'this is a POST Request', success, site: data.site });
                 break;
 
             default:

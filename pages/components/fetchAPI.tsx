@@ -7,12 +7,13 @@ export interface FetchAPI {
     method: 'GET' | 'POST';
     body?: {
         action: ActionTypes;
-        type?: 'access_code' | 'credentials';
+        type?: 'access_code' | 'credentials' | 'bill_plan';
         access_code?: string;
         credentials?: {
             room_number: string;
             last_name: string;
-        };
+        },
+        bill_plan?: string;
     };
 }
 

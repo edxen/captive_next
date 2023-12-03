@@ -1,6 +1,9 @@
 import { useState, useEffect, ChangeEvent } from 'react';
+import { useRouter } from 'next/router';
+
 import { Site, Texts, Credentials, BillPlan } from "../components/inteface";
-import { fetchAPI } from "../components/fetchAPI";
+import { fetchAPI, FetchAPI } from "../components/fetchAPI";
+import { Data } from '../components/inteface';
 
 import Layout from "../components/layout";
 import InputGroup from "../components/inputGroup";
@@ -19,50 +22,57 @@ const Authentication = () => {
     const [credentials, setCredentials] = useState<Credentials>({ room_number: '', last_name: '' });
     const updateCredentials = (value: Partial<Credentials>) => setCredentials((prevCredentials: Credentials) => ({ ...prevCredentials, ...value }));
 
-    const fetchSite = async ({ method, body }: { method: string, body?: { [key: string]: string; }; }) => {
-        const data = await fetchAPI({ target: "handler", method, body });
-        if (data) setSite(data.site);
-    };
+    const router = useRouter();
 
     useEffect(() => {
-        fetchSite({ method: "GET" });
+        const fetchSite = async () => {
+            const data = await fetchAPI({ target: "handler", method: 'POST' });
+            if (data) {
+                setSite(data.site);
+            }
+        };
+        fetchSite();
     }, [site?.signed_in]);
 
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setErrorMessage('');
-        if (credentials.room_number === undefined || credentials.last_name === '') {
+
+        const emptyCredentials: boolean = Object.values(credentials).every(credential => credential === '');
+        if (emptyCredentials) {
             setErrorMessage(texts.error.blank_credentials);
         } else {
-            const body = {
-                action: "signin",
-                room_number: String(credentials.room_number),
-                last_name: credentials.last_name
-            };
-            const data = await fetchAPI({ target: "handler", method: "POST", body });
-            if (!data.success) setErrorMessage(texts.error.invalid_credentials);
+            const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signin', credentials } }) as Data;
+            if (data.success) {
+                router.push('./bill_plan');
+            } else {
+                setErrorMessage(texts.error.invalid_credentials);
+            }
         }
     };
 
     const handleSignOut = async () => {
-        const body = { action: "signout" };
-        await fetchAPI({ target: "handler", method: "POST", body });
+        await fetchAPI({ target: "handler", method: "POST", body: { action: 'signout' } });
 
         setSelectedPlan("");
         setCredentials({ room_number: "", last_name: "" });
     };
 
     const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
-        setSelectedPlan(event.target.id.replace('plan_', ''));
+        setSelectedPlan(event.target.value.replace('plan_', ''));
     };
 
     const handleConnect = async () => {
         if (selectedPlan === "") {
             setErrorMessage(texts.error.no_plan_selected);
         } else {
-            const body = { action: "connect", type: "bill_plan", plan_uuid: selectedPlan };
-            await fetchAPI({ target: "handler", method: "POST", body });
+            const body: FetchAPI['body'] = { action: "connect", type: "bill_plan", bill_plan: selectedPlan };
+            const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
+            if (data.success) {
+                router.push('./connected');
+            }
+
         }
     };
 
@@ -87,7 +97,7 @@ const Authentication = () => {
                             {billPlans?.map((plan) =>
                                 <li key={plan.uuid}>
                                     <label>
-                                        <input type="radio" id={`plan_${plan.uuid}`} name="bill_plans" onChange={handleSelect}></input>
+                                        <input type="radio" value={`plan_${plan.uuid}`} name="bill_plans" onChange={handleSelect}></input>
                                         {plan.name} {plan.amount} $
                                     </label>
                                 </li>

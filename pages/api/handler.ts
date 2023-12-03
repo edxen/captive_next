@@ -2,7 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
-import { Data, BillPlan, Voucher, Guest, StringKey } from '../components/inteface';
+import { Site, Guest, Data, Voucher } from '../components/inteface';
+import { stringify } from 'querystring';
 
 const readJSONFile = (filePath: string): any => {
     const fileContents = fs.readFileSync(filePath, 'utf-8');
@@ -18,21 +19,21 @@ export default function handler(
 ) {
     const setPath = (fileName: string) => path.join(process.cwd(), 'data', `${fileName}.json`);
 
-    const paths: StringKey = {
+    const paths: { [key: string]: string; } = {
         pms: setPath('pms'),
         site: setPath('site'),
         bill_plans: setPath('bill_plans'),
         voucher: setPath('voucher'),
     };
-    const data: any = {
-        pms: readJSONFile(paths.pms),
-        site: readJSONFile(paths.site),
-        bill_plans: readJSONFile(paths.bill_plans),
-        voucher: readJSONFile(paths.voucher)
+    const data = {
+        pms: readJSONFile(paths.pms) as Guest[],
+        site: readJSONFile(paths.site) as Site,
+        bill_plans: readJSONFile(paths.bill_plans) as Site['bill_plans'],
+        voucher: readJSONFile(paths.voucher) as Voucher[]
     };
 
     try {
-        let success = false;
+        let success: boolean = false;
         switch (req.method) {
             case "GET":
                 res.status(200).json({ message: 'this is a GET Request', success: true, site: data.site });
@@ -46,17 +47,18 @@ export default function handler(
 
                 switch (action) {
                     case "signin":
-                        const { room_number, last_name } = req.body;
+                        const { room_number, last_name } = req.body.credentials;
+                        const guest: Guest = data.pms.filter((data) => data.room_number === room_number)[0];
 
-                        const guest = data.pms.filter((data: Guest) => data.room_number === room_number)[0];
-                        success = (guest?.last_name === last_name) ? true : false;
+                        if (guest?.last_name === last_name) {
+                            success = true;
+                        }
 
                         if (success) {
-                            const getGuestPlans = data.bill_plans.filter((billPlan: BillPlan) => billPlan.type !== 'voucher');
+                            const getGuestPlans = data.bill_plans.filter((billPlan) => billPlan.type !== 'voucher');
                             data.site.bill_plans = getGuestPlans;
                             data.site.signed_in = { status: true, guest };
                         }
-                        writeJSONFile(paths.site, data.site);
                         break;
 
                     case "signout":
@@ -69,7 +71,7 @@ export default function handler(
                     case "connect":
                         const { type } = req.body;
 
-                        const getSelectedPlan = (uuid: string) => data.bill_plans.filter((billplan: BillPlan) => billplan.uuid === uuid)[0];
+                        const getSelectedPlan = (uuid: string) => data.bill_plans.filter((billplan) => billplan.uuid === uuid)[0];
 
                         switch (type) {
                             case "bill_plan":
@@ -86,15 +88,15 @@ export default function handler(
                             case "access_code":
                                 const { access_code }: { access_code: string; } = req.body;
 
-                                const found = data.voucher.filter((voucher: Voucher) => voucher.code === access_code)[0];
+                                const found = data.voucher.filter((voucher) => voucher.code === access_code)[0];
 
                                 if (found) {
                                     success = true;
+
                                     data.site.connected = {
                                         status: true,
                                         bill_plan: getSelectedPlan(found.uuid)
                                     };
-                                    data.site.connected.bill_plan.code = access_code;
                                 }
                                 break;
                         }

@@ -1,12 +1,14 @@
+import { fetchAPI } from "../components/fetchAPI";
 import Layout from "../components/layout";
 import { useRouter } from 'next/router';
 
 const Connected = () => {
     const router = useRouter();
 
-    const handleClick = () => {
+    const handleClick = async () => {
         const result = confirm('Are you sure?');
         if (result) {
+            await fetchAPI({ target: 'handler', method: 'POST', body: { action: 'disconnect' } });
             router.push('/');
         }
     };

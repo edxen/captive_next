@@ -1,4 +1,4 @@
-import { Data, Texts } from "./inteface";
+import { Data, StringKey } from "./inteface";
 import Translations from "./translation.json";
 
 type ActionTypes = 'signin' | 'signout' | 'connect' | 'disconnect';
@@ -33,6 +33,20 @@ export const fetchAPI = async ({ target, method, body }: FetchAPI) => {
         console.error(`There was an error: ${error}`);
     }
 };
+
+interface Translations {
+    access_code: StringKey;
+    credentials: StringKey;
+    buttons: StringKey;
+    error: StringKey;
+}
+
+interface Texts {
+    languages: StringKey;
+    translations: {
+        en: Translations;
+    };
+}
 
 export const getCurrentTranslation = () => {
     const jsonData: Texts = Translations;

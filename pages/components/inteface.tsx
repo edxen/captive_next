@@ -2,20 +2,6 @@ export type StringKey = {
     [key: string]: string;
 };
 
-export interface Translations {
-    access_code: StringKey;
-    credentials: StringKey;
-    buttons: StringKey;
-    error: StringKey;
-}
-
-export interface Texts {
-    languages: StringKey;
-    translations: {
-        en: Translations;
-    };
-}
-
 export interface Voucher {
     [key: string]: string;
 }

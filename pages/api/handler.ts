@@ -90,9 +90,11 @@ export default function handler(
                                 if (found) {
                                     success = true;
 
+                                    const associatedPlan: BillPlan = getSelectedPlan(found.uuid);
+                                    associatedPlan.code = access_code;
                                     data.site.connected = {
                                         status: true,
-                                        bill_plan: getSelectedPlan(found.uuid)
+                                        bill_plan: associatedPlan
                                     };
                                 }
                                 break;

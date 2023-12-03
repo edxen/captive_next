@@ -2,6 +2,7 @@
     {
         "uuid": "10001",
         "name": "free plan",
+        "code": "",
         "duration": 60,
         "type": "free",
         "amount": 0,
@@ -13,6 +14,7 @@
     {
         "uuid": "10002",
         "name": "paid plan",
+        "code": "",
         "duration": 120,
         "type": "paid",
         "amount": 10,
@@ -24,6 +26,7 @@
     {
         "uuid": "10003",
         "name": "voucher plan",
+        "code": "",
         "duration": 30,
         "type": "voucher",
         "amount": 0,
@@ -35,6 +38,7 @@
     {
         "uuid": "10004",
         "name": "premium voucher plan",
+        "code": "",
         "duration": 60,
         "type": "voucher",
         "amount": 0,

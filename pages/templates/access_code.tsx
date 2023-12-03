@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import Layout from "../components/layout";
 import Link from 'next/link';
-import InputGroup from "../components/inputGroup";
+
 import Translations from '../components/translation.json';
 import { Texts } from '../components/inteface';
 import { fetchAPI } from '../components/fetchAPI';
@@ -11,15 +11,18 @@ const currentLanguage = 'en';
 const texts = jsonData.translations[currentLanguage];
 
 const AccessCode = () => {
-    const [accessCode, setAccessCode] = useState<{ [key: string]: string; }>({ access_code: "" });
+    const [inputAccessCode, setInputAccessCode] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setInputAccessCode(e.target.value);
+    };
+
     const handleConnect = async () => {
-        const { access_code } = accessCode;
-        if (access_code === "") {
+        if (inputAccessCode === "") {
             setErrorMessage(texts.error.blank_access_code);
         } else {
-            const body = { action: "connect", type: "access_code", access_code };
+            const body = { action: "connect", type: "access_code", access_code: inputAccessCode };
             await fetchAPI({ target: "handler", method: "POST", body });
         }
     };
@@ -28,7 +31,8 @@ const AccessCode = () => {
         <Layout>
             <h2>This is Access Code</h2>
             <div>
-                <InputGroup value={accessCode.access_code} label={texts.access_code.label} htmlFor='access_code' updateData={setAccessCode} />
+                <label>{texts.access_code.label}</label>
+                <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
                 <div>{errorMessage}</div>
                 <button onClick={handleConnect}>{texts.access_code.connect}</button>
             </div>

@@ -16,6 +16,7 @@ const BillPlan = () => {
     const router = useRouter();
 
     const handleSignOut = async () => {
+        setIsLoading(true);
         const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signout' } }) as Data;
         if (data.success) {
             router.push('/templates/authentication');
@@ -34,7 +35,7 @@ const BillPlan = () => {
             const body: FetchAPI['body'] = { action: "connect", type: "bill_plan", bill_plan: plan };
             const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
             if (data.success) {
-                router.push('./connected');
+                router.push('/templates/connected');
             } else {
                 setIsLoading(false);
             }

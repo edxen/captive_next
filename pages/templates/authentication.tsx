@@ -12,22 +12,12 @@ import InputGroup from "../components/inputGroup";
 const texts = getCurrentTranslation();
 
 const Authentication = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [credentials, setCredentials] = useState<Credentials>({ room_number: '', last_name: '' });
     const updateCredentials = (value: Partial<Credentials>) => setCredentials((prevCredentials: Credentials) => ({ ...prevCredentials, ...value }));
 
     const router = useRouter();
-
-    useEffect(() => {
-        const fetchSite = async () => {
-            const data = await fetchAPI({ target: "handler", method: 'POST' });
-            if (data) {
-                setIsLoading(false);
-            }
-        };
-        fetchSite();
-    }, []);
 
     const handleClick = () => {
         setIsLoading(true);
@@ -44,7 +34,7 @@ const Authentication = () => {
             setIsLoading(true);
             const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signin', credentials } }) as Data;
             if (data.success) {
-                router.push('./bill_plan');
+                router.push('/templates/bill_plan');
             } else {
                 setIsLoading(false);
                 setErrorMessage(texts.error.invalid_credentials);

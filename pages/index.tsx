@@ -15,22 +15,31 @@ export default function Home() {
   const router = useRouter();
 
   const [site, setSite] = useState<Site | null>(null);
+  const [redirected, setRedirected] = useState<boolean>(false);
 
   const fetchSite = async () => {
     const data = await fetchAPI({ target: "handler", method: "GET" }) as Data;
     if (data) {
       setSite(data.site);
 
-      if (!site?.connected.status) {
-        router.push('/templates/authentication');
-      } else {
-        router.push('/templates/connected');
+      let template: string = 'authentication';
+      if (site?.connected.status) template = 'connected';
+
+      if (!redirected) {
+        setRedirected(true);
+        router.push(`/templates/${template}`);
       }
     }
   };
 
   useEffect(() => {
+    let isMounted: boolean = true;
+
     fetchSite();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (

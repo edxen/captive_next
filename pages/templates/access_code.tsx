@@ -30,7 +30,7 @@ const AccessCode = () => {
             const body: FetchAPI['body'] = { action: "connect", type: "access_code", access_code: inputAccessCode };
             const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
             if (data.success) {
-                router.push('./connected');
+                router.push('/templates/connected');
             } else {
                 setIsLoading(false);
                 setErrorMessage(texts.error.invalid_access_code);

@@ -2,8 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
-import { Site, Guest, Data, Voucher } from '../components/inteface';
-import { stringify } from 'querystring';
+import { Site, Guest, Data, Voucher, BillPlan } from '../components/inteface';
 
 const readJSONFile = (filePath: string): any => {
     const fileContents = fs.readFileSync(filePath, 'utf-8');
@@ -73,14 +72,14 @@ export default function handler(
 
                         switch (type) {
                             case "bill_plan":
-                                const { plan_uuid }: { plan_uuid: string; } = req.body;
+                                const { bill_plan }: { bill_plan: string; } = req.body;
 
                                 clearBillPlans();
 
                                 success = true;
                                 data.site.connected = {
                                     status: true,
-                                    bill_plan: getSelectedPlan(plan_uuid)
+                                    bill_plan: getSelectedPlan(bill_plan)
                                 };
                                 break;
                             case "access_code":

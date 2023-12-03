@@ -9,7 +9,18 @@
     "guest": {}
   },
   "connected": {
-    "status": false,
-    "bill_plan": {}
+    "status": true,
+    "bill_plan": {
+      "uuid": "10001",
+      "name": "free plan",
+      "duration": 60,
+      "type": "free",
+      "amount": 0,
+      "bandwidth": {
+        "download": 2048,
+        "upload": 2048
+      },
+      "code": "123456"
+    }
   }
 }

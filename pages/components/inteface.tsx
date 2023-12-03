@@ -20,11 +20,6 @@ export interface Voucher {
     [key: string]: string;
 }
 
-export interface Credentials {
-    room_number: string;
-    last_name: string;
-}
-
 export interface Data {
     message: string;
     success: boolean;

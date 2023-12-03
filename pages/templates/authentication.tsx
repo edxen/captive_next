@@ -1,24 +1,19 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-import { Site, Texts, Credentials, BillPlan } from "../components/inteface";
-import { fetchAPI, FetchAPI } from "../components/fetchAPI";
+import { Site, Credentials } from "../components/inteface";
+import { fetchAPI, getCurrentTranslation } from "../components/utils";
 import { Data } from '../components/inteface';
 
 import Layout from "../components/layout";
 import InputGroup from "../components/inputGroup";
-import Translations from '../components/translation.json';
 
-import Link from 'next/link';
-
-const jsonData: Texts = Translations;
-const currentLanguage = 'en';
-const texts = jsonData.translations[currentLanguage];
+const texts = getCurrentTranslation();
 
 const Authentication = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [site, setSite] = useState<Site | null>(null);
-    const [selectedPlan, setSelectedPlan] = useState<string>("");
     const [credentials, setCredentials] = useState<Credentials>({ room_number: '', last_name: '' });
     const updateCredentials = (value: Partial<Credentials>) => setCredentials((prevCredentials: Credentials) => ({ ...prevCredentials, ...value }));
 

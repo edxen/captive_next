@@ -5,7 +5,7 @@ import styles from '@/styles/Home.module.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { fetchAPI } from './components/fetchAPI';
+import { fetchAPI } from './components/utils';
 import { Site, Data } from './components/inteface';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -30,7 +30,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchSite();
-  }, [site?.connected]);
+  }, []);
 
   return (
     <>

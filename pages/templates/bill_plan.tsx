@@ -2,13 +2,10 @@ import Layout from "../components/layout";
 import { ChangeEvent, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
-import { fetchAPI, FetchAPI } from "../components/fetchAPI";
-import { Site, Data, Texts } from "../components/inteface";
+import { fetchAPI, FetchAPI, getCurrentTranslation } from "../components/utils";
+import { Site, Data } from "../components/inteface";
 
-import Translations from "../components/translation.json";
-const jsonData: Texts = Translations;
-const currentLanguage = 'en';
-const texts = jsonData.translations[currentLanguage];
+const texts = getCurrentTranslation();
 
 const BillPlan = () => {
     const [site, setSite] = useState<Site | null>(null);

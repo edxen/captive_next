@@ -3,13 +3,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import Layout from "../components/layout";
-import Translations from '../components/translation.json';
 import { Data, Texts } from '../components/inteface';
-import { fetchAPI, FetchAPI } from '../components/fetchAPI';
+import { fetchAPI, FetchAPI, getCurrentTranslation } from '../components/utils';
 
-const jsonData: Texts = Translations;
-const currentLanguage = 'en';
-const texts = jsonData.translations[currentLanguage];
+const texts = getCurrentTranslation();
 
 const AccessCode = () => {
     const [inputAccessCode, setInputAccessCode] = useState<string>("");

@@ -1,6 +1,8 @@
-import { fetchAPI } from "../components/fetchAPI";
+import { fetchAPI, getCurrentTranslation } from "../components/utils";
 import Layout from "../components/layout";
 import { useRouter } from 'next/router';
+
+const texts = getCurrentTranslation();
 
 const Connected = () => {
     const router = useRouter();
@@ -17,7 +19,7 @@ const Connected = () => {
         <Layout>
             <h2>This is connected page</h2>
 
-            <button onClick={handleClick}>Disconnect</button>
+            <button onClick={handleClick}>{texts.credentials.sign_out}</button>
         </Layout>
     );
 };

@@ -38,11 +38,11 @@ const AccessCode = () => {
                 <label>{texts.access_code.label}</label>
                 <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
                 <div>{errorMessage}</div>
-                <button onClick={handleConnect}>{texts.access_code.connect}</button>
+                <button onClick={handleConnect}>{texts.buttons.connect}</button>
             </div>
 
             <Link href="/templates/authentication">
-                <button>Guest Login</button>
+                <button>{texts.buttons.login_guest}</button>
             </Link>
         </Layout>
     );

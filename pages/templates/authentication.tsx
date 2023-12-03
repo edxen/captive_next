@@ -55,10 +55,10 @@ const Authentication = () => {
                     <InputGroup value={credentials.room_number} label={texts.credentials.room_number} htmlFor='room_number' updateData={updateCredentials} />
                     <InputGroup value={credentials.last_name} label={texts.credentials.last_name} htmlFor='last_name' updateData={updateCredentials} />
                     <div>{errorMessage}</div>
-                    <button>{texts.credentials.sign_in}</button>
+                    <button>{texts.buttons.sign_in}</button>
                 </form>
                 <Link href="/templates/access_code">
-                    <button>Connect with Access Code</button>
+                    <button>{texts.buttons.login_access_code}</button>
                 </Link>
             </Layout>
         </>

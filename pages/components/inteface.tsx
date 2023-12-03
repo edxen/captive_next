@@ -3,9 +3,10 @@ export type StringKey = {
 };
 
 export interface Translations {
-    credentials: StringKey;
-    error: StringKey;
     access_code: StringKey;
+    credentials: StringKey;
+    buttons: StringKey;
+    error: StringKey;
 }
 
 export interface Texts {

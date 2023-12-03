@@ -64,8 +64,8 @@ const BillPlan = () => {
                     </li>
                 )}
                 <div>{errorMessage}</div>
-                <button onClick={handleSignOut}>{texts.credentials.sign_out}</button>
-                <button onClick={handleConnect}>{texts.credentials.connect}</button>
+                <button onClick={handleSignOut}>{texts.buttons.sign_out}</button>
+                <button onClick={handleConnect}>{texts.buttons.connect}</button>
             </div>
         </Layout>
     );

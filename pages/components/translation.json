@@ -14,10 +14,15 @@
             "credentials": {
                 "welcome_message": "Welcome to DisCafe!",
                 "room_number": "Room Number",
-                "last_name": "Last Name",
+                "last_name": "Last Name"
+            },
+            "buttons": {
                 "sign_in": "Sign in",
                 "sign_out": "Sign out",
-                "connect": "Connect"
+                "connect": "Connect",
+                "disconnect": "Disconnect",
+                "login_access_code": "Access Code Login",
+                "login_guest": "Guest Login"
             },
             "access_code": {
                 "label": "Access Code",

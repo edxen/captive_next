@@ -5,17 +5,11 @@
   },
   "bill_plans": [],
   "signed_in": {
-    "status": true,
-    "guest": {
-      "uuid": "10001",
-      "room_number": "1001",
-      "full_name": "Richard Smith",
-      "first_name": "Richard",
-      "last_name": "Smith",
-      "code": ""
-    }
+    "status": false,
+    "guest": {}
   },
   "connected": {
-    "status": true
+    "status": false,
+    "bill_plan": {}
   }
 }

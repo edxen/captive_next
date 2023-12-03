@@ -19,7 +19,7 @@ const Connected = () => {
         <Layout>
             <h2>This is connected page</h2>
 
-            <button onClick={handleClick}>{texts.credentials.sign_out}</button>
+            <button onClick={handleClick}>{texts.buttons.disconnect}</button>
         </Layout>
     );
 };

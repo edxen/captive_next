@@ -2,7 +2,7 @@ import { Data } from "./inteface";
 
 type ActionTypes = 'signin' | 'signout' | 'connect' | 'disconnect';
 
-interface FetchAPI {
+export interface FetchAPI {
     target: 'handler';
     method: 'GET' | 'POST';
     body?: {

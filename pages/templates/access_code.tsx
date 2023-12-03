@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 
 import Layout from "../components/layout";
 import Translations from '../components/translation.json';
-import { Texts } from '../components/inteface';
-import { fetchAPI } from '../components/fetchAPI';
+import { Data, Texts } from '../components/inteface';
+import { fetchAPI, FetchAPI } from '../components/fetchAPI';
 
 const jsonData: Texts = Translations;
 const currentLanguage = 'en';
@@ -24,8 +24,8 @@ const AccessCode = () => {
         if (inputAccessCode === "") {
             setErrorMessage(texts.error.blank_access_code);
         } else {
-            const body = { action: "connect", type: "access_code", access_code: inputAccessCode };
-            const data = await fetchAPI({ target: "handler", method: "POST", body });
+            const body: FetchAPI['body'] = { action: "connect", type: "access_code", access_code: inputAccessCode };
+            const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
             if (data.success) {
                 router.push('./connected');
             } else {

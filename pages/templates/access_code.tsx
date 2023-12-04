@@ -23,7 +23,9 @@ const AccessCode = () => {
         setIsLoading(true);
     };
 
-    const handleConnect = async () => {
+    const handleConnect = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         if (inputAccessCode === "") {
             setErrorMessage(texts.error.blank_access_code);
         } else {
@@ -47,12 +49,14 @@ const AccessCode = () => {
             <StyledInstructions>
                 Approach our front desk to request for access code.
             </StyledInstructions>
-            <StyledInputGroup value={errorMessage}>
-                <label>{texts.access_code.label}</label>
-                <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
-            </StyledInputGroup>
-            <StyledError>{errorMessage}</StyledError>
-            <StyledButton onClick={handleConnect}>{texts.buttons.connect}</StyledButton>
+            <form onSubmit={handleConnect}>
+                <StyledInputGroup value={errorMessage}>
+                    <label>{texts.access_code.label}</label>
+                    <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
+                </StyledInputGroup>
+                <StyledError>{errorMessage}</StyledError>
+                <StyledButton>{texts.buttons.connect}</StyledButton>
+            </form>
 
             <StyledDivider>
                 or connect via:

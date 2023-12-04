@@ -47,7 +47,7 @@ const AccessCode = () => {
             <StyledInstructions>
                 Approach our front desk to request for access code.
             </StyledInstructions>
-            <StyledInputGroup onError={(errorMessage !== '') ? true : undefined}>
+            <StyledInputGroup value={errorMessage}>
                 <label>{texts.access_code.label}</label>
                 <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
             </StyledInputGroup>
@@ -63,7 +63,7 @@ const AccessCode = () => {
                     {texts.buttons.login_guest}
                 </StyledButton>
             </Link>
-        </Layout>
+        </Layout >
     );
 };
 

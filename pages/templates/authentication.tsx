@@ -58,7 +58,8 @@ const Authentication = () => {
                     </StyledInstructions>
                     {
                         Object.keys(credentials).map((credential, index) => (
-                            <StyledInputGroup key={index} onError={(errorMessage !== '') ? true : undefined}>
+                            <StyledInputGroup key={index}
+                                value={errorMessage}>
 
                                 <label>{texts.credentials[`label_${credential}`]}</label>
                                 <input id={credential} onChange={handleChange} defaultValue={credentials[credential]} placeholder={texts.credentials[`placeholder_${credential}`]} />

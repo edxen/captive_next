@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface StyledInputGroup {
-    onError: boolean | undefined;
+    value: string;
 }
 
 export const StyledHeader = styled.div`
@@ -33,7 +33,7 @@ export const StyledInputGroup = styled.div<StyledInputGroup>`
 
     & input {
         padding:10px;
-        border:${(props) => (props.onError ? '1px solid red' : '1px solid transparent')};
+        border:${(props) => (props.value !== '' ? '1px solid red' : '1px solid transparent')};
         border-radius:4px;
         width: 100%;
     }

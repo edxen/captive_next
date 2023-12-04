@@ -18,6 +18,30 @@
                 "placeholder_room_number": "Enter Room Number",
                 "placeholder_last_name": "Enter Last Name"
             },
+            "guest": {
+                "uuid": "UUID",
+                "room_number": "Room Number",
+                "full_name": "Full Name",
+                "first_name": "First Name",
+                "last_name": "Last Name",
+                "code": "Code"
+            },
+            "connected": {
+                "welcome_guest": "Welcome, {guest?.first_name}!",
+                "welcome": "Welcome!"
+            },
+            "bill_plan": {
+                "uuid": "UUID",
+                "name": "Name",
+                "code": "Code",
+                "duration": "Duration",
+                "type": "Type",
+                "amount": "Amount",
+                "bandwidth": {
+                    "download": "Download Speed",
+                    "upload": "Upload Speed"
+                }
+            },
             "buttons": {
                 "sign_in": "Sign in",
                 "sign_out": "Sign out",

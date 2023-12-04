@@ -114,6 +114,25 @@ export const StyledSelectGroup = styled.div`
     }
 `;
 
+export const StyledList = styled.div`
+    color: ${palette.white};
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    margin-bottom: 10px;
+
+    & > div {
+        display:flex;
+        justify-content: start;
+        items-center: center
+    }
+
+    & > div > label {
+        text-align: left;
+        width: 50%;
+    }
+`;
+
 export const StyledError = styled.div`
     margin-bottom: 10px;
 

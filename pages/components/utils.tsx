@@ -38,6 +38,12 @@ interface Translations {
     access_code: StringKey;
     credentials: StringKey;
     buttons: StringKey;
+    guest: StringKey;
+    connected: StringKey,
+    bill_plan: {
+        [key: string]: string | {};
+        bandwidth: StringKey;
+    };
     error: StringKey;
 }
 

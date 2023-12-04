@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { fetchAPI, FetchAPI, getCurrentTranslation } from "../components/utils";
 import { Site, Data, Guest } from "../components/inteface";
 import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../styled/authentication";
-import e from "express";
 
 const texts = getCurrentTranslation();
 

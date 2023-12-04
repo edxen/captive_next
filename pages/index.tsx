@@ -5,9 +5,9 @@ import styles from '@/styles/Home.module.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { fetchAPI } from './components/utils';
-import { Site, Data } from './components/inteface';
-import Layout from './components/layout';
+import { fetchAPI } from '../components/utils';
+import { Site, Data } from '../components/inteface';
+import Layout from '../components/layout';
 
 const inter = Inter({ subsets: ['latin'] });
 

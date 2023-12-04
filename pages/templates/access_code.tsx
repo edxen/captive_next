@@ -2,10 +2,10 @@ import { ChangeEvent, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import Layout from "../components/layout";
-import { Data } from '../components/inteface';
-import { fetchAPI, FetchAPI, getCurrentTranslation } from '../components/utils';
-import { StyledButton, StyledError, StyledDivider, StyledHeader, StyledInputGroup, StyledInstructions } from '../styled/authentication';
+import Layout from "../../components/layout";
+import { Data } from '../../components/inteface';
+import { fetchAPI, FetchAPI, getCurrentTranslation } from '../../components/utils';
+import { StyledButton, StyledError, StyledDivider, StyledHeader, StyledInputGroup, StyledInstructions } from '../../styled/authentication';
 
 const texts = getCurrentTranslation();
 

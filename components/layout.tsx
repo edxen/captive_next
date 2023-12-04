@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Content, Footer, Header, StyledLogo } from '../styled/layout';
 
-import Waiting from '../templates/waiting';
+import Waiting from '../pages/templates/waiting';
 import { StyledHeader } from '../styled/authentication';
 
 interface LayoutProps {

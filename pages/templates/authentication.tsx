@@ -2,11 +2,11 @@ import { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { fetchAPI, getCurrentTranslation } from "../components/utils";
-import { Data } from '../components/inteface';
+import { fetchAPI, getCurrentTranslation } from "../../components/utils";
+import { Data } from '../../components/inteface';
 
-import Layout from "../components/layout";
-import { StyledInputGroup, StyledError, StyledButton, StyledHeader, StyledInstructions, StyledDivider } from '../styled/authentication';
+import Layout from "../../components/layout";
+import { StyledInputGroup, StyledError, StyledButton, StyledHeader, StyledInstructions, StyledDivider } from '../../styled/authentication';
 
 const texts = getCurrentTranslation();
 

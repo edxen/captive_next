@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { fetchAPI, getCurrentTranslation } from "../components/utils";
-import Layout from "../components/layout";
-import { Site, Guest, BillPlan } from '../components/inteface';
-import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../styled/authentication';
+import { fetchAPI, getCurrentTranslation } from "../../components/utils";
+import Layout from "../../components/layout";
+import { Site, Guest, BillPlan } from '../../components/inteface';
+import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../../styled/authentication';
 
 const texts = getCurrentTranslation();
 

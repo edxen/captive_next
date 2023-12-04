@@ -1,10 +1,10 @@
-import Layout from "../components/layout";
+import Layout from "../../components/layout";
 import { ChangeEvent, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
-import { fetchAPI, FetchAPI, getCurrentTranslation } from "../components/utils";
-import { Site, Data, Guest } from "../components/inteface";
-import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../styled/authentication";
+import { fetchAPI, FetchAPI, getCurrentTranslation } from "../../components/utils";
+import { Site, Data, Guest } from "../../components/inteface";
+import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../../styled/authentication";
 
 const texts = getCurrentTranslation();
 

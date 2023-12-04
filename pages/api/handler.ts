@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
-import { Site, Guest, Data, Voucher, BillPlan } from '../components/inteface';
+import { Site, Guest, Data, Voucher, BillPlan } from '../../components/inteface';
 
 const readJSONFile = (filePath: string): any => {
     const fileContents = fs.readFileSync(filePath, 'utf-8');
@@ -15,7 +15,6 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) {
-
     const delayDuration = 500;
     setTimeout(() => {
         const setPath = (fileName: string) => path.join(process.cwd(), 'data', `${fileName}.json`);

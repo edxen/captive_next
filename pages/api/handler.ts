@@ -15,111 +15,109 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) {
-    const delayDuration = 500;
-    setTimeout(() => {
-        const setPath = (fileName: string) => path.join(process.cwd(), 'data', `${fileName}.json`);
 
-        const paths: { [key: string]: string; } = {
-            pms: setPath('pms'),
-            site: setPath('site'),
-            bill_plans: setPath('bill_plans'),
-            voucher: setPath('voucher'),
-        };
-        const data = {
-            pms: readJSONFile(paths.pms) as Guest[],
-            site: readJSONFile(paths.site) as Site,
-            bill_plans: readJSONFile(paths.bill_plans) as Site['bill_plans'],
-            voucher: readJSONFile(paths.voucher) as Voucher[]
-        };
+    const setPath = (fileName: string) => path.join(process.cwd(), 'data', `${fileName}.json`);
 
-        try {
-            let success: boolean = false;
-            switch (req.method) {
-                case "GET":
-                    res.status(200).json({ message: 'this is a GET Request', success: true, site: data.site });
-                    break;
-                case "POST":
-                    const { action } = req.body;
+    const paths: { [key: string]: string; } = {
+        pms: setPath('pms'),
+        site: setPath('site'),
+        bill_plans: setPath('bill_plans'),
+        voucher: setPath('voucher'),
+    };
+    const data = {
+        pms: readJSONFile(paths.pms) as Guest[],
+        site: readJSONFile(paths.site) as Site,
+        bill_plans: readJSONFile(paths.bill_plans) as Site['bill_plans'],
+        voucher: readJSONFile(paths.voucher) as Voucher[]
+    };
 
-                    const clearBillPlans = () => data.site.bill_plans = [];
-                    const clearSignedIn = () => data.site.signed_in = { status: false, guest: {} };
-                    const clearConnected = () => data.site.connected = { status: false, bill_plan: {} };
+    try {
+        let success: boolean = false;
+        switch (req.method) {
+            case "GET":
+                res.status(200).json({ message: 'this is a GET Request', success: true, site: data.site });
+                break;
+            case "POST":
+                const { action } = req.body;
 
-                    switch (action) {
-                        case "signin":
-                            const { room_number, last_name } = req.body;
-                            const guest: Guest = data.pms.filter((data) => data.room_number === room_number)[0];
+                const clearBillPlans = () => data.site.bill_plans = [];
+                const clearSignedIn = () => data.site.signed_in = { status: false, guest: {} };
+                const clearConnected = () => data.site.connected = { status: false, bill_plan: {} };
 
-                            if (guest?.last_name === last_name) success = true;
+                switch (action) {
+                    case "signin":
+                        const { room_number, last_name } = req.body;
+                        const guest: Guest = data.pms.filter((data) => data.room_number === room_number)[0];
 
-                            if (success) {
-                                const getGuestPlans = data.bill_plans.filter((billPlan) => billPlan.type !== 'voucher');
-                                data.site.bill_plans = getGuestPlans;
-                                data.site.signed_in = { status: true, guest };
-                            }
-                            break;
+                        if (guest?.last_name === last_name) success = true;
 
-                        case "signout":
-                            clearSignedIn();
-                            clearBillPlans();
+                        if (success) {
+                            const getGuestPlans = data.bill_plans.filter((billPlan) => billPlan.type !== 'voucher');
+                            data.site.bill_plans = getGuestPlans;
+                            data.site.signed_in = { status: true, guest };
+                        }
+                        break;
 
-                            success = true;
-                            break;
+                    case "signout":
+                        clearSignedIn();
+                        clearBillPlans();
 
-                        case "connect":
-                            const { type } = req.body;
+                        success = true;
+                        break;
 
-                            const getSelectedPlan = (uuid: string) => data.bill_plans.filter((billplan) => billplan.uuid === uuid)[0];
+                    case "connect":
+                        const { type } = req.body;
 
-                            switch (type) {
-                                case "bill_plan":
-                                    const { bill_plan }: { bill_plan: string; } = req.body;
+                        const getSelectedPlan = (uuid: string) => data.bill_plans.filter((billplan) => billplan.uuid === uuid)[0];
 
-                                    clearBillPlans();
+                        switch (type) {
+                            case "bill_plan":
+                                const { bill_plan }: { bill_plan: string; } = req.body;
 
+                                clearBillPlans();
+
+                                success = true;
+                                data.site.connected = {
+                                    status: true,
+                                    bill_plan: getSelectedPlan(bill_plan)
+                                };
+                                break;
+                            case "access_code":
+                                const { access_code }: { access_code: string; } = req.body;
+
+                                const found = data.voucher.filter((voucher) => voucher.code === access_code)[0];
+
+                                if (found) {
                                     success = true;
+
+                                    const associatedPlan: BillPlan = getSelectedPlan(found.uuid);
+                                    associatedPlan.code = access_code;
                                     data.site.connected = {
                                         status: true,
-                                        bill_plan: getSelectedPlan(bill_plan)
+                                        bill_plan: associatedPlan
                                     };
-                                    break;
-                                case "access_code":
-                                    const { access_code }: { access_code: string; } = req.body;
+                                }
+                                break;
+                        }
+                        break;
 
-                                    const found = data.voucher.filter((voucher) => voucher.code === access_code)[0];
+                    case "disconnect":
+                        clearBillPlans();
+                        clearSignedIn();
+                        clearConnected();
 
-                                    if (found) {
-                                        success = true;
+                        success = true;
+                };
 
-                                        const associatedPlan: BillPlan = getSelectedPlan(found.uuid);
-                                        associatedPlan.code = access_code;
-                                        data.site.connected = {
-                                            status: true,
-                                            bill_plan: associatedPlan
-                                        };
-                                    }
-                                    break;
-                            }
-                            break;
+                writeJSONFile(paths.site, data.site);
+                res.status(200).json({ message: 'this is a POST Request', success, site: data.site } as Data);
+                break;
 
-                        case "disconnect":
-                            clearBillPlans();
-                            clearSignedIn();
-                            clearConnected();
-
-                            success = true;
-                    };
-
-                    writeJSONFile(paths.site, data.site);
-                    res.status(200).json({ message: 'this is a POST Request', success, site: data.site } as Data);
-                    break;
-
-                default:
-                    res.end();
-                    break;
-            }
-        } catch (error) {
-            console.error(`there was an error: ${error}`);
+            default:
+                res.end();
+                break;
         }
-    }, delayDuration);
+    } catch (error) {
+        console.error(`there was an error: ${error}`);
+    }
 }

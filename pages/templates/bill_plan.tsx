@@ -90,9 +90,6 @@ const BillPlan = () => {
                                 <option defaultChecked={true}>
                                     Charge to Room
                                 </option>
-                                <option>
-                                    via Paypal Checkout
-                                </option>
                             </select>
                         </StyledSelectGroup>
                     )

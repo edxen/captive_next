@@ -3,10 +3,42 @@
     "authentication": true,
     "access_code": true
   },
-  "bill_plans": [],
+  "bill_plans": [
+    {
+      "uuid": "10001",
+      "name": "free plan",
+      "code": "",
+      "duration": 60,
+      "type": "free",
+      "amount": 0,
+      "bandwidth": {
+        "download": 2048,
+        "upload": 2048
+      }
+    },
+    {
+      "uuid": "10002",
+      "name": "paid plan",
+      "code": "",
+      "duration": 120,
+      "type": "paid",
+      "amount": 10,
+      "bandwidth": {
+        "download": 5120,
+        "upload": 5120
+      }
+    }
+  ],
   "signed_in": {
-    "status": false,
-    "guest": {}
+    "status": true,
+    "guest": {
+      "uuid": "10001",
+      "room_number": "1001",
+      "full_name": "Richard Smith",
+      "first_name": "Richard",
+      "last_name": "Smith",
+      "code": ""
+    }
   },
   "connected": {
     "status": false,

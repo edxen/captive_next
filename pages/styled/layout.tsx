@@ -14,7 +14,7 @@ export const Content = styled.div`
     align-items:center;
     
     text-align: center;
-    background-color: rgba(0, 0,0 , .8);
+    background-color: rgba(0, 0,0 , .4);
     color: white;
     padding: 15px;
     width: 100%;
@@ -36,16 +36,10 @@ export const Header = styled.div`
     color: white;
 
     & div {
-        color: black;
         font-size: 28px;
     }
 `;
 
-export const Footer = styled.div`
-    color: gray;
-    font-size: 14px;
-    margin: 10px;
-`;
 
 export const StyledLogo = styled.div`
     color: white;
@@ -55,4 +49,10 @@ export const StyledLogo = styled.div`
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
+`;
+
+export const Footer = styled.div`
+    color: rgb(230, 230, 230);
+    font-size: 14px;
+    margin: 10px;
 `;

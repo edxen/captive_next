@@ -3,7 +3,9 @@ import { ChangeEvent, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from "../components/utils";
-import { Site, Data } from "../components/inteface";
+import { Site, Data, Guest } from "../components/inteface";
+import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../styled/authentication";
+import e from "express";
 
 const texts = getCurrentTranslation();
 
@@ -27,7 +29,9 @@ const BillPlan = () => {
         setPlan(event.target.value.replace('plan_', ''));
     };
 
-    const handleConnect = async () => {
+    const handleConnect = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         if (plan === "") {
             setErrorMessage(texts.error.no_plan_selected);
         } else {
@@ -48,32 +52,60 @@ const BillPlan = () => {
             if (data) {
                 setIsLoading(false);
                 setSite(data.site);
+                setPlan(data.site.bill_plans[0].uuid);
             }
         };
         fetchSite();
     }, []);
 
     const billPlans = (site?.bill_plans) && site.bill_plans;
+    const signed_in = (site?.signed_in) && site.signed_in;
+    const guest: Partial<Guest> | undefined = (signed_in) && signed_in.guest;
 
     return (
         <Layout isLoading={isLoading}>
-            <h2>This is Bill plan page</h2>
-
-            <div>
-                <h2>You are now signed in</h2>
-                {billPlans?.map((plan) =>
-                    <li key={plan.uuid}>
-                        <label>
-                            <input type="radio" value={`plan_${plan.uuid}`} name="bill_plans" onChange={handleSelect}></input>
-                            {plan.name} {plan.amount} $
-                        </label>
-                    </li>
-                )}
-                <div>{errorMessage}</div>
-                <button onClick={handleSignOut}>{texts.buttons.sign_out}</button>
-                <button onClick={handleConnect}>{texts.buttons.connect}</button>
-            </div>
-        </Layout>
+            <StyledHeader>
+                Welcome! {guest && guest.first_name}.
+            </StyledHeader>
+            <StyledInstructions>
+                Please select a plan to continue:
+            </StyledInstructions>
+            <form onSubmit={handleConnect}>
+                <StyledRadioGroup>
+                    {billPlans?.map((plan, index) =>
+                        <li key={plan.uuid}>
+                            <label>
+                                <input type="radio" value={`plan_${plan.uuid}`} name="bill_plans" onChange={handleSelect} defaultChecked={(index === 0) ? true : false}></input>
+                                <span>{plan.name} {plan.duration} minutes {plan.amount !== 0 && (`${plan.amount}$`)}</span>
+                            </label>
+                        </li>
+                    )}
+                </StyledRadioGroup>
+                {
+                    plan && billPlans?.filter((billplan) => billplan.uuid === plan)[0].type === 'paid' && (
+                        <StyledSelectGroup>
+                            <label>
+                                Payment Method:
+                            </label>
+                            <select>
+                                <option defaultChecked={true}>
+                                    Charge to Room
+                                </option>
+                                <option>
+                                    via Paypal Checkout
+                                </option>
+                            </select>
+                        </StyledSelectGroup>
+                    )
+                }
+                <StyledError>{errorMessage}</StyledError>
+                <StyledButton>{texts.buttons.connect}</StyledButton>
+            </form>
+            <StyledDivider>
+                Or
+            </StyledDivider>
+            <StyledButton onClick={handleSignOut}>{texts.buttons.sign_out}</StyledButton>
+        </Layout >
     );
 };
 

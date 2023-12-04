@@ -4,7 +4,13 @@
 }
 
 body {
-    background-color: #dbe8de
+    background-color: #dbe8de;
+    background-image: url('../public/background.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    min-width: 320px;
 }
 
 @font-face {

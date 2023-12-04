@@ -55,6 +55,65 @@ export const StyledInputGroup = styled.div<StyledInputGroup>`
     }
 `;
 
+export const StyledRadioGroup = styled.div`
+    color: ${palette.white};
+
+    & > li {
+        list-style:none;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    & label {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    & input {
+        display: none;
+    }
+
+    & input + span {
+        width: 100%;
+        text-align: left;
+        padding: 5px 10px;
+        border: 1px solid ${palette.white};
+        color: ${palette.white};
+        border-radius: 4px;
+        transition: color 0.3 ease, border-color 0.3 ease;
+    }
+
+    & input:hover + span {
+        border: 1px solid ${palette.secondary};
+        color: ${palette.secondary};
+    }
+
+
+    & input:checked + span {
+        background-color:${palette.secondary};
+        border-color: ${palette.secondary};
+        color: ${palette.white};
+    }
+`;
+
+
+export const StyledSelectGroup = styled.div`
+    color: ${palette.white};
+    display: flex;
+
+    & label, select {        
+        padding: 5px;
+        width: fit-content;
+    }
+
+    & select {
+        border-radius: 4px;
+        flex: 1;
+    }
+`;
+
 export const StyledError = styled.div`
     margin-bottom: 10px;
 
@@ -77,7 +136,7 @@ export const StyledButton = styled.button`
     padding:5px;
     margin-bottom: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 
     & a {
         color: ${palette.white};
@@ -86,9 +145,10 @@ export const StyledButton = styled.button`
 
     &:hover {
         background-color: ${palette.secondary};
+        color: ${palette.white};
     }
 `;
 
-export const StyledDivider = styled.div`;
-    margin: bottom: 10px;
-`;;
+export const StyledDivider = styled.div`
+    margin-bottom: 10px;
+`;

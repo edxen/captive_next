@@ -1,7 +1,7 @@
 [
     {
         "uuid": "10001",
-        "name": "free plan",
+        "name": "Complimentary Plan",
         "code": "",
         "duration": 60,
         "type": "free",
@@ -13,10 +13,10 @@
     },
     {
         "uuid": "10002",
-        "name": "paid plan",
+        "name": "Premium Plan",
         "code": "",
         "duration": 120,
-        "type": "paid",
+        "type": "prepaid",
         "amount": 10,
         "bandwidth": {
             "download": 5120,
@@ -25,7 +25,7 @@
     },
     {
         "uuid": "10003",
-        "name": "voucher plan",
+        "name": "Standard Voucher Plan",
         "code": "",
         "duration": 30,
         "type": "voucher",
@@ -37,7 +37,7 @@
     },
     {
         "uuid": "10004",
-        "name": "premium voucher plan",
+        "name": "Premium Voucher plan",
         "code": "",
         "duration": 60,
         "type": "voucher",

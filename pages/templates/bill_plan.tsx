@@ -81,7 +81,7 @@ const BillPlan = () => {
                     )}
                 </StyledRadioGroup>
                 {
-                    plan && billPlans?.filter((billplan) => billplan.uuid === plan)[0].type === 'paid' && (
+                    plan && billPlans?.filter((billplan) => billplan.uuid === plan)[0].amount !== 0 && (
                         <StyledSelectGroup>
                             <label>
                                 Payment Method:

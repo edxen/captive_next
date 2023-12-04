@@ -6,7 +6,7 @@ import { fetchAPI, getCurrentTranslation } from "../components/utils";
 import { Data } from '../components/inteface';
 
 import Layout from "../components/layout";
-import { StyledInputGroup, StyledError, StyledButtons, StyledHeaders, StyledInstructions, StyledDivider } from '../styled/authentication';
+import { StyledInputGroup, StyledError, StyledButton, StyledHeader, StyledInstructions, StyledDivider } from '../styled/authentication';
 
 const texts = getCurrentTranslation();
 
@@ -50,31 +50,33 @@ const Authentication = () => {
         <>
             <Layout isLoading={isLoading}>
                 <form onSubmit={handleSignIn}>
-                    <StyledHeaders>
+                    <StyledHeader>
                         Guest Login
-                    </StyledHeaders>
+                    </StyledHeader>
                     <StyledInstructions>
                         Sign in to get connected with our high speed internet.
                     </StyledInstructions>
                     {
                         Object.keys(credentials).map((credential, index) => (
-                            <StyledInputGroup
-                                key={index}
-                                onError={(errorMessage !== '' && true)}
-                            >
+                            <StyledInputGroup key={index} onError={(errorMessage !== '') ? true : undefined}>
+
                                 <label>{texts.credentials[`label_${credential}`]}</label>
                                 <input id={credential} onChange={handleChange} defaultValue={credentials[credential]} placeholder={texts.credentials[`placeholder_${credential}`]} />
                             </StyledInputGroup>
                         ))
                     }
                     <StyledError>{errorMessage}</StyledError>
-                    <StyledButtons>{texts.buttons.sign_in}</StyledButtons>
+                    <StyledButton>{texts.buttons.sign_in}</StyledButton>
                 </form>
+
                 <StyledDivider>
                     or connect via:
                 </StyledDivider>
+
                 <Link href="/templates/access_code">
-                    <StyledButtons onClick={handleClick}>{texts.buttons.login_access_code}</StyledButtons>
+                    <StyledButton onClick={handleClick}>
+                        {texts.buttons.login_access_code}
+                    </StyledButton>
                 </Link>
             </Layout>
         </>

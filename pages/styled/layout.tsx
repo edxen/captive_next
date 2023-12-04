@@ -8,15 +8,24 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    
     text-align: center;
     background-color: rgba(0, 0,0 , .8);
-    color: White;
+    color: white;
     padding: 15px;
     width: 100%;
     min-height: 250px;
     min-width: 320px;
     max-width: 450px;
     border-radius: 4px;
+
+    & > * {
+        width: 100%;
+    }
 `;
 
 export const Header = styled.div`

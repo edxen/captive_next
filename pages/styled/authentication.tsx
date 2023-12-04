@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 interface StyledInputGroup {
-    onError: boolean;
+    onError: boolean | undefined;
 }
 
-export const StyledHeaders = styled.div`
+export const StyledHeader = styled.div`
     font-size: 20px;
     color: white;
     text-align: left;
@@ -55,7 +55,7 @@ export const StyledError = styled.div`
     }
 `;
 
-export const StyledButtons = styled.button`
+export const StyledButton = styled.button`
     width: 100%;
     background-color: hsl(280, 100%, 50%);
     border: 1px solid transparent;
@@ -66,6 +66,11 @@ export const StyledButtons = styled.button`
     margin-bottom: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+
+    & a {
+        color:white;
+        text-decoration: none;
+    }
 
     &:hover {
         background-color: hsl(280, 100%, 30%);

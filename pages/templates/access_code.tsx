@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Layout from "../components/layout";
 import { Data } from '../components/inteface';
 import { fetchAPI, FetchAPI, getCurrentTranslation } from '../components/utils';
+import { StyledButton, StyledError, StyledDivider, StyledHeader, StyledInputGroup, StyledInstructions } from '../styled/authentication';
 
 const texts = getCurrentTranslation();
 
@@ -40,16 +41,27 @@ const AccessCode = () => {
 
     return (
         <Layout isLoading={isLoading}>
-            <h2>This is Access Code</h2>
-            <div>
+            <StyledHeader>
+                Access Code Login
+            </StyledHeader>
+            <StyledInstructions>
+                Approach our front desk to request for access code.
+            </StyledInstructions>
+            <StyledInputGroup onError={(errorMessage !== '') ? true : undefined}>
                 <label>{texts.access_code.label}</label>
                 <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
-                <div>{errorMessage}</div>
-                <button onClick={handleConnect}>{texts.buttons.connect}</button>
-            </div>
+            </StyledInputGroup>
+            <StyledError>{errorMessage}</StyledError>
+            <StyledButton onClick={handleConnect}>{texts.buttons.connect}</StyledButton>
+
+            <StyledDivider>
+                or connect via:
+            </StyledDivider>
 
             <Link href="/templates/authentication">
-                <button onClick={handleClick}>{texts.buttons.login_guest}</button>
+                <StyledButton onClick={handleClick}>
+                    {texts.buttons.login_guest}
+                </StyledButton>
             </Link>
         </Layout>
     );

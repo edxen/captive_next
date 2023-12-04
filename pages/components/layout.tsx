@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Content, Footer, Header, StyledLogo } from '../styled/layout';
 
 import Waiting from '../templates/waiting';
-import { StyledHeaders } from '../styled/authentication';
+import { StyledHeader } from '../styled/authentication';
 
 interface LayoutProps {
     isLoading?: boolean;
@@ -14,9 +14,9 @@ const Layout: React.FC<LayoutProps> = ({ isLoading, children }) => {
         <Container>
             <Header>
                 <StyledLogo />
-                <StyledHeaders>
+                <StyledHeader>
                     Welcome to Outlast Resort
-                </StyledHeaders>
+                </StyledHeader>
             </Header>
             <Content>
                 {isLoading

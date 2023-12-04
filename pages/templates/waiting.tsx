@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import { StyledInstructions } from '../styled/authentication';
 
 const spin = keyframes`
     0% {
@@ -14,6 +15,7 @@ const Loader = styled.div`
     border-radius: 50%;
     width: 50px;
     height: 50px;
+    margin-bottom:10px;
     animation: ${spin} 1s linear infinite;
 `;
 
@@ -22,15 +24,13 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items:center;
-
 `;
 
 const Waiting = () => {
     return (
         <Center>
-            <h2>This is waiting page</h2>
             <Loader />
-            <p>Please wait</p>
+            <StyledInstructions>Please wait</StyledInstructions>
         </Center>
     );
 };

@@ -9,7 +9,7 @@ import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../s
 const texts = getCurrentTranslation();
 
 const Connected = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [site, setSite] = useState<Site | null>(null);
 
     const router = useRouter();

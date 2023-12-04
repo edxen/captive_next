@@ -1,5 +1,8 @@
 import React from 'react';
+import { Container, Content, Footer, Header, StyledLogo } from '../styled/layout';
+
 import Waiting from '../templates/waiting';
+import { StyledHeaders } from '../styled/authentication';
 
 interface LayoutProps {
     isLoading?: boolean;
@@ -8,21 +11,26 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ isLoading, children }) => {
     return (
-        <>
-            <div>
-                <h2>This is for header</h2>
-            </div>
-            {isLoading
-                ? <Waiting />
-                :
-                <>
-                    {children}
-                </>
-            }
-            <div>
-                <h2>This is for footer</h2>
-            </div>
-        </>
+        <Container>
+            <Header>
+                <StyledLogo />
+                <StyledHeaders>
+                    Welcome to Outlast Resort
+                </StyledHeaders>
+            </Header>
+            <Content>
+                {isLoading
+                    ? <Waiting />
+                    :
+                    <>
+                        {children}
+                    </>
+                }
+            </Content>
+            <Footer>
+                Happysight © 2023 Edxen. All rights reversed.
+            </Footer>
+        </Container>
     );
 };
 

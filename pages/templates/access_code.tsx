@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import Layout from "../components/layout";
-import { Data, Texts } from '../components/inteface';
+import { Data } from '../components/inteface';
 import { fetchAPI, FetchAPI, getCurrentTranslation } from '../components/utils';
 
 const texts = getCurrentTranslation();

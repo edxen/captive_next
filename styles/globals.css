@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Saira-Regular'
+}
+
+body {
+    background-color: #dbe8de
+}
+
+@font-face {
+    font-family: 'Saira-Regular';
+    src: url('../public/fonts/Saira-Regular.eot');
+    src: url('../public/fonts//Saira-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../public/fonts//Saira-Regular.woff2') format('woff2'),
+        url('../public/fonts//Saira-Regular.woff') format('woff'),
+        url('../public/fonts//Saira-Regular.ttf') format('truetype'),
+        url('../public/fonts//Saira-Regular.svg#Saira-Regular') format('svg');
+}

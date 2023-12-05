@@ -12,9 +12,17 @@ let firebaseConfig = {
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
+if (!firebaseConfig.apiKey) {
+    try {
+        firebaseConfig = require('@/.env/firebase.json');
+    } catch (error) {
+        console.error('.env/firebase.json does not exist');
+    }
+}
 
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+let firebaseApp;
+if (!firebaseApp) firebaseApp = initializeApp(firebaseConfig);
+const storage = getStorage(firebaseApp);
 
 const loadData = async (filePath: string) => {
     const storageRef = ref(storage, filePath);

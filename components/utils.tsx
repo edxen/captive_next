@@ -18,12 +18,24 @@ export interface FetchAPI {
     };
 }
 
+interface RequestInfo {
+    method: 'GET' | 'POST',
+    headers?: {
+        'Content-Type': string;
+    },
+    body?: string;
+}
+
 export const fetchAPI = async ({ target, method, body }: FetchAPI) => {
-    const headers: { 'Content-Type': string; } = { "Content-Type": "application/json" };
-    const bodyString: string = JSON.stringify(body);
+    const requestInfo: RequestInfo = { method };
+    if (body) {
+        requestInfo.headers = { "Content-Type": "application/json" };
+        requestInfo.body = JSON.stringify(body);
+    }
 
     try {
-        const response = await fetch(`../api/${target}`, { method, headers, body: bodyString });
+        const response = await fetch(`../api/${target}`, { ...requestInfo });
+        console.log(response);
         if (response.ok) {
             return await response.json();
         } else {

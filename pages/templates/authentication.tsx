@@ -35,7 +35,7 @@ const Authentication = () => {
             setErrorMessage(texts.error.blank_credentials);
         } else {
             setIsLoading(true);
-            const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body: { action: 'signin', ...credentials } }) as Data;
+            const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body: { action: 'signin', ...credentials } });
             if (data.success) {
                 router.push('/templates/bill_plan');
             } else {

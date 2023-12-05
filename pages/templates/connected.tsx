@@ -58,29 +58,29 @@ const Connected = () => {
             ? <Waiting />
             : <>
                 <StyledTitle>
-                    {signed_in?.status
-                        ? <> {interpolateText(texts.connected.welcome_guest, guest?.first_name as string)}
+                    {guest && guest.uuid
+                        ? <> {interpolateText(texts.connected.title_guest as string, guest?.first_name as string)}
                         </>
-                        : <> {texts.connected.welcome}
+                        : <> {texts.connected.title}
                         </>
                     }
                 </StyledTitle>
                 <StyledInstructions>
-                    You are now connected
+                    {texts.connected.instructions as string}
                 </StyledInstructions>
 
                 {guest && guest.uuid && (
                     <>
                         <StyledInstructions>
-                            Guest Information:
+                            {texts.connected.guest_title as string}
                         </StyledInstructions>
                         <StyledList>
                             <div>
-                                <label>{texts.guest.room_number}:</label>
+                                <label>{texts.connected.guest.room_number}:</label>
                                 <span>{guest && guest?.room_number}</span>
                             </div>
                             <div>
-                                <label>{texts.guest.full_name}:</label>
+                                <label>{texts.connected.guest.full_name}:</label>
                                 <span>{guest && guest?.full_name}</span>
                             </div>
                         </StyledList>
@@ -88,31 +88,31 @@ const Connected = () => {
                 )}
 
                 <StyledInstructions>
-                    Plan Information:
+                    {texts.connected.plan_title as string}
                 </StyledInstructions>
                 <StyledList>
                     {
                         plan &&
                         Object.entries(plan).map(([key, value]) => key !== 'bandwidth' && value !== 0 && value !== '' && (
                             <div key={key}>
-                                <label>{texts.plan[key] as string}:</label>
+                                <label>{texts.connected.plan[key] as string}:</label>
                                 <span>{value as string}</span>
                                 {key === 'duration' && ('minutes')}
                             </div>
                         ))
                     }
                     <div>
-                        <label>{texts.plan.bandwidth.download}:</label>
+                        <label>{texts.connected.plan.bandwidth.download}:</label>
                         <span>{plan && plan?.bandwidth?.download}kbps</span>
                     </div>
                     <div>
-                        <label>{texts.plan.bandwidth.upload}:</label>
+                        <label>{texts.connected.plan.bandwidth.upload}:</label>
                         <span>{plan && plan?.bandwidth?.upload}kbps</span>
                     </div>
                 </StyledList>
 
 
-                <StyledButton onClick={handleClick}>{texts.buttons.disconnect}</StyledButton>
+                <StyledButton onClick={handleClick}>{texts.general.disconnect}</StyledButton>
             </ >
     );
 };

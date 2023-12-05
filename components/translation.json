@@ -29,8 +29,11 @@
                 "currency": "$"
             },
             "connected": {
-                "welcome_guest": "Welcome, {guest?.first_name}!",
-                "welcome": "Welcome!",
+                "title_guest": "Welcome, {guest?.first_name}!",
+                "title": "Welcome!",
+                "instructions": "You are now connected!",
+                "guest_title": "Guest Information",
+                "plan_title": "Plan Information",
                 "guest": {
                     "uuid": "UUID",
                     "room_number": "Room Number",

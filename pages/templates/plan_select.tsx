@@ -80,7 +80,7 @@ const Billplan = () => {
             }
         };
         fetchSite();
-    }, [router.isReady]);
+    }, [router]);
 
     return (
         isLoading

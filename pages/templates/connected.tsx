@@ -45,7 +45,7 @@ const Connected = () => {
             }
         };
         fetchSite();
-    }, [router.isReady]);
+    }, [router]);
 
     const signed_in = (site?.signed_in) && site.signed_in;
     const guest: Partial<Guest> | undefined = (signed_in) && signed_in.guest;

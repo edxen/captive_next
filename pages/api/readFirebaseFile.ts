@@ -75,6 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         res.status(400).json({ message: `invalid action`, success });
                         break;
                 }
+                break;
             default:
                 res.status(400).json({ message: `invalid method`, success, firebaseConfig });
                 break;

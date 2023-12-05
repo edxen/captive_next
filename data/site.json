@@ -3,56 +3,13 @@
     "authentication": true,
     "access_code": true
   },
-  "bill_plans": [
-    {
-      "uuid": "10001",
-      "name": "Complimentary Plan",
-      "code": "",
-      "duration": 60,
-      "type": "free",
-      "amount": 0,
-      "bandwidth": {
-        "download": 2048,
-        "upload": 2048
-      }
-    },
-    {
-      "uuid": "10002",
-      "name": "Premium Plan",
-      "code": "",
-      "duration": 120,
-      "type": "prepaid",
-      "amount": 10,
-      "bandwidth": {
-        "download": 5120,
-        "upload": 5120
-      }
-    }
-  ],
+  "bill_plans": [],
   "signed_in": {
-    "status": true,
-    "guest": {
-      "uuid": "10001",
-      "room_number": "1001",
-      "full_name": "Richard Smith",
-      "first_name": "Richard",
-      "last_name": "Smith",
-      "code": ""
-    }
+    "status": false,
+    "guest": {}
   },
   "connected": {
-    "status": true,
-    "bill_plan": {
-      "uuid": "10001",
-      "name": "Complimentary Plan",
-      "code": "123456",
-      "duration": 60,
-      "type": "free",
-      "amount": 0,
-      "bandwidth": {
-        "download": 2048,
-        "upload": 2048
-      }
-    }
+    "status": false,
+    "bill_plan": {}
   }
 }

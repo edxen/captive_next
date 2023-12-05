@@ -24,7 +24,6 @@ const Authentication = () => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setCredentials((prevCredentials) => ({ ...prevCredentials, [e.target.id]: e.target.value }));
         setErrorMessage('');
-
     };
 
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,7 +35,7 @@ const Authentication = () => {
             setErrorMessage(texts.error.blank_credentials);
         } else {
             setIsLoading(true);
-            const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signin', ...credentials } }) as Data;
+            const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body: { action: 'signin', ...credentials } }) as Data;
             if (data.success) {
                 router.push('/templates/bill_plan');
             } else {

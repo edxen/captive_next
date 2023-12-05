@@ -1,14 +1,14 @@
 import { Data, StringKey } from "./inteface";
 import Translations from "./translation.json";
 
-type ActionTypes = 'signin' | 'signout' | 'connect' | 'disconnect';
+type ActionTypes = 'signin' | 'billplans' | 'signout' | 'connect' | 'disconnect';
 
 export interface FetchAPI {
-    target: 'handler';
+    target: 'handler' | 'readFirebaseFile';
     method: 'GET' | 'POST';
     body?: {
         action: ActionTypes;
-        type?: 'access_code' | 'credentials' | 'bill_plan';
+        type?: 'guest' | 'access_code' | 'credentials' | 'bill_plan';
         access_code?: string;
         credentials?: {
             room_number: string;
@@ -25,7 +25,7 @@ export const fetchAPI = async ({ target, method, body }: FetchAPI) => {
     try {
         const response = await fetch(`../api/${target}`, { method, headers, body: bodyString });
         if (response.ok) {
-            return await response.json() as Data;
+            return await response.json();
         } else {
             throw new Error('Error fetching data');
         }

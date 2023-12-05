@@ -3,15 +3,15 @@ import { ChangeEvent, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from "../../components/utils";
-import { Site, Data, Guest } from "../../components/inteface";
+import { Data, Guest, BillPlan } from "../../components/inteface";
 import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../../styled/authentication";
 
 const texts = getCurrentTranslation();
 
-const BillPlan = () => {
+const Billplan = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [site, setSite] = useState<Site | null>(null);
-    const [plan, setPlan] = useState<string>('');
+    const [selectedPlan, setSelectedPlan] = useState<Partial<BillPlan>>({});
+    const [plans, setPlans] = useState<BillPlan[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const router = useRouter();
@@ -25,17 +25,21 @@ const BillPlan = () => {
     };
 
     const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
-        setPlan(event.target.value.replace('plan_', ''));
+        const uuid = event.target.value.replace('plan_', '');
+        const found = plans.filter((plan) => plan.uuid === uuid)[0];
+        if (found) {
+            setSelectedPlan(found);
+        }
     };
 
     const handleConnect = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (plan === "") {
+        if (selectedPlan.uuid === "") {
             setErrorMessage(texts.error.no_plan_selected);
         } else {
             setIsLoading(true);
-            const body: FetchAPI['body'] = { action: "connect", type: "bill_plan", bill_plan: plan };
+            const body: FetchAPI['body'] = { action: "connect", type: "bill_plan", bill_plan: selectedPlan.uuid };
             const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
             if (data.success) {
                 router.push('/templates/connected');
@@ -47,31 +51,30 @@ const BillPlan = () => {
 
     useEffect(() => {
         const fetchSite = async () => {
-            const data = await fetchAPI({ target: "handler", method: 'GET' });
-            if (data) {
+            const data = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'billplans', type: 'guest' } });
+            if (data.billplans?.length) {
                 setIsLoading(false);
-                setSite(data.site);
-                setPlan(data.site.bill_plans[0].uuid);
+                setSelectedPlan(data.billplans[0]);
+                setPlans(data.billplans);
+            } else {
+                setIsLoading(false);
+                setErrorMessage('No Bill Plans Available');
             }
         };
         fetchSite();
     }, []);
 
-    const billPlans = (site?.bill_plans) && site.bill_plans;
-    const signed_in = (site?.signed_in) && site.signed_in;
-    const guest: Partial<Guest> | undefined = (signed_in) && signed_in.guest;
-
     return (
         <Layout isLoading={isLoading}>
             <StyledHeader>
-                Welcome! {guest && guest.first_name}.
+                Welcome!
             </StyledHeader>
             <StyledInstructions>
                 Please select a plan to continue:
             </StyledInstructions>
             <form onSubmit={handleConnect}>
                 <StyledRadioGroup>
-                    {billPlans?.map((plan, index) =>
+                    {plans.map((plan, index) =>
                         <li key={plan.uuid}>
                             <label>
                                 <input type="radio" value={`plan_${plan.uuid}`} name="bill_plans" onChange={handleSelect} defaultChecked={(index === 0) ? true : false}></input>
@@ -81,7 +84,7 @@ const BillPlan = () => {
                     )}
                 </StyledRadioGroup>
                 {
-                    plan && billPlans?.filter((billplan) => billplan.uuid === plan)[0].amount !== 0 && (
+                    selectedPlan.amount !== 0 && (
                         <StyledSelectGroup>
                             <label>
                                 Payment Method:
@@ -105,4 +108,4 @@ const BillPlan = () => {
     );
 };
 
-export default BillPlan;
+export default Billplan;

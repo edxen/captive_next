@@ -1,20 +1,20 @@
 import { Data, StringKey } from "./inteface";
 import Translations from "./translation.json";
 
-type ActionTypes = 'signin' | 'billplans' | 'signout' | 'connect' | 'disconnect';
+type ActionTypes = 'signin' | 'plans' | 'signout' | 'connect' | 'disconnect';
 
 export interface FetchAPI {
     target: 'handler' | 'readFirebaseFile';
     method: 'GET' | 'POST';
     body?: {
         action: ActionTypes;
-        type?: 'guest' | 'access_code' | 'credentials' | 'bill_plan';
-        access_code?: string;
+        type?: 'guest' | 'code' | 'credentials' | 'plan';
+        code?: string;
         credentials?: {
             room_number: string;
             last_name: string;
         },
-        bill_plan?: string;
+        plan?: string;
     };
 }
 
@@ -35,7 +35,6 @@ export const fetchAPI = async ({ target, method, body }: FetchAPI) => {
 
     try {
         const response = await fetch(`../api/${target}`, { ...requestInfo });
-        console.log(response);
         if (response.ok) {
             return await response.json();
         } else {
@@ -52,7 +51,7 @@ interface Translations {
     buttons: StringKey;
     guest: StringKey;
     connected: StringKey,
-    bill_plan: {
+    plan: {
         [key: string]: string | {};
         bandwidth: StringKey;
     };

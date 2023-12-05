@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchAPI, getCurrentTranslation } from "../../components/utils";
-import { Data } from '../../components/inteface';
 
 import Layout from "../../components/layout";
 import { StyledInputGroup, StyledError, StyledButton, StyledHeader, StyledInstructions, StyledDivider } from '../../styled/authentication';

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { fetchAPI, getCurrentTranslation } from "../../components/utils";
+import { getCurrentTranslation } from "../../components/utils";
 import Layout from "../../components/layout";
-import { Site, Guest, BillPlan } from '../../components/inteface';
+import { Site, Guest, Plan } from '../../components/inteface';
 import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../../styled/authentication';
 
 const texts = getCurrentTranslation();
 
 const Connected = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [site, setSite] = useState<Site | null>(null);
 
     const router = useRouter();
@@ -18,26 +18,18 @@ const Connected = () => {
         const result = confirm('Are you sure?');
         if (result) {
             setIsLoading(true);
-            await fetchAPI({ target: 'handler', method: 'POST', body: { action: 'disconnect' } });
             router.push('/');
         }
     };
 
     useEffect(() => {
-        const fetchSite = async () => {
-            const data = await fetchAPI({ target: "handler", method: 'GET' });
-            if (data) {
-                setIsLoading(false);
-                setSite(data.site);
-            }
-        };
-        fetchSite();
+
     }, []);
 
     const signed_in = (site?.signed_in) && site.signed_in;
     const guest: Partial<Guest> | undefined = (signed_in) && signed_in.guest;
     const connected = (site?.connected) && site.connected;
-    const billPlan: Partial<BillPlan> | undefined = (connected) && connected?.bill_plan;
+    const plan: Partial<Plan> | undefined = (connected) && connected?.plan;
 
     const interpolateText = (text: string, reference: string): string => {
         const replacedMessage: string = text.replace(/\{([^{}]+)\}/g, reference);
@@ -81,22 +73,22 @@ const Connected = () => {
             </StyledInstructions>
             <StyledList>
                 {
-                    billPlan &&
-                    Object.entries(billPlan).map(([key, value]) => key !== 'bandwidth' && value !== 0 && value !== '' && (
+                    plan &&
+                    Object.entries(plan).map(([key, value]) => key !== 'bandwidth' && value !== 0 && value !== '' && (
                         <div key={key}>
-                            <label>{texts.bill_plan[key] as string}:</label>
+                            <label>{texts.plan[key] as string}:</label>
                             <span>{value as string}</span>
                             {key === 'duration' && ('minutes')}
                         </div>
                     ))
                 }
                 <div>
-                    <label>{texts.bill_plan.bandwidth.download}:</label>
-                    <span>{billPlan && billPlan?.bandwidth?.download}kbps</span>
+                    <label>{texts.plan.bandwidth.download}:</label>
+                    <span>{plan && plan?.bandwidth?.download}kbps</span>
                 </div>
                 <div>
-                    <label>{texts.bill_plan.bandwidth.upload}:</label>
-                    <span>{billPlan && billPlan?.bandwidth?.upload}kbps</span>
+                    <label>{texts.plan.bandwidth.upload}:</label>
+                    <span>{plan && plan?.bandwidth?.upload}kbps</span>
                 </div>
             </StyledList>
 

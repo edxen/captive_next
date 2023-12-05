@@ -3,25 +3,22 @@ import { ChangeEvent, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from "../../components/utils";
-import { Data, Guest, BillPlan } from "../../components/inteface";
+import { Plan } from "../../components/inteface";
 import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../../styled/authentication";
 
 const texts = getCurrentTranslation();
 
 const Billplan = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [selectedPlan, setSelectedPlan] = useState<Partial<BillPlan>>({});
-    const [plans, setPlans] = useState<BillPlan[]>([]);
+    const [selectedPlan, setSelectedPlan] = useState<Partial<Plan>>({});
+    const [plans, setPlans] = useState<Plan[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const router = useRouter();
 
     const handleSignOut = async () => {
         setIsLoading(true);
-        const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signout' } }) as Data;
-        if (data.success) {
-            router.push('/templates/authentication');
-        }
+        router.push('/templates/authentication');
     };
 
     const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +36,8 @@ const Billplan = () => {
             setErrorMessage(texts.error.no_plan_selected);
         } else {
             setIsLoading(true);
-            const body: FetchAPI['body'] = { action: "connect", type: "bill_plan", bill_plan: selectedPlan.uuid };
-            const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
+            const body: FetchAPI['body'] = { action: "connect", type: "plan", plan: selectedPlan.uuid };
+            const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body });
             if (data.success) {
                 router.push('/templates/connected');
             } else {
@@ -51,14 +48,14 @@ const Billplan = () => {
 
     useEffect(() => {
         const fetchSite = async () => {
-            const data = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'billplans', type: 'guest' } });
-            if (data.billplans?.length) {
+            const data = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'plans', type: 'guest' } });
+            if (data.plans?.length) {
                 setIsLoading(false);
-                setSelectedPlan(data.billplans[0]);
-                setPlans(data.billplans);
+                setSelectedPlan(data.plans[0]);
+                setPlans(data.plans);
             } else {
                 setIsLoading(false);
-                setErrorMessage('No Bill Plans Available');
+                setErrorMessage('No Plans Available');
             }
         };
         fetchSite();
@@ -77,7 +74,7 @@ const Billplan = () => {
                     {plans.map((plan, index) =>
                         <li key={plan.uuid}>
                             <label>
-                                <input type="radio" value={`plan_${plan.uuid}`} name="bill_plans" onChange={handleSelect} defaultChecked={(index === 0) ? true : false}></input>
+                                <input type="radio" value={`plan_${plan.uuid}`} name="plans" onChange={handleSelect} defaultChecked={(index === 0) ? true : false}></input>
                                 <span>{plan.name} {plan.duration} minutes {plan.amount !== 0 && (`${plan.amount}$`)}</span>
                             </label>
                         </li>

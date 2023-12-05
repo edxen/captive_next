@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { Guest, BillPlan } from '@/components/inteface';
+import { Guest, Plan, Voucher } from '@/components/inteface';
 
 let firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -39,11 +39,16 @@ const loadData = async (filePath: string) => {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         const pmsPath = 'pms.json';
-        const billplansPath = 'bill_plans.json';
+        const plansPath = 'bill_plans.json';
+        const voucherPath = 'voucher.json';
+
+        let pmsData: Guest[];
+        let plansData: Plan[];
+        let voucherData: Voucher[];
 
         let success = false;
         let guest: Guest | undefined;
-        let billplans: BillPlan[] | undefined;
+        let plans: Plan[] | undefined;
         const { action, type } = req.body;
 
         switch (req.method) {
@@ -51,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 switch (action) {
                     case "signin":
                         const { room_number, last_name } = req.body;
-                        const pmsData: Guest[] = await loadData(pmsPath);
+                        pmsData = await loadData(pmsPath);
                         const foundGuest = pmsData.find((data) => data.room_number === room_number);
 
                         if (foundGuest?.last_name === last_name) {
@@ -61,15 +66,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         res.status(200).json({ message: 'This is a POST request', success, guest });
                         break;
 
-                    case "billplans":
+                    case "plans":
                         success = true;
-                        const billplanData: BillPlan[] = await loadData(billplansPath);
+                        plansData = await loadData(plansPath);
                         if (type === 'guest') {
-                            billplans = billplanData.filter((plan) => plan.type !== 'voucher');
+                            plans = plansData.filter((plan) => plan.type !== 'voucher');
                         } else if (type === 'all') {
-                            billplans = billplanData;
+                            plans = plansData;
                         }
-                        res.status(200).json({ message: 'This is a POST request', success, billplans });
+                        res.status(200).json({ message: 'This is a POST request', success, plans });
+                        break;
+                    case "connect":
+                        const { plan, code } = req.body;
+                        const getPlan = (uuid: string) => plans?.filter((plan) => plan.uuid === uuid)[0] as Plan;
+                        let selectedPlan = {} as Plan;
+
+                        switch (type) {
+                            case 'plan':
+                                success = true;
+                                selectedPlan = getPlan(plan);
+                                break;
+
+                            case 'code':
+                                voucherData = await loadData(voucherPath);
+                                console.log(voucherData);
+                                const found = voucherData.filter((voucher) => voucher.code === code)[0];
+                                console.log(found);
+
+                                if (found) {
+                                    success = true;
+                                    selectedPlan = getPlan(found.code);
+                                }
+                                break;
+                        }
+                        res.status(200).json({ message: 'This is a POST request', success, plan: selectedPlan });
+
                         break;
                     default:
                         res.status(400).json({ message: `invalid action`, success });

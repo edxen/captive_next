@@ -30,7 +30,7 @@
                 "welcome_guest": "Welcome, {guest?.first_name}!",
                 "welcome": "Welcome!"
             },
-            "bill_plan": {
+            "plan": {
                 "uuid": "UUID",
                 "name": "Name",
                 "code": "Code",

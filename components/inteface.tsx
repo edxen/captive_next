@@ -12,7 +12,7 @@ export interface Data {
     site: Site;
 }
 
-export interface BillPlan {
+export interface Plan {
     uuid: string,
     code: string,
     name: string,
@@ -38,10 +38,10 @@ export interface SignedIn {
 
 export interface Site {
     login_options: { [key: string]: boolean; };
-    bill_plans: BillPlan[] | [];
+    plan: Plan[] | [];
     signed_in: SignedIn;
     connected: {
         status: boolean;
-        bill_plan: BillPlan | {};
+        plan: Plan | {};
     };
 }

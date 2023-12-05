@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import Layout from "../../components/layout";
-import { Data } from '../../components/inteface';
 import { fetchAPI, FetchAPI, getCurrentTranslation } from '../../components/utils';
 import { StyledButton, StyledError, StyledDivider, StyledHeader, StyledInputGroup, StyledInstructions } from '../../styled/authentication';
 
@@ -30,8 +29,9 @@ const AccessCode = () => {
             setErrorMessage(texts.error.blank_access_code);
         } else {
             setIsLoading(true);
-            const body: FetchAPI['body'] = { action: "connect", type: "access_code", access_code: inputAccessCode };
-            const data = await fetchAPI({ target: "handler", method: "POST", body }) as Data;
+            const body: FetchAPI['body'] = { action: "connect", type: "code", code: inputAccessCode };
+            const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body });
+            console.log(data);
             if (data.success) {
                 router.push('/templates/connected');
             } else {

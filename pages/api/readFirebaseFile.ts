@@ -1,22 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { Guest, BillPlan } from '@/components/inteface';
-import localFirebaseConfig from '@/.env/firebase.json';
+import app from '@/components/initFirebase';
 
-let firebaseConfig;
-if (process.env.FIREBASE_API_KEY && process.env.FIREBASE_AUTH_DOMAIN && process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_STORAGE_BUCKET) {
-    firebaseConfig = {
-        apiKey: process.env.FIREBASE_API_KEY,
-        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-    };
-} else {
-    firebaseConfig = localFirebaseConfig;
-}
-
-const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
 const loadData = async (filePath: string) => {

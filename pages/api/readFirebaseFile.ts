@@ -1,31 +1,40 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import admin from 'firebase-admin';
-
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { Guest, BillPlan } from '@/components/inteface';
+import localFirebaseConfig from '@/.env/firebase.json';
 
-const serviceAccount = require('../../.env/captive-next-firebase.json');
-
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        storageBucket: 'gs://captive-next.appspot.com'
-    });
+let firebaseConfig;
+if (process.env.FIREBASE_API_KEY && process.env.FIREBASE_AUTH_DOMAIN && process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_STORAGE_BUCKET) {
+    firebaseConfig = {
+        apiKey: process.env.FIREBASE_API_KEY,
+        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    };
+} else {
+    firebaseConfig = localFirebaseConfig;
 }
 
-async function loadData(filePath: string) {
-    const bucket = admin.storage().bucket();
-    const file = bucket.file(filePath);
-    const fileJSONContent = await file.download();
-    return JSON.parse(fileJSONContent.toString());
-}
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+
+const loadData = async (filePath: string) => {
+    const storageRef = ref(storage, filePath);
+    const url = await getDownloadURL(storageRef);
+    const response = await fetch(url);
+    if (response.ok) {
+        const data = await response.json();
+        return data;
+    } else {
+        throw new Error('failed to fetch data');
+    }
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const bucket = admin.storage().bucket();
-
         const pmsPath = 'pms.json';
         const billplansPath = 'bill_plans.json';
-
 
         let success = false;
         let guest: Guest | undefined;
@@ -56,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             billplans = billplanData;
                         }
                         res.status(200).json({ message: 'This is a POST request', success, billplans });
-
+                        break;
                     default:
                         res.status(400).json({ message: `invalid action`, success });
                         break;

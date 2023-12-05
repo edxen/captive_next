@@ -17,8 +17,11 @@ const Billplan = () => {
     const router = useRouter();
 
     const handleSignOut = async () => {
-        setIsLoading(true);
-        router.push('/templates/authentication');
+        const result = confirm('Are you sure?');
+        if (result) {
+            setIsLoading(true);
+            router.push('/');
+        }
     };
 
     const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {

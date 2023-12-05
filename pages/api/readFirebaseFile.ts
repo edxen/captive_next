@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { Guest, BillPlan } from '@/components/inteface';
-import app from '@/components/initFirebase';
+import firebaseConfig from '@/.env/firebase.json';
 
+const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
 const loadData = async (filePath: string) => {

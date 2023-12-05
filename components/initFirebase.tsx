@@ -8,11 +8,12 @@ firebaseConfig = {
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 };
 
-let app;
-try {
-    app = initializeApp(firebaseConfig);
-} catch (error) {
-    console.error("Firebase initialization error:", error);
-}
+const app = () => {
+    try {
+        return initializeApp(firebaseConfig);
+    } catch (error) {
+        console.error("Firebase initialization error:", error);
+    }
+};
 
 export default app;

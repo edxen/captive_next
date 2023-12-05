@@ -1,20 +1,12 @@
 import Head from 'next/head';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { Site } from '../components/inteface';
 import Layout from '../components/layout';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
   const router = useRouter();
-
-  const [site, setSite] = useState<Site | null>(null);
-  const [redirected, setRedirected] = useState<boolean>(false);
 
   useEffect(() => {
     router.push('/templates/authentication');
@@ -28,7 +20,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
+      <main>
         <Layout isLoading={true} />
       </main>
     </>

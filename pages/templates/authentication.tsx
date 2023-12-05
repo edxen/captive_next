@@ -17,8 +17,6 @@ const Authentication = () => {
 
     const router = useRouter();
 
-    console.log(process.env);
-
     const handleClick = () => {
         setIsLoading(true);
     };

@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-import Layout from "../../components/layout";
 import { fetchAPI, FetchAPI, getCurrentTranslation } from '../../components/utils';
 import { StyledButton, StyledError, StyledDivider, StyledHeader, StyledInputGroup, StyledInstructions } from '../../styled/authentication';
+import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
 
@@ -42,32 +42,34 @@ const AccessCode = () => {
     };
 
     return (
-        <Layout isLoading={isLoading}>
-            <StyledHeader>
-                Access Code Login
-            </StyledHeader>
-            <StyledInstructions>
-                Approach our front desk to request for access code.
-            </StyledInstructions>
-            <form onSubmit={handleConnect}>
-                <StyledInputGroup value={errorMessage}>
-                    <label>{texts.access_code.label}</label>
-                    <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
-                </StyledInputGroup>
-                <StyledError>{errorMessage}</StyledError>
-                <StyledButton>{texts.buttons.connect}</StyledButton>
-            </form>
+        isLoading
+            ? <Waiting />
+            : <>
+                <StyledHeader>
+                    Access Code Login
+                </StyledHeader>
+                <StyledInstructions>
+                    Approach our front desk to request for access code.
+                </StyledInstructions>
+                <form onSubmit={handleConnect}>
+                    <StyledInputGroup value={errorMessage}>
+                        <label>{texts.access_code.label}</label>
+                        <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
+                    </StyledInputGroup>
+                    <StyledError>{errorMessage}</StyledError>
+                    <StyledButton>{texts.buttons.connect}</StyledButton>
+                </form>
 
-            <StyledDivider>
-                or connect via:
-            </StyledDivider>
+                <StyledDivider>
+                    or connect via:
+                </StyledDivider>
 
-            <Link href="/templates/authentication">
-                <StyledButton onClick={handleClick}>
-                    {texts.buttons.login_guest}
-                </StyledButton>
-            </Link>
-        </Layout >
+                <Link href="/templates/authentication">
+                    <StyledButton onClick={handleClick}>
+                        {texts.buttons.login_guest}
+                    </StyledButton>
+                </Link>
+            </>
     );
 };
 

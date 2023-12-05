@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { fetchAPI, getCurrentTranslation } from "../../components/utils";
-import Layout from "../../components/layout";
-import { Site, Guest, Plan } from '../../components/inteface';
 import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../../styled/authentication';
+import { Site, Guest, Plan } from '../../components/inteface';
+import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
 
@@ -55,64 +55,66 @@ const Connected = () => {
     };
 
     return (
-        <Layout isLoading={isLoading}>
-            <StyledHeader>
-                {signed_in?.status
-                    ? <> {interpolateText(texts.connected.welcome_guest, guest?.first_name as string)}
+        isLoading
+            ? <Waiting />
+            : <>
+                <StyledHeader>
+                    {signed_in?.status
+                        ? <> {interpolateText(texts.connected.welcome_guest, guest?.first_name as string)}
+                        </>
+                        : <> {texts.connected.welcome}
+                        </>
+                    }
+                </StyledHeader>
+                <StyledInstructions>
+                    You are now connected
+                </StyledInstructions>
+
+                {guest && guest.uuid && (
+                    <>
+                        <StyledInstructions>
+                            Guest Information:
+                        </StyledInstructions>
+                        <StyledList>
+                            <div>
+                                <label>{texts.guest.room_number}:</label>
+                                <span>{guest && guest?.room_number}</span>
+                            </div>
+                            <div>
+                                <label>{texts.guest.full_name}:</label>
+                                <span>{guest && guest?.full_name}</span>
+                            </div>
+                        </StyledList>
                     </>
-                    : <> {texts.connected.welcome}
-                    </>
-                }
-            </StyledHeader>
-            <StyledInstructions>
-                You are now connected
-            </StyledInstructions>
+                )}
 
-            {guest && guest.uuid && (
-                <>
-                    <StyledInstructions>
-                        Guest Information:
-                    </StyledInstructions>
-                    <StyledList>
-                        <div>
-                            <label>{texts.guest.room_number}:</label>
-                            <span>{guest && guest?.room_number}</span>
-                        </div>
-                        <div>
-                            <label>{texts.guest.full_name}:</label>
-                            <span>{guest && guest?.full_name}</span>
-                        </div>
-                    </StyledList>
-                </>
-            )}
-
-            <StyledInstructions>
-                Plan Information:
-            </StyledInstructions>
-            <StyledList>
-                {
-                    plan &&
-                    Object.entries(plan).map(([key, value]) => key !== 'bandwidth' && value !== 0 && value !== '' && (
-                        <div key={key}>
-                            <label>{texts.plan[key] as string}:</label>
-                            <span>{value as string}</span>
-                            {key === 'duration' && ('minutes')}
-                        </div>
-                    ))
-                }
-                <div>
-                    <label>{texts.plan.bandwidth.download}:</label>
-                    <span>{plan && plan?.bandwidth?.download}kbps</span>
-                </div>
-                <div>
-                    <label>{texts.plan.bandwidth.upload}:</label>
-                    <span>{plan && plan?.bandwidth?.upload}kbps</span>
-                </div>
-            </StyledList>
+                <StyledInstructions>
+                    Plan Information:
+                </StyledInstructions>
+                <StyledList>
+                    {
+                        plan &&
+                        Object.entries(plan).map(([key, value]) => key !== 'bandwidth' && value !== 0 && value !== '' && (
+                            <div key={key}>
+                                <label>{texts.plan[key] as string}:</label>
+                                <span>{value as string}</span>
+                                {key === 'duration' && ('minutes')}
+                            </div>
+                        ))
+                    }
+                    <div>
+                        <label>{texts.plan.bandwidth.download}:</label>
+                        <span>{plan && plan?.bandwidth?.download}kbps</span>
+                    </div>
+                    <div>
+                        <label>{texts.plan.bandwidth.upload}:</label>
+                        <span>{plan && plan?.bandwidth?.upload}kbps</span>
+                    </div>
+                </StyledList>
 
 
-            <StyledButton onClick={handleClick}>{texts.buttons.disconnect}</StyledButton>
-        </Layout >
+                <StyledButton onClick={handleClick}>{texts.buttons.disconnect}</StyledButton>
+            </ >
     );
 };
 

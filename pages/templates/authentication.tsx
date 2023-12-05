@@ -3,9 +3,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchAPI, getCurrentTranslation } from "../../components/utils";
-
-import Layout from "../../components/layout";
 import { StyledInputGroup, StyledError, StyledButton, StyledHeader, StyledInstructions, StyledDivider } from '../../styled/authentication';
+import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
 
@@ -44,8 +43,9 @@ const Authentication = () => {
     };
 
     return (
-        <>
-            <Layout isLoading={isLoading}>
+        isLoading
+            ? <Waiting />
+            : <>
                 <form onSubmit={handleSignIn}>
                     <StyledHeader>
                         Guest Login
@@ -76,8 +76,7 @@ const Authentication = () => {
                         {texts.buttons.login_access_code}
                     </StyledButton>
                 </Link>
-            </Layout>
-        </>
+            </>
     );
 };
 

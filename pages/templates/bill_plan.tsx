@@ -1,10 +1,10 @@
-import Layout from "../../components/layout";
 import { ChangeEvent, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from "../../components/utils";
-import { Guest, Plan, SignedIn, Site } from "../../components/inteface";
 import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../../styled/authentication";
+import { Plan, Site } from "../../components/inteface";
+import Waiting from "./waiting";
 
 const texts = getCurrentTranslation();
 
@@ -39,7 +39,6 @@ const Billplan = () => {
             const body: FetchAPI['body'] = { action: "connect", type: "plan", plan: selectedPlan.uuid };
             const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body });
             if (data.success) {
-                console.log(data.plan);
                 const query = {
                     gid: site.signed_in?.guest?.uuid,
                     pid: data.plan.uuid
@@ -81,46 +80,48 @@ const Billplan = () => {
     }, [router.isReady]);
 
     return (
-        <Layout isLoading={isLoading}>
-            <StyledHeader>
-                Welcome! {site.signed_in?.status && site.signed_in?.guest?.first_name}
-            </StyledHeader>
-            <StyledInstructions>
-                Please select a plan to continue:
-            </StyledInstructions>
-            <form onSubmit={handleConnect}>
-                <StyledRadioGroup>
-                    {plans.map((plan, index) =>
-                        <li key={plan.uuid}>
-                            <label>
-                                <input type="radio" value={`plan_${plan.uuid}`} name="plans" onChange={handleSelect} defaultChecked={(index === 0) ? true : false}></input>
-                                <span>{plan.name} {plan.duration} minutes {plan.amount !== 0 && (`${plan.amount}$`)}</span>
-                            </label>
-                        </li>
-                    )}
-                </StyledRadioGroup>
-                {
-                    selectedPlan.amount !== 0 && (
-                        <StyledSelectGroup>
-                            <label>
-                                Payment Method:
-                            </label>
-                            <select>
-                                <option defaultChecked={true}>
-                                    Charge to Room
-                                </option>
-                            </select>
-                        </StyledSelectGroup>
-                    )
-                }
-                <StyledError>{errorMessage}</StyledError>
-                <StyledButton>{texts.buttons.connect}</StyledButton>
-            </form>
-            <StyledDivider>
-                Or
-            </StyledDivider>
-            <StyledButton onClick={handleSignOut}>{texts.buttons.sign_out}</StyledButton>
-        </Layout >
+        isLoading
+            ? <Waiting />
+            : <>
+                <StyledHeader>
+                    Welcome! {site.signed_in?.status && site.signed_in?.guest?.first_name}
+                </StyledHeader>
+                <StyledInstructions>
+                    Please select a plan to continue:
+                </StyledInstructions>
+                <form onSubmit={handleConnect}>
+                    <StyledRadioGroup>
+                        {plans.map((plan, index) =>
+                            <li key={plan.uuid}>
+                                <label>
+                                    <input type="radio" value={`plan_${plan.uuid}`} name="plans" onChange={handleSelect} defaultChecked={(index === 0) ? true : false}></input>
+                                    <span>{plan.name} {plan.duration} minutes {plan.amount !== 0 && (`${plan.amount}$`)}</span>
+                                </label>
+                            </li>
+                        )}
+                    </StyledRadioGroup>
+                    {
+                        selectedPlan.amount !== 0 && (
+                            <StyledSelectGroup>
+                                <label>
+                                    Payment Method:
+                                </label>
+                                <select>
+                                    <option defaultChecked={true}>
+                                        Charge to Room
+                                    </option>
+                                </select>
+                            </StyledSelectGroup>
+                        )
+                    }
+                    <StyledError>{errorMessage}</StyledError>
+                    <StyledButton>{texts.buttons.connect}</StyledButton>
+                </form>
+                <StyledDivider>
+                    Or
+                </StyledDivider>
+                <StyledButton onClick={handleSignOut}>{texts.buttons.sign_out}</StyledButton>
+            </>
     );
 };
 

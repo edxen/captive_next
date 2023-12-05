@@ -2,8 +2,8 @@ import { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { fetchAPI, FetchAPI, getCurrentTranslation } from '../../components/utils';
-import { StyledButton, StyledError, StyledDivider, StyledTitle, StyledInputGroup, StyledInstructions } from '../../styled/components';
+import { fetchAPI, FetchAPI, getCurrentTranslation } from '@/components/utils';
+import { StyledButton, StyledError, StyledDivider, StyledTitle, StyledInputGroup, StyledInstructions } from '@/styles/styled';
 import Waiting from './waiting';
 
 const texts = getCurrentTranslation();

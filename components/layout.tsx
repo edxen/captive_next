@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '../styled/components';
+import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '@/styles/styled';
 
-import Waiting from '../pages/templates/waiting';
+import Waiting from '@/pages/templates/waiting';
 
 interface LayoutProps {
     isLoading?: boolean;

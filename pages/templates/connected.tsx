@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { fetchAPI, getCurrentTranslation } from "../../components/utils";
-import { StyledButton, StyledTitle, StyledInstructions, StyledList } from '../../styled/components';
-import { Site, Guest, Plan } from '../../components/inteface';
+import { fetchAPI, getCurrentTranslation } from "@/components/utils";
+import { StyledButton, StyledTitle, StyledInstructions, StyledList } from '@/styles/styled';
+import { Site, Guest, Plan } from '@/components/inteface';
 import Waiting from './waiting';
 
 const texts = getCurrentTranslation();

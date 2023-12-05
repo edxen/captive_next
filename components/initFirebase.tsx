@@ -7,13 +7,7 @@ firebaseConfig = {
     projectId: process.env.FIREBASE_PROJECT_ID,
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 };
-
-const app = () => {
-    try {
-        return initializeApp(firebaseConfig);
-    } catch (error) {
-        console.error("Firebase initialization error:", error);
-    }
-};
+console.log(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 export default app;

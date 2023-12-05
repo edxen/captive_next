@@ -127,23 +127,24 @@ export const StyledRadioGroup = styled.div`
         display: none;
     }
 
-    & input + span {
+    & input + div {
+        display: flex;
+        justify-content: space-between;
         width: 100%;
         text-align: left;
         padding: 5px 10px;
         border: 1px solid ${palette.white};
         border-radius: 4px;
-        transition: color 0.3 ease, border-color 0.3 ease;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out ;
     }
-
-    & input:hover + span {
+    
+    & input:hover + div {
         border: 1px solid ${palette.secondary};
         ${color('secondary')};
     }
-
-
-    & input:checked + span {
-        background-color:${palette.secondary};
+    
+    & input:checked + div {
+        background-color: ${palette.secondary};
         border-color: ${palette.secondary};
         ${color('white')};
     }

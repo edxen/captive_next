@@ -38,7 +38,7 @@ const Authentication = () => {
             setIsLoading(true);
             const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body: { action: 'signin', ...credentials } });
             if (data.success) {
-                router.push(`/templates/bill_plan?gid=${data.guest.uuid}`);
+                router.push(`/templates/plan_select?gid=${data.guest.uuid}`);
             } else {
                 setErrorMessage(texts.error.invalid_credentials);
                 setIsLoading(false);
@@ -70,7 +70,7 @@ const Authentication = () => {
                 </form>
 
                 <StyledDivider>
-                    {texts.general.or}
+                    {texts.general.or_via}
                 </StyledDivider>
 
                 <Link href="/templates/access_code">

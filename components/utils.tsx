@@ -62,6 +62,7 @@ interface ConnectedTranslations {
 interface Translations {
     authentication: StringObject;
     access_code: StringObject;
+    plan_select: StringObject;
     connected: ConnectedTranslations;
     general: StringObject;
     layout: StringObject;

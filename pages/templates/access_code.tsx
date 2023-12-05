@@ -60,7 +60,7 @@ const AccessCode = () => {
                 </form>
 
                 <StyledDivider>
-                    {texts.general.or}
+                    {texts.general.or_via}
                 </StyledDivider>
 
                 <Link href="/templates/authentication">

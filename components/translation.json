@@ -20,6 +20,14 @@
                 "placeholder": "Enter Access Code",
                 "connect": "Connect"
             },
+            "plan_select": {
+                "title": "Welcome!",
+                "instructions": "Please select a plan to continue:",
+                "payment_method": "Payment Method:",
+                "charge_to_room": "Charge to Room",
+                "minutes": "minutes",
+                "currency": "$"
+            },
             "connected": {
                 "welcome_guest": "Welcome, {guest?.first_name}!",
                 "welcome": "Welcome!",
@@ -51,7 +59,8 @@
                 "disconnect": "Disconnect",
                 "login_access_code": "Access Code Login",
                 "login_guest": "Guest Login",
-                "or": "or connect via:"
+                "or_via": "or connect via:",
+                "or": "or"
             },
             "layout": {
                 "header": "Welcome to Outlast Resort",

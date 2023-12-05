@@ -8,26 +8,30 @@ import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
 
+interface Credentials {
+    room_number: string;
+    last_name: string;
+}
+
 const Authentication = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
-    const [credentials, setCredentials] = useState<{ [key: string]: string; }>({ room_number: '', last_name: '' });
-
+    const [credentials, setCredentials] = useState<Credentials>({ room_number: '', last_name: '' });
     const router = useRouter();
 
-    const handleClick = () => {
+    const handlePageChange = () => {
         setIsLoading(true);
     };
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setCredentials((prevCredentials) => ({ ...prevCredentials, [e.target.id]: e.target.value }));
         setErrorMessage('');
     };
 
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         setErrorMessage('');
-        const emptyCredentials: boolean = Object.values(credentials).every(credential => credential === '');
+
+        const emptyCredentials: boolean = Object.values(credentials).some(credential => credential === '');
         if (emptyCredentials) {
             setErrorMessage(texts.error.blank_credentials);
         } else {
@@ -36,8 +40,8 @@ const Authentication = () => {
             if (data.success) {
                 router.push(`/templates/bill_plan?gid=${data.guest.uuid}`);
             } else {
-                setIsLoading(false);
                 setErrorMessage(texts.error.invalid_credentials);
+                setIsLoading(false);
             }
         }
     };
@@ -48,32 +52,30 @@ const Authentication = () => {
             : <>
                 <form onSubmit={handleSignIn}>
                     <StyledTitle>
-                        Guest Login
+                        {texts.authentication.title}
                     </StyledTitle>
                     <StyledInstructions>
-                        Sign in to get connected with our high speed internet.
+                        {texts.authentication.instructions}
                     </StyledInstructions>
                     {
-                        Object.keys(credentials).map((credential, index) => (
-                            <StyledInputGroup key={index}
-                                value={errorMessage}>
-
-                                <label>{texts.credentials[`label_${credential}`]}</label>
-                                <input id={credential} onChange={handleChange} defaultValue={credentials[credential]} placeholder={texts.credentials[`placeholder_${credential}`]} />
+                        Object.keys(credentials).map((credential, index: number) => (
+                            <StyledInputGroup key={index} value={errorMessage}>
+                                <label>{texts.authentication[`label_${credential}`]}</label>
+                                <input id={credential} onChange={handleInputChange} defaultValue={credentials[credential as keyof Credentials]} placeholder={texts.authentication[`placeholder_${credential}`]} />
                             </StyledInputGroup>
                         ))
                     }
                     <StyledError>{errorMessage}</StyledError>
-                    <StyledButton>{texts.buttons.sign_in}</StyledButton>
+                    <StyledButton>{texts.general.sign_in}</StyledButton>
                 </form>
 
                 <StyledDivider>
-                    or connect via:
+                    {texts.general.or}
                 </StyledDivider>
 
                 <Link href="/templates/access_code">
-                    <StyledButton onClick={handleClick}>
-                        {texts.buttons.login_access_code}
+                    <StyledButton onClick={handlePageChange}>
+                        {texts.general.login_access_code}
                     </StyledButton>
                 </Link>
             </>

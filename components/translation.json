@@ -4,56 +4,64 @@
     },
     "translations": {
         "en": {
-            "error": {
-                "blank_credentials": "Room Number and Last Name is required",
-                "invalid_credentials": "Room Numer / Last Name is incorrect",
-                "no_plan_selected": "No bill plan selected",
-                "blank_access_code": "Access Code is required",
-                "invalid_access_code": "Access Code is invalid"
-            },
-            "credentials": {
+            "authentication": {
+                "title": "Guest Login",
+                "instructions": "Sign in to get connected with our high speed internet.",
                 "welcome_message": "Welcome to DisCafe!",
                 "label_room_number": "Room Number",
                 "label_last_name": "Last Name",
                 "placeholder_room_number": "Enter Room Number",
                 "placeholder_last_name": "Enter Last Name"
             },
-            "guest": {
-                "uuid": "UUID",
-                "room_number": "Room Number",
-                "full_name": "Full Name",
-                "first_name": "First Name",
-                "last_name": "Last Name",
-                "code": "Code"
+            "access_code": {
+                "label": "Access Code",
+                "placeholder": "Enter Access Code",
+                "connect": "Connect"
             },
             "connected": {
                 "welcome_guest": "Welcome, {guest?.first_name}!",
-                "welcome": "Welcome!"
-            },
-            "plan": {
-                "uuid": "UUID",
-                "name": "Name",
-                "code": "Code",
-                "duration": "Duration",
-                "type": "Type",
-                "amount": "Amount",
-                "bandwidth": {
-                    "download": "Download Speed",
-                    "upload": "Upload Speed"
+                "welcome": "Welcome!",
+                "guest": {
+                    "uuid": "UUID",
+                    "room_number": "Room Number",
+                    "full_name": "Full Name",
+                    "first_name": "First Name",
+                    "last_name": "Last Name",
+                    "code": "Code"
+                },
+                "plan": {
+                    "uuid": "UUID",
+                    "name": "Name",
+                    "code": "Code",
+                    "duration": "Duration",
+                    "type": "Type",
+                    "amount": "Amount",
+                    "bandwidth": {
+                        "download": "Download Speed",
+                        "upload": "Upload Speed"
+                    }
                 }
             },
-            "buttons": {
+            "general": {
                 "sign_in": "Sign in",
                 "sign_out": "Sign out",
                 "connect": "Connect",
                 "disconnect": "Disconnect",
                 "login_access_code": "Access Code Login",
-                "login_guest": "Guest Login"
+                "login_guest": "Guest Login",
+                "or": "or connect via:"
             },
-            "access_code": {
-                "label": "Access Code",
-                "placeholder": "Enter Access Code",
-                "connect": "Connect"
+            "layout": {
+                "header": "Welcome to Outlast Resort",
+                "waiting": "Please wait...",
+                "footer": "Happysight © 2023 Edxen. All rights reversed."
+            },
+            "error": {
+                "blank_credentials": "Room Number and Last Name is required",
+                "invalid_credentials": "Room Numer / Last Name is incorrect",
+                "no_plan_selected": "No bill plan selected",
+                "blank_access_code": "Access Code is required",
+                "invalid_access_code": "Access Code is invalid"
             }
         }
     }

@@ -46,23 +46,31 @@ export const fetchAPI = async ({ target, method, body }: FetchAPI) => {
     }
 };
 
-interface Translations {
-    access_code: StringKey;
-    credentials: StringKey;
-    buttons: StringKey;
-    guest: StringKey;
-    connected: StringKey,
-    plan: {
-        [key: string]: string | {};
-        bandwidth: StringKey;
-    };
-    error: StringKey;
-}
+type StringObject = Record<string, string>;
 
+interface PlanTranslations {
+    [key: string]: string | StringObject;
+    bandwidth: StringObject;
+};
+
+interface ConnectedTranslations {
+    [key: string]: string | StringObject | PlanTranslations;
+    guest: StringObject;
+    plan: PlanTranslations;
+};
+
+interface Translations {
+    authentication: StringObject;
+    access_code: StringObject;
+    connected: ConnectedTranslations;
+    general: StringObject;
+    layout: StringObject;
+    error: StringObject;
+}
 interface Texts {
     languages: StringKey;
     translations: {
-        en: Translations;
+        [key: string]: Translations;
     };
 }
 

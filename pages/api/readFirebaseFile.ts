@@ -104,6 +104,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                                     success = true;
                                     selectedPlan = getPlan(found.uuid);
                                 }
+                                selectedPlan.code = code;
                                 break;
                         }
                         res.status(200).json({ message: 'This is a POST request', success, plan: selectedPlan });

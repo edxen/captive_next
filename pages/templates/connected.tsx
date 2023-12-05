@@ -34,6 +34,9 @@ const Connected = () => {
                         setSite((prevSite) => ({ ...prevSite, signed_in: { status: true, guest: guestData.guest } }));
                     }
                     if (planData.success) {
+                        if (queryData.aid) {
+                            planData.plan.code = queryData.aid;
+                        }
                         setSite((prevSite) => ({ ...prevSite, connected: { status: true, plan: planData.plan } }));
                         setIsLoading(false);
                     }

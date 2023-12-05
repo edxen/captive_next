@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '@/styles/styled';
 
+import { getCurrentTranslation } from './utils';
+import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '@/styles/styled';
 import Waiting from '@/pages/templates/waiting';
+
+const texts = getCurrentTranslation();
 
 interface LayoutProps {
     isLoading?: boolean;
@@ -28,7 +31,7 @@ const Header = () => {
         <StyledHeader>
             <StyledLogo />
             <StyledHeader>
-                Welcome to Outlast Resort
+                {texts.layout.header}
             </StyledHeader>
         </StyledHeader>
     );
@@ -37,7 +40,7 @@ const Header = () => {
 const Footer = () => {
     return (
         <StyledFooter>
-            Happysight © 2023 Edxen. All rights reversed.
+            {texts.layout.footer}
         </StyledFooter>
     );
 };

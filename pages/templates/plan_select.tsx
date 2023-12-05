@@ -40,7 +40,7 @@ const Billplan = () => {
         } else {
             setIsLoading(true);
             const body: FetchAPI['body'] = { action: "connect", type: "plan", plan: selectedPlan.uuid };
-            const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body });
+            const data = await fetchAPI({ target: "handler", method: "POST", body });
             if (data.success) {
                 const query = {
                     gid: site.signed_in?.guest?.uuid,
@@ -64,11 +64,11 @@ const Billplan = () => {
             if (router.isReady) {
                 const gid = router.query.gid as string;
                 if (gid) {
-                    const guestData = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'guest', guestuuid: gid } });
+                    const guestData = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'guest', guestuuid: gid } });
                     setSite((prevSite) => ({ ...prevSite, signed_in: { status: true, guest: guestData.guest } }));
                 }
 
-                const data = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'plans', type: 'guest' } });
+                const data = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'plans', type: 'guest' } });
                 if (data.plans?.length) {
                     setIsLoading(false);
                     setSelectedPlan(data.plans[0]);

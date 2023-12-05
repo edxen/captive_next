@@ -30,7 +30,7 @@ const AccessCode = () => {
         } else {
             setIsLoading(true);
             const body: FetchAPI['body'] = { action: "connect", type: "code", code: inputAccessCode };
-            const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body });
+            const data = await fetchAPI({ target: "handler", method: "POST", body });
             if (data.success) {
                 router.push(`/templates/connected?pid=${data.plan.uuid}&aid=${data.plan.code}`);
             } else {

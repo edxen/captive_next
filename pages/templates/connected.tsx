@@ -27,8 +27,8 @@ const Connected = () => {
             if (router.isReady) {
                 const queryData = router.query;
                 if (queryData.gid || queryData.pid) {
-                    const guestData = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'guest', guestuuid: queryData.gid as string } });
-                    const planData = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'plan', plan: queryData.pid as string } });
+                    const guestData = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'guest', guestuuid: queryData.gid as string } });
+                    const planData = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'plan', plan: queryData.pid as string } });
 
                     if (guestData.success) {
                         setSite((prevSite) => ({ ...prevSite, signed_in: { status: true, guest: guestData.guest } }));
@@ -36,6 +36,7 @@ const Connected = () => {
                     if (planData.success) {
                         if (queryData.aid) {
                             planData.plan.code = queryData.aid;
+                            console.log(planData.plan);
                         }
                         setSite((prevSite) => ({ ...prevSite, connected: { status: true, plan: planData.plan } }));
                         setIsLoading(false);

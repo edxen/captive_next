@@ -74,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     case "plan":
                         success = true;
                         plansData = await loadData(plansPath);
-                        selectedPlan = plansData.filter((list) => list.uuid = plan)[0];
+                        selectedPlan = plansData.filter((list) => list.uuid === plan)[0];
                         res.status(200).json({ message: 'This is a POST request', success, plan: selectedPlan });
                         break;
                     case "plans":

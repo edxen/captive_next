@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { fetchAPI, getCurrentTranslation } from "../../components/utils";
-import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../../styled/authentication';
+import { StyledButton, StyledTitle, StyledInstructions, StyledList } from '../../styled/components';
 import { Site, Guest, Plan } from '../../components/inteface';
 import Waiting from './waiting';
 
@@ -15,7 +15,6 @@ const Connected = () => {
     const router = useRouter();
 
     const handleClick = async () => {
-        console.log(site);
         const result = confirm('Are you sure?');
         if (result) {
             setIsLoading(true);
@@ -58,14 +57,14 @@ const Connected = () => {
         isLoading
             ? <Waiting />
             : <>
-                <StyledHeader>
+                <StyledTitle>
                     {signed_in?.status
                         ? <> {interpolateText(texts.connected.welcome_guest, guest?.first_name as string)}
                         </>
                         : <> {texts.connected.welcome}
                         </>
                     }
-                </StyledHeader>
+                </StyledTitle>
                 <StyledInstructions>
                     You are now connected
                 </StyledInstructions>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Content, StyledHeader, StyledFooter, StyledLogo } from '../styled/layout';
+import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '../styled/components';
 
 import Waiting from '../pages/templates/waiting';
 
@@ -10,16 +10,16 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ isLoading, children }) => {
     return (
-        <Container>
+        <StyledContainer>
             <Header />
-            <Content>
+            <StyledContent>
                 {isLoading
                     ? <Waiting />
                     : <>{children}</>
                 }
-            </Content>
+            </StyledContent>
             <Footer />
-        </Container>
+        </StyledContainer>
     );
 };
 

@@ -1,43 +1,97 @@
 import styled from 'styled-components';
 import { StringKey } from '../components/inteface';
 
-const palette: StringKey = {
+interface Palette {
+    [key: string]: string;
+}
+
+const palette: Palette = {
     white: "rgb(255, 255, 255)",
     black: "rgba(0, 0, 0, 0.8)",
-    mute: "gray",
+    mute: "rgb(230, 230, 230)",
     primary: "rgb(255, 189, 89)",
     secondary: "rgb(253, 135, 12)",
     alternate: "rgb(64, 84, 89)",
     background: "rgb(219, 232, 222)",
+    black40: "rgba(0, 0, 0 , .4)",
     error: "rgb(255, 0, 0)"
 };
 
-interface StyledInputGroup {
-    value: string;
-}
+const flexColumnCenterStyle = `
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+`;
+
+const color = (value: string) => `
+    color: ${palette[value]};
+`;
+
+export const StyledContainer = styled.div`
+    ${flexColumnCenterStyle};
+    ${color('white')};
+`;
+
+export const StyledContent = styled.div`
+    ${flexColumnCenterStyle};
+    background-color: ${palette.black40};
+    
+    text-align: center;
+    width: 100%;
+    padding: 15px;
+    min-height: 250px;
+    min-width: 320px;
+    max-width: 450px;
+    border-radius: 4px;
+
+    & > * {
+        width: 100%;
+    }
+`;
+
+export const StyledLogo = styled.div`
+    background-image: url('/logo.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    height: 150px;
+    width: 150px;
+`;
+
+export const StyledFooter = styled.div`
+    ${color('mute')};
+
+    font-size: 14px;
+    margin: 10px;
+`;
 
 export const StyledHeader = styled.div`
+    ${flexColumnCenterStyle}
+
+    & div {
+        font-size: 28px;
+    }
+`;
+
+export const StyledTitle = styled.div`
     font-size: 20px;
-    color: ${palette.white};
     text-align: left;
     margin-bottom:10px;
 
 `;
 
 export const StyledInstructions = styled.div`
-    color: ${palette.white};
     text-align: left;
     margin-bottom:10px;
 `;
 
-export const StyledInputGroup = styled.div<StyledInputGroup>`
-    color: ${palette.white};
-    display:flex;
-    flex-direction: column;
+export const StyledInputGroup = styled.div<{ value: string; }>`
+    ${flexColumnCenterStyle}
+
     align-items:start;
-    justify-content: center;
-    width: 100%;
     margin-bottom:5px;
+    width: 100%;
 
     & label {
         margin-top: 2px;
@@ -51,13 +105,11 @@ export const StyledInputGroup = styled.div<StyledInputGroup>`
     }
 
     & input:focus + label {
-        color: ${palette.white};
+        ${color('white')};
     }
 `;
 
 export const StyledRadioGroup = styled.div`
-    color: ${palette.white};
-
     & > li {
         list-style:none;
         width: 100%;
@@ -80,27 +132,25 @@ export const StyledRadioGroup = styled.div`
         text-align: left;
         padding: 5px 10px;
         border: 1px solid ${palette.white};
-        color: ${palette.white};
         border-radius: 4px;
         transition: color 0.3 ease, border-color 0.3 ease;
     }
 
     & input:hover + span {
         border: 1px solid ${palette.secondary};
-        color: ${palette.secondary};
+        ${color('secondary')};
     }
 
 
     & input:checked + span {
         background-color:${palette.secondary};
         border-color: ${palette.secondary};
-        color: ${palette.white};
+        ${color('white')};
     }
 `;
 
 
 export const StyledSelectGroup = styled.div`
-    color: ${palette.white};
     display: flex;
 
     & label, select {        
@@ -115,20 +165,20 @@ export const StyledSelectGroup = styled.div`
 `;
 
 export const StyledList = styled.div`
-    color: ${palette.white};
     display: flex;
     flex-direction: column;
+
     padding: 0 20px;
     margin-bottom: 10px;
 
     & > div {
         display:flex;
         justify-content: start;
-        items-center: center
+        align-items: center;
     }
 
     & > div > label {
-        text-align: left;
+        text-align: start;
         width: 50%;
     }
 `;
@@ -146,9 +196,11 @@ export const StyledError = styled.div`
 `;
 
 export const StyledButton = styled.button`
+    ${color('black')};
+
     width: 100%;
     background-color: ${palette.primary};
-    color: ${palette.black};
+
     border: 1px solid transparent;
     border-radius:6px;
     font-size:16px;

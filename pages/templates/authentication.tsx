@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchAPI, getCurrentTranslation } from "../../components/utils";
-import { StyledInputGroup, StyledError, StyledButton, StyledHeader, StyledInstructions, StyledDivider } from '../../styled/authentication';
+import { StyledInputGroup, StyledError, StyledButton, StyledTitle, StyledInstructions, StyledDivider } from '../../styled/components';
 import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
@@ -47,9 +47,9 @@ const Authentication = () => {
             ? <Waiting />
             : <>
                 <form onSubmit={handleSignIn}>
-                    <StyledHeader>
+                    <StyledTitle>
                         Guest Login
-                    </StyledHeader>
+                    </StyledTitle>
                     <StyledInstructions>
                         Sign in to get connected with our high speed internet.
                     </StyledInstructions>

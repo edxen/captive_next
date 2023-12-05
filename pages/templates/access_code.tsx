@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from '../../components/utils';
-import { StyledButton, StyledError, StyledDivider, StyledHeader, StyledInputGroup, StyledInstructions } from '../../styled/authentication';
+import { StyledButton, StyledError, StyledDivider, StyledTitle, StyledInputGroup, StyledInstructions } from '../../styled/components';
 import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
@@ -45,9 +45,9 @@ const AccessCode = () => {
         isLoading
             ? <Waiting />
             : <>
-                <StyledHeader>
+                <StyledTitle>
                     Access Code Login
-                </StyledHeader>
+                </StyledTitle>
                 <StyledInstructions>
                     Approach our front desk to request for access code.
                 </StyledInstructions>

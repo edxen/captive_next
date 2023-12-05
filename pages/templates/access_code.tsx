@@ -14,11 +14,11 @@ const AccessCode = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const router = useRouter();
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputAccessCode(e.target.value);
     };
 
-    const handleClick = () => {
+    const handlePageChange = () => {
         setIsLoading(true);
     };
 
@@ -31,12 +31,11 @@ const AccessCode = () => {
             setIsLoading(true);
             const body: FetchAPI['body'] = { action: "connect", type: "code", code: inputAccessCode };
             const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body });
-            console.log(data);
             if (data.success) {
-                router.push('/templates/connected');
+                router.push(`/templates/connected?pid=${data.plan.uuid}`);
             } else {
-                setIsLoading(false);
                 setErrorMessage(texts.error.invalid_access_code);
+                setIsLoading(false);
             }
         }
     };
@@ -46,27 +45,27 @@ const AccessCode = () => {
             ? <Waiting />
             : <>
                 <StyledTitle>
-                    Access Code Login
+                    {texts.access_code.title}
                 </StyledTitle>
                 <StyledInstructions>
-                    Approach our front desk to request for access code.
+                    {texts.access_code.instructions}
                 </StyledInstructions>
                 <form onSubmit={handleConnect}>
                     <StyledInputGroup value={errorMessage}>
                         <label>{texts.access_code.label}</label>
-                        <input onChange={handleChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
+                        <input onChange={handleInputChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
                     </StyledInputGroup>
                     <StyledError>{errorMessage}</StyledError>
-                    <StyledButton>{texts.buttons.connect}</StyledButton>
+                    <StyledButton>{texts.general.connect}</StyledButton>
                 </form>
 
                 <StyledDivider>
-                    or connect via:
+                    {texts.general.or}
                 </StyledDivider>
 
                 <Link href="/templates/authentication">
-                    <StyledButton onClick={handleClick}>
-                        {texts.buttons.login_guest}
+                    <StyledButton onClick={handlePageChange}>
+                        {texts.general.login_guest}
                     </StyledButton>
                 </Link>
             </>

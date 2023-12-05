@@ -99,13 +99,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                             case 'code':
                                 voucherData = await loadData(voucherPath);
-                                console.log(voucherData);
                                 const found = voucherData.filter((voucher) => voucher.code === code)[0];
-                                console.log(found);
-
                                 if (found) {
                                     success = true;
-                                    selectedPlan = getPlan(found.code);
+                                    selectedPlan = getPlan(found.uuid);
                                 }
                                 break;
                         }

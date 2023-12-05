@@ -33,14 +33,13 @@ export interface Guest {
 
 export interface SignedIn {
     status: boolean;
-    guest: Guest | {};
+    guest?: Guest;
 }
 
 export interface Site {
-    login_options: { [key: string]: boolean; };
-    plan: Plan[] | [];
-    signed_in: SignedIn;
-    connected: {
+    plans?: Plan[] | [];
+    signed_in?: SignedIn;
+    connected?: {
         status: boolean;
         plan: Plan | {};
     };

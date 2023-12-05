@@ -49,13 +49,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let success = false;
         let guest: Guest | undefined;
         let plans: Plan[] | undefined;
-        const { action, type } = req.body;
+        let selectedPlan = {} as Plan;
+        const { action, type, guestuuid, plan, code, room_number, last_name } = req.body;
 
         switch (req.method) {
             case "POST":
                 switch (action) {
+                    case "guest":
+                        pmsData = await loadData(pmsPath);
+                        success = true;
+                        guest = pmsData.find((data) => data.uuid === guestuuid);
+                        res.status(200).json({ message: 'This is a POST request', success, guest });
+                        break;
                     case "signin":
-                        const { room_number, last_name } = req.body;
                         pmsData = await loadData(pmsPath);
                         const foundGuest = pmsData.find((data) => data.room_number === room_number);
 
@@ -65,7 +71,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         }
                         res.status(200).json({ message: 'This is a POST request', success, guest });
                         break;
-
+                    case "plan":
+                        success = true;
+                        plansData = await loadData(plansPath);
+                        selectedPlan = plansData.filter((list) => list.uuid = plan)[0];
+                        res.status(200).json({ message: 'This is a POST request', success, plan: selectedPlan });
+                        break;
                     case "plans":
                         success = true;
                         plansData = await loadData(plansPath);
@@ -77,9 +88,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         res.status(200).json({ message: 'This is a POST request', success, plans });
                         break;
                     case "connect":
-                        const { plan, code } = req.body;
-                        const getPlan = (uuid: string) => plans?.filter((plan) => plan.uuid === uuid)[0] as Plan;
-                        let selectedPlan = {} as Plan;
+                        plansData = await loadData(plansPath);
+                        const getPlan = (uuid: string) => plansData?.filter((plan) => plan.uuid === uuid)[0] as Plan;
 
                         switch (type) {
                             case 'plan':

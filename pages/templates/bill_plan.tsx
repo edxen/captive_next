@@ -3,7 +3,7 @@ import { ChangeEvent, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from "../../components/utils";
-import { Plan } from "../../components/inteface";
+import { Guest, Plan, SignedIn, Site } from "../../components/inteface";
 import { StyledHeader, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "../../styled/authentication";
 
 const texts = getCurrentTranslation();
@@ -39,32 +39,51 @@ const Billplan = () => {
             const body: FetchAPI['body'] = { action: "connect", type: "plan", plan: selectedPlan.uuid };
             const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body });
             if (data.success) {
-                router.push('/templates/connected');
+                console.log(data.plan);
+                const query = {
+                    gid: site.signed_in?.guest?.uuid,
+                    pid: data.plan.uuid
+                };
+                router.push(`/templates/connected?gid=${query.gid}&pid=${query.pid}`);
             } else {
                 setIsLoading(false);
             }
         }
     };
 
+    const [site, setSite] = useState<Site>({
+        signed_in: {
+            status: false
+        }
+    });
+
     useEffect(() => {
         const fetchSite = async () => {
-            const data = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'plans', type: 'guest' } });
-            if (data.plans?.length) {
-                setIsLoading(false);
-                setSelectedPlan(data.plans[0]);
-                setPlans(data.plans);
-            } else {
-                setIsLoading(false);
-                setErrorMessage('No Plans Available');
+            if (router.isReady) {
+                const gid = router.query.gid as string;
+                if (gid) {
+                    const guestData = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'guest', guestuuid: gid } });
+                    setSite((prevSite) => ({ ...prevSite, signed_in: { status: true, guest: guestData.guest } }));
+                }
+
+                const data = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'plans', type: 'guest' } });
+                if (data.plans?.length) {
+                    setIsLoading(false);
+                    setSelectedPlan(data.plans[0]);
+                    setPlans(data.plans);
+                } else {
+                    setIsLoading(false);
+                    setErrorMessage('No Plans Available');
+                }
             }
         };
         fetchSite();
-    }, []);
+    }, [router.isReady]);
 
     return (
         <Layout isLoading={isLoading}>
             <StyledHeader>
-                Welcome!
+                Welcome! {site.signed_in?.status && site.signed_in?.guest?.first_name}
             </StyledHeader>
             <StyledInstructions>
                 Please select a plan to continue:

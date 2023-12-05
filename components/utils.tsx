@@ -1,7 +1,7 @@
 import { Data, StringKey } from "./inteface";
 import Translations from "./translation.json";
 
-type ActionTypes = 'signin' | 'plans' | 'signout' | 'connect' | 'disconnect';
+type ActionTypes = 'guest' | 'plan' | 'signin' | 'plans' | 'signout' | 'connect' | 'disconnect';
 
 export interface FetchAPI {
     target: 'handler' | 'readFirebaseFile';
@@ -14,6 +14,7 @@ export interface FetchAPI {
             room_number: string;
             last_name: string;
         },
+        guestuuid?: string;
         plan?: string;
     };
 }

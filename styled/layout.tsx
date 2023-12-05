@@ -28,7 +28,7 @@ export const Content = styled.div`
     }
 `;
 
-export const Header = styled.div`
+export const StyledHeader = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -51,7 +51,7 @@ export const StyledLogo = styled.div`
     background-size: contain;
 `;
 
-export const Footer = styled.div`
+export const StyledFooter = styled.div`
     color: rgb(230, 230, 230);
     font-size: 14px;
     margin: 10px;

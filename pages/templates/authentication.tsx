@@ -19,7 +19,6 @@ const Authentication = () => {
     const handleClick = () => {
         setIsLoading(true);
     };
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setCredentials((prevCredentials) => ({ ...prevCredentials, [e.target.id]: e.target.value }));
         setErrorMessage('');
@@ -36,7 +35,7 @@ const Authentication = () => {
             setIsLoading(true);
             const data = await fetchAPI({ target: "readFirebaseFile", method: "POST", body: { action: 'signin', ...credentials } });
             if (data.success) {
-                router.push('/templates/bill_plan');
+                router.push(`/templates/bill_plan?gid=${data.guest.uuid}`);
             } else {
                 setIsLoading(false);
                 setErrorMessage(texts.error.invalid_credentials);

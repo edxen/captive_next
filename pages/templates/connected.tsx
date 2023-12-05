@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { getCurrentTranslation } from "../../components/utils";
+import { fetchAPI, getCurrentTranslation } from "../../components/utils";
 import Layout from "../../components/layout";
 import { Site, Guest, Plan } from '../../components/inteface';
 import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../../styled/authentication';
@@ -9,12 +9,13 @@ import { StyledButton, StyledHeader, StyledInstructions, StyledList } from '../.
 const texts = getCurrentTranslation();
 
 const Connected = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [site, setSite] = useState<Site | null>(null);
 
     const router = useRouter();
 
     const handleClick = async () => {
+        console.log(site);
         const result = confirm('Are you sure?');
         if (result) {
             setIsLoading(true);
@@ -23,8 +24,25 @@ const Connected = () => {
     };
 
     useEffect(() => {
+        const fetchSite = async () => {
+            if (router.isReady) {
+                const queryData = router.query;
+                if (queryData.gid || queryData.pid) {
+                    const guestData = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'guest', guestuuid: queryData.gid as string } });
+                    const planData = await fetchAPI({ target: "readFirebaseFile", method: 'POST', body: { action: 'plan', plan: queryData.pid as string } });
 
-    }, []);
+                    if (guestData.success) {
+                        setSite((prevSite) => ({ ...prevSite, signed_in: { status: true, guest: guestData.guest } }));
+                    }
+                    if (planData.success) {
+                        setSite((prevSite) => ({ ...prevSite, connected: { status: true, plan: planData.plan } }));
+                        setIsLoading(false);
+                    }
+                }
+            }
+        };
+        fetchSite();
+    }, [router.isReady]);
 
     const signed_in = (site?.signed_in) && site.signed_in;
     const guest: Partial<Guest> | undefined = (signed_in) && signed_in.guest;

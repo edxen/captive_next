@@ -43,6 +43,8 @@ interface Site {
 interface SiteContextType {
     site: Site;
     setSite: React.Dispatch<React.SetStateAction<Site>>;
+    updateStatus: (obj: Partial<Status>) => void;
+    updateSite: (obj: Partial<Site>) => void;
 }
 
 interface SiteProviderType {

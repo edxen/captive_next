@@ -16,16 +16,8 @@ interface Credentials {
 
 const Authentication = () => {
     const [credentials, setCredentials] = useState<Credentials>({ room_number: '', last_name: '' });
-    const { site, setSite } = useContext(SiteContext);
+    const { site, updateSite, updateStatus } = useContext(SiteContext);
     const router = useRouter();
-
-    const updateStatus = (obj: Partial<Status>) => {
-        setSite((prevSite) => ({ ...prevSite, status: { ...prevSite.status, ...obj } }));
-    };
-
-    const updateSite = (obj: Partial<Site>) => {
-        setSite((prevSite) => ({ ...prevSite, ...obj }));
-    };
 
     const handlePageChange = () => {
         updateStatus({ loading: true });

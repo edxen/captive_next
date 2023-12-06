@@ -18,12 +18,23 @@ const defaultSite: Site = {
 
 export const SiteContext = createContext<SiteContextType>({
     site: defaultSite,
-    setSite: () => { }
+    setSite: () => { },
+    updateSite: () => { },
+    updateStatus: () => { }
 });
 
 export const SiteProvider: React.FC<SiteProviderType> = ({ children }) => {
     const [site, setSite] = useState<Site>(defaultSite);
-    const context = { site, setSite };
+
+    const updateStatus = (obj: Partial<Status>) => {
+        setSite((prevSite) => ({ ...prevSite, status: { ...prevSite.status, ...obj } }));
+    };
+
+    const updateSite = (obj: Partial<Site>) => {
+        setSite((prevSite) => ({ ...prevSite, ...obj }));
+    };
+
+    const context = { site, setSite, updateStatus, updateSite };
 
     return (
         <SiteContext.Provider value={context}>

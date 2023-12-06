@@ -1,10 +1,11 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchAPI, getCurrentTranslation } from "@/components/utils";
 import { StyledInputGroup, StyledError, StyledButton, StyledTitle, StyledInstructions, StyledDivider } from '@/styles/styled';
 import Waiting from './waiting';
+import { SiteContext } from '../_app';
 
 const texts = getCurrentTranslation();
 
@@ -46,10 +47,18 @@ const Authentication = () => {
         }
     };
 
+    const { flag, setFlag } = useContext(SiteContext);
+
+    const toggleFlag = () => {
+        setFlag(!flag);
+    };
+
     return (
         isLoading
             ? <Waiting />
             : <>
+                <StyledButton onClick={toggleFlag}>Toggle</StyledButton>
+                {flag ? 'show' : 'dont show'}
                 <form onSubmit={handleSignIn}>
                     <StyledTitle>
                         {texts.authentication.title}

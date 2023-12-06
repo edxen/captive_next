@@ -5,17 +5,15 @@ import Link from 'next/link';
 import { fetchAPI, getCurrentTranslation } from "@/components/utils";
 import { StyledInputGroup, StyledError, StyledButton, StyledTitle, StyledInstructions, StyledDivider } from '@/styles/styled';
 import { SiteContext } from '@/components/context';
+
+import { Credentials } from '@/components/utils';
+
 import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
 
-interface Credentials {
-    room_number: string;
-    last_name: string;
-}
-
 const Authentication = () => {
-    const [credentials, setCredentials] = useState<Credentials>({ room_number: '', last_name: '' });
+    const [credentials, setCredentials] = useState<Credentials>({ room_number: undefined, last_name: '' });
     const { site, updateSite, updateStatus } = useContext(SiteContext);
     const router = useRouter();
 
@@ -37,7 +35,7 @@ const Authentication = () => {
             updateStatus({ error: texts.error.blank_credentials });
         } else {
             updateStatus({ loading: true });
-            const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signin', ...credentials } });
+            const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signin', credentials } });
             if (data.success) {
                 updateStatus({ error: '', signed_in: true });
                 updateSite({ guest: data.guest });

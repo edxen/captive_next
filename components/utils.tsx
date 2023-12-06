@@ -1,29 +1,38 @@
-import { Data, StringKey } from "./inteface";
 import Translations from "./translation.json";
 
+export interface Voucher {
+    uuid: number;
+    code: number;
+    plan_uuid: number;
+}
+
+export interface Credentials {
+    room_number?: number;
+    last_name: string;
+}
+
+type TypeTypes = 'guest' | 'code' | 'credentials' | 'plan' | 'all';
 type ActionTypes = 'guest' | 'plan' | 'signin' | 'plans' | 'signout' | 'connect' | 'disconnect';
 
+interface Body {
+    action: ActionTypes;
+    type?: TypeTypes;
+    code?: number;
+    credentials?: Credentials;
+    uuid?: number;
+};
+
+type MethodTypes = 'GET' | 'POST';
+
 export interface FetchAPI {
-    target: 'handler' | 'readFirebaseFile';
-    method: 'GET' | 'POST';
-    body?: {
-        action: ActionTypes;
-        type?: 'guest' | 'code' | 'credentials' | 'plan';
-        code?: string;
-        credentials?: {
-            room_number: string;
-            last_name: string;
-        },
-        guestuuid?: string;
-        plan?: string;
-    };
+    target: 'handler';
+    method: MethodTypes;
+    body?: Body;
 }
 
 interface RequestInfo {
-    method: 'GET' | 'POST',
-    headers?: {
-        'Content-Type': string;
-    },
+    method: MethodTypes;
+    headers?: { 'Content-Type': string; },
     body?: string;
 }
 
@@ -69,7 +78,7 @@ interface Translations {
     error: StringObject;
 }
 interface Texts {
-    languages: StringKey;
+    languages: StringObject;
     translations: {
         [key: string]: Translations;
     };

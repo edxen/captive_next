@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { Guest, Plan, Voucher } from '@/components/inteface';
+
+import { Voucher } from '@/components/utils';
 
 let firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -39,12 +40,12 @@ const loadData = async (filePath: string) => {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         const pmsPath = 'pms.json';
-        const plansPath = 'bill_plans.json';
-        const voucherPath = 'voucher.json';
+        const plansPath = 'plans.json';
+        const voucherPath = 'vouchers.json';
 
         let pmsData: Guest[];
         let plansData: Plan[];
-        let voucherData: Voucher[];
+        let vouchersData: Voucher[];
 
         let success = false;
         let guest: Guest | undefined;
@@ -98,8 +99,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                                 break;
 
                             case 'code':
-                                voucherData = await loadData(voucherPath);
-                                const found = voucherData.filter((voucher) => voucher.code === code)[0];
+                                vouchersData = await loadData(voucherPath);
+                                const found = vouchersData.filter((voucher) => voucher.code === code)[0];
                                 if (found) {
                                     success = true;
                                     selectedPlan = getPlan(found.uuid);

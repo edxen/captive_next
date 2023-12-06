@@ -54,7 +54,7 @@ const Authentication = () => {
         } else {
             updateStatus({ loading: true });
         }
-    }, []);
+    }, [router, updateStatus]);
 
     return (
         <>

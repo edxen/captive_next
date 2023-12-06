@@ -67,7 +67,7 @@ const Billplan = () => {
             }
         };
         fetchSite();
-    }, [router]);
+    }, [router, site, updateSite, updateStatus]);
 
     return (
         site.status.loading

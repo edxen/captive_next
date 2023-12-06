@@ -54,7 +54,7 @@ const AccessCode = () => {
         } else {
             updateStatus({ loading: true });
         }
-    }, [router]);
+    }, [router, updateStatus]);
 
     return (
         site.status.loading

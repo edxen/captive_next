@@ -34,7 +34,7 @@ const Connected = () => {
             }
         };
         fetchSite();
-    }, [router]);
+    }, [router, site, updateStatus]);
 
     const interpolateText = (text: string, reference: string): string => {
         const replacedMessage: string = text.replace(/\{([^{}]+)\}/g, reference);

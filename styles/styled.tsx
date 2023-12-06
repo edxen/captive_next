@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { StringKey } from '../components/inteface';
 
 interface Palette {
     [key: string]: string;

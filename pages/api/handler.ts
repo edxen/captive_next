@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-
-import { Body, Voucher } from '@/components/utils';
+import { Body, Voucher } from '../../interface/utils';
 
 let firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,

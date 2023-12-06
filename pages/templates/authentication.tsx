@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useContext } from 'react';
+import { ChangeEvent, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -46,6 +46,14 @@ const Authentication = () => {
             }
         }
     };
+
+    useEffect(() => {
+        if (router.isReady) {
+            updateStatus({ loading: false });
+        } else {
+            updateStatus({ loading: true });
+        }
+    }, []);
 
     return (
         site.status.loading

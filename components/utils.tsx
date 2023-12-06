@@ -12,9 +12,9 @@ export interface Credentials {
 }
 
 type TypeTypes = 'guest' | 'code' | 'credentials' | 'plan' | 'all';
-type ActionTypes = 'guest' | 'plan' | 'signin' | 'plans' | 'signout' | 'connect' | 'disconnect';
+type ActionTypes = 'signin' | 'connect';
 
-interface Body {
+export interface Body {
     action: ActionTypes;
     type?: TypeTypes;
     code?: number;

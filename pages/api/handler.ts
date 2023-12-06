@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-import { Voucher } from '@/components/utils';
+import { Body, Credentials, Voucher } from '@/components/utils';
 
 let firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -51,24 +51,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let guest: Guest | undefined;
         let plans: Plan[] | undefined;
         let selectedPlan = {} as Plan;
-        const { action, type, guestuuid, plan, code, room_number, last_name } = req.body;
+        const { action, type, code, credentials, uuid }: Body = req.body;
 
         switch (req.method) {
             case "POST":
                 switch (action) {
-                    case "guest":
+                    case "signin": // for when user is signing in, check if credentials matched with the records
                         pmsData = await loadData(pmsPath);
-                        success = true;
-                        guest = pmsData.find((data) => data.uuid === guestuuid);
-                        res.status(200).json({ message: 'This is a POST request', success, guest });
-                        break;
-                    case "signin":
-                        pmsData = await loadData(pmsPath);
-                        const foundGuest = pmsData.find((data) => data.room_number === room_number);
-
-                        if (foundGuest?.last_name === last_name) {
-                            success = true;
-                            guest = foundGuest;
+                        if (credentials !== undefined && credentials.room_number !== undefined) {
+                            const { room_number, last_name } = credentials;
+                            const roomNumber = parseInt(room_number.toString(), 10);
+                            if (!isNaN(roomNumber)) {
+                                guest = pmsData.find((data) => data.room_number === roomNumber && data.last_name === last_name);
+                                if (guest?.uuid) success = true;
+                            }
                         }
                         res.status(200).json({ message: 'This is a POST request', success, guest });
                         break;

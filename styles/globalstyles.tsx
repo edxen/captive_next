@@ -27,5 +27,6 @@ export const GlobalStyles = createGlobalStyle`
         url('/fonts/Saira-Regular.svg#Saira-Regular') format('svg');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
   }
 `;

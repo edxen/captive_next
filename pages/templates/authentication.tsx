@@ -17,7 +17,7 @@ const Authentication = () => {
     const router = useRouter();
 
     const handlePageChange = () => {
-        updateStatus({ loading: true });
+        updateStatus({ error: '', loading: true });
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { getCurrentTranslation } from './utils';
 import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '@/styles/styled';
+import Image from 'next/image';
 
 const texts = getCurrentTranslation();
 
@@ -25,7 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 const Header = () => {
     return (
         <StyledHeader>
-            <StyledLogo />
+            <Image src="/logo.webp" alt="captive site logo" width={150} height={150} />
             <StyledHeader>
                 {texts.layout.header}
             </StyledHeader>

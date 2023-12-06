@@ -49,15 +49,6 @@ export const StyledContent = styled.div`
     }
 `;
 
-export const StyledLogo = styled.div`
-    background-image: url('/logo.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    height: 150px;
-    width: 150px;
-`;
-
 export const StyledFooter = styled.div`
     ${color('mute')};
 

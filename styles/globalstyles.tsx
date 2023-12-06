@@ -8,7 +8,7 @@ export const GlobalStyles = createGlobalStyle`
 
   body {
     background-color: #dbe8de;
-    background-image: url('/background.jpg'); /* Update the path based on your project structure */
+    background-image: url('/background.webp'); /* Update the path based on your project structure */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

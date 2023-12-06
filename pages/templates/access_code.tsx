@@ -36,7 +36,7 @@ const AccessCode = () => {
                 const data = await fetchAPI({ target: "handler", method: "POST", body });
                 if (data.success) {
                     updateSite({ plan: data.plan });
-                    updateStatus({ connected: true });
+                    updateStatus({ error: '', connected: true });
                     const redirectPath = '/templates/connected';
                     router.push(redirectPath);
                 } else {

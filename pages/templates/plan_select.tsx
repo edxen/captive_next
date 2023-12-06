@@ -38,7 +38,7 @@ const Billplan = () => {
             const data = await fetchAPI({ target: "handler", method: "POST", body });
             if (data.success) {
                 removeSite({ plans: site.plans });
-                updateStatus({ connected: true });
+                updateStatus({ error: '', connected: true });
                 const redirectPath: string = '/templates/connected';
                 router.push(redirectPath);
             } else {

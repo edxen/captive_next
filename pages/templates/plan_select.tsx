@@ -66,16 +66,18 @@ const Billplan = () => {
                 if (gid) {
                     const guestData = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'guest', guestuuid: gid } });
                     setSite((prevSite) => ({ ...prevSite, signed_in: { status: true, guest: guestData.guest } }));
-                }
 
-                const data = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'plans', type: 'guest' } });
-                if (data.plans?.length) {
-                    setIsLoading(false);
-                    setSelectedPlan(data.plans[0]);
-                    setPlans(data.plans);
+                    const data = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'plans', type: 'guest' } });
+                    if (data.plans?.length) {
+                        setIsLoading(false);
+                        setSelectedPlan(data.plans[0]);
+                        setPlans(data.plans);
+                    } else {
+                        setIsLoading(false);
+                        setErrorMessage('No Plans Available');
+                    }
                 } else {
-                    setIsLoading(false);
-                    setErrorMessage('No Plans Available');
+                    router.push('/');
                 }
             }
         };

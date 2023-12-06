@@ -41,6 +41,8 @@ const Connected = () => {
                         setSite((prevSite) => ({ ...prevSite, connected: { status: true, plan: planData.plan } }));
                         setIsLoading(false);
                     }
+                } else {
+                    router.push('/');
                 }
             }
         };

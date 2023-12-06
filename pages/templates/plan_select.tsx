@@ -1,8 +1,9 @@
 import { ChangeEvent, useEffect, useContext } from 'react';
 import { useRouter } from "next/router";
 
-import { fetchAPI, FetchAPI, getCurrentTranslation, HeadMeta } from "@/components/utils";
 import { StyledTitle, StyledInstructions, StyledRadioGroup, StyledButton, StyledDivider, StyledError, StyledSelectGroup } from "@/styles/styled";
+import { fetchAPI, getCurrentTranslation, HeadMeta } from "@/components/utils";
+import { FetchAPI } from '@/interface/utils';
 import { SiteContext } from '@/components/context';
 import Waiting from "./waiting";
 

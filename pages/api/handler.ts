@@ -14,7 +14,10 @@ let firebaseConfig = {
 };
 if (!firebaseConfig.apiKey) {
     try {
-        firebaseConfig = require('@/.env/firebase.json');
+        if (process.env.NODE_ENV !== 'production') {
+            const localFirebaseConfig = require('@/.env/firebase.json');
+            firebaseConfig = localFirebaseConfig;
+        }
     } catch (error) {
         console.error('.env/firebase.json does not exist');
     }

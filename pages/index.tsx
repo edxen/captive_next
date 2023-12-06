@@ -9,7 +9,8 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/templates/authentication');
+    const redirectPath: string = '/templates/authentication';
+    router.push(redirectPath);
   }, [router]);
 
   return (

@@ -57,7 +57,8 @@ const AccessCode = () => {
             }
         };
         toggleLoading();
-    }, [router]);  // eslint-disable-line react-hooks/exhaustive-deps *disabled to stop seeing warning about adding updateStatus as dependency array
+        // eslint-disable-next-line
+    }, [router]);
 
     return (
         site.status.loading

@@ -31,7 +31,8 @@ const Connected = () => {
             }
         };
         toggleLoading();
-    }, [router]);  // eslint-disable-line react-hooks/exhaustive-deps *disabled to stop seeing warning about adding updateStatus as dependency array
+        // eslint-disable-next-line
+    }, [router]);
 
     const interpolateText = (text: string, reference: string): string => {
         const replacedMessage: string = text.replace(/\{([^{}]+)\}/g, reference);

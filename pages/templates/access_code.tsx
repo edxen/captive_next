@@ -1,47 +1,63 @@
-import { ChangeEvent, useState, useContext } from 'react';
+import { ChangeEvent, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from '@/components/utils';
 import { StyledButton, StyledError, StyledDivider, StyledTitle, StyledInputGroup, StyledInstructions } from '@/styles/styled';
+import { SiteContext } from '@/components/context';
 import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
 
 const AccessCode = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [inputAccessCode, setInputAccessCode] = useState<string>("");
-    const [errorMessage, setErrorMessage] = useState<string>('');
+    const { site, updateSite, updateStatus } = useContext(SiteContext);
+    const [accessCode, setAccessCode] = useState<string>('');
     const router = useRouter();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputAccessCode(e.target.value);
+        setAccessCode(e.target.value);
     };
 
     const handlePageChange = () => {
-        setIsLoading(true);
+        updateStatus({ loading: true });
     };
 
     const handleConnect = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (inputAccessCode === "") {
-            setErrorMessage(texts.error.blank_access_code);
+        if (!accessCode) {
+            updateStatus({ error: texts.error.blank_access_code });
         } else {
-            setIsLoading(true);
-            const body: FetchAPI['body'] = { action: "connect", type: "code", code: inputAccessCode };
-            const data = await fetchAPI({ target: "handler", method: "POST", body });
-            if (data.success) {
-                router.push(`/templates/connected?pid=${data.plan.uuid}&aid=${data.plan.code}`);
+            updateStatus({ loading: true });
+
+            const accessCodeIsNum = parseInt(accessCode.toString(), 10);
+            if (!isNaN(accessCodeIsNum)) {
+                const body: FetchAPI['body'] = { action: "connect", type: "code", code: accessCodeIsNum };
+                const data = await fetchAPI({ target: "handler", method: "POST", body });
+                if (data.success) {
+                    updateSite({ plan: data.plan });
+                    updateStatus({ connected: true });
+                    const redirectPath = '/templates/connected';
+                    router.push(redirectPath);
+                } else {
+                    updateStatus({ loading: false, error: texts.error.invalid_access_code });
+                }
             } else {
-                setErrorMessage(texts.error.invalid_access_code);
-                setIsLoading(false);
+                updateStatus({ loading: false, error: texts.error.invalid_access_code });
             }
         }
     };
 
+    useEffect(() => {
+        if (router.isReady) {
+            updateStatus({ loading: false });
+        } else {
+            updateStatus({ loading: true });
+        }
+    }, [router]);
+
     return (
-        isLoading
+        site.status.loading
             ? <Waiting />
             : <>
                 <StyledTitle>
@@ -51,11 +67,11 @@ const AccessCode = () => {
                     {texts.access_code.instructions}
                 </StyledInstructions>
                 <form onSubmit={handleConnect}>
-                    <StyledInputGroup value={errorMessage}>
+                    <StyledInputGroup value={site.status.error}>
                         <label>{texts.access_code.label}</label>
-                        <input onChange={handleInputChange} value={inputAccessCode} placeholder={texts.access_code.placeholder}></input>
+                        <input onChange={handleInputChange} value={accessCode} placeholder={texts.access_code.placeholder}></input>
                     </StyledInputGroup>
-                    <StyledError>{errorMessage}</StyledError>
+                    <StyledError>{site.status.error}</StyledError>
                     <StyledButton>{texts.general.connect}</StyledButton>
                 </form>
 

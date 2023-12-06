@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-import { Body, Credentials, Voucher } from '@/components/utils';
+import { Body, Voucher } from '@/components/utils';
 
 let firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -83,30 +83,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                     // connect user based on selected plan or voucher
                     case "connect":
-                        if (uuid) {
-                            const uuidAsNum = parseInt(uuid.toString(), 10);
-                            const getPlan = (uuid: number) => plansData?.filter((plan) => plan.uuid === uuid)[0] as Plan;
-                            const getVoucher = (uuid: number) => vouchersData?.filter((plan) => plan.uuid === uuid)[0] as Voucher;
+                        const getPlan = (uuid: number) => plansData?.filter((plan) => plan.uuid === uuid)[0] as Plan;
+                        const getVoucher = (uuid: number) => vouchersData?.filter((voucher) => voucher.code === code)[0] as Voucher;
 
-                            switch (type) {
-                                // return selected plan
-                                case 'plan':
-                                    success = true;
-                                    plansData = await loadData(plansPath);
-                                    selectedPlan = getPlan(uuidAsNum);
-                                    break;
-
-                                // validate voucher and return associated plan
-                                case 'code':
-                                    vouchersData = await loadData(voucherPath);
-                                    const voucher = getVoucher(uuidAsNum);
-                                    if (voucher.uuid) {
+                        switch (type) {
+                            // return selected plan
+                            case 'plan':
+                                if (uuid) {
+                                    const uuidAsNum = parseInt(uuid.toString(), 10);
+                                    if (!isNaN(uuidAsNum)) {
                                         success = true;
-                                        selectedPlan = getPlan(voucher.uuid);
-                                        selectedPlan.code = code;
+                                        plansData = await loadData(plansPath);
+                                        selectedPlan = getPlan(uuidAsNum);
                                     }
-                                    break;
-                            }
+                                }
+                                break;
+
+                            // validate voucher and return associated plan
+                            case 'code':
+                                if (code) {
+                                    const codeAsNum = parseInt(code.toString(), 10);
+                                    if (!isNaN(codeAsNum)) {
+                                        vouchersData = await loadData(voucherPath);
+                                        const voucher = getVoucher(codeAsNum);
+                                        if (voucher) {
+                                            success = true;
+                                            plansData = await loadData(plansPath);
+                                            selectedPlan = getPlan(voucher.plan_uuid);
+                                            selectedPlan.code = codeAsNum;
+                                        }
+                                    }
+                                }
+                                break;
                         }
                         res.status(200).json({ message: 'This is a POST request', success, plan: selectedPlan });
                         break;

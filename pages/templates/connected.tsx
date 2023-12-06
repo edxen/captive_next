@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 
 import { fetchAPI, getCurrentTranslation } from "@/components/utils";
 import { StyledButton, StyledTitle, StyledInstructions, StyledList } from '@/styles/styled';
-import Waiting from './waiting';
 import { SiteContext } from '@/components/context';
+import Waiting from './waiting';
 
 const texts = getCurrentTranslation();
 

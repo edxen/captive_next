@@ -20,7 +20,8 @@ export const SiteContext = createContext<SiteContextType>({
     site: defaultSite,
     setSite: () => { },
     updateSite: () => { },
-    updateStatus: () => { }
+    updateStatus: () => { },
+    removeSite: () => { }
 });
 
 export const SiteProvider: React.FC<SiteProviderType> = ({ children }) => {
@@ -34,7 +35,19 @@ export const SiteProvider: React.FC<SiteProviderType> = ({ children }) => {
         setSite((prevSite) => ({ ...prevSite, ...obj }));
     };
 
-    const context = { site, setSite, updateStatus, updateSite };
+    const removeSite = (key: Partial<Site>) => {
+        setSite((prevSite) => {
+            const currentSite = { ...prevSite };
+            for (const k in key) {
+                if (Object.prototype.hasOwnProperty.call(key, k)) {
+                    delete currentSite[k as keyof Site];
+                }
+            }
+            return currentSite;
+        });
+    };
+
+    const context = { site, setSite, updateStatus, updateSite, removeSite };
 
     return (
         <SiteContext.Provider value={context}>

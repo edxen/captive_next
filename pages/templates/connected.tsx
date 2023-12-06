@@ -9,12 +9,13 @@ import { SiteContext } from '@/components/context';
 const texts = getCurrentTranslation();
 
 const Connected = () => {
-    const { site, updateSite, updateStatus } = useContext(SiteContext);
+    const { site, updateStatus, removeSite } = useContext(SiteContext);
     const router = useRouter();
 
     const handleClick = async () => {
         const result = confirm(texts.general.confirm_question);
         if (result) {
+            removeSite({ guest: site.guest, plan: site.plan });
             updateStatus({ signed_in: false, connected: false, loading: true });
             router.push('/');
         }

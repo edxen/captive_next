@@ -9,7 +9,7 @@ import { SiteContext } from '@/components/context';
 const texts = getCurrentTranslation();
 
 const Billplan = () => {
-    const { site, updateSite, updateStatus } = useContext(SiteContext);
+    const { site, updateSite, updateStatus, removeSite } = useContext(SiteContext);
 
     const router = useRouter();
 
@@ -17,6 +17,7 @@ const Billplan = () => {
         const result = confirm(texts.general.confirm_question);
         if (result) {
             updateStatus({ signed_in: false, loading: true });
+            removeSite({ guest: site.guest });
             router.push('/');
         }
     };
@@ -36,6 +37,7 @@ const Billplan = () => {
             const body: FetchAPI['body'] = { action: "connect", type: "plan", uuid: site.plan?.uuid };
             const data = await fetchAPI({ target: "handler", method: "POST", body });
             if (data.success) {
+                removeSite({ plans: site.plans });
                 updateStatus({ connected: true });
                 const redirectPath: string = '/templates/connected';
                 router.push(redirectPath);

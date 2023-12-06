@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { fetchAPI, FetchAPI, getCurrentTranslation } from '@/components/utils';
 import { StyledButton, StyledError, StyledDivider, StyledTitle, StyledInputGroup, StyledInstructions } from '@/styles/styled';
 import Waiting from './waiting';
-import { SiteContext } from '../_app';
 
 const texts = getCurrentTranslation();
 

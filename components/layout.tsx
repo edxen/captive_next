@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { getCurrentTranslation } from './utils';
-import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '@/styles/styled';
+import { StyledContainer, StyledContent, StyledHeader, StyledFooter } from '@/styles/styled';
 import Image from 'next/image';
 
 const texts = getCurrentTranslation();

@@ -77,7 +77,8 @@
                 "no_plan_selected": "No bill plan selected",
                 "no_plans_available": "No available plans",
                 "blank_access_code": "Access Code is required",
-                "invalid_access_code": "Access Code is invalid"
+                "invalid_access_code": "Access Code is invalid",
+                "page_not_exist": "Error: Page does not exist"
             }
         }
     }

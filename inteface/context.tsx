@@ -13,7 +13,8 @@ interface PlanBandwidth {
 
 interface Plan {
     uuid: number;
-    full_name: string;
+    name: string;
+    amount: number;
     duration: number;
     code?: number;
     type: string;

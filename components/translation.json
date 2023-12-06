@@ -62,6 +62,7 @@
                 "disconnect": "Disconnect",
                 "login_access_code": "Access Code Login",
                 "login_guest": "Guest Login",
+                "confirm_question": "Are you sure?",
                 "or_via": "or connect via:",
                 "or": "or"
             },
@@ -74,6 +75,7 @@
                 "blank_credentials": "Room Number and Last Name is required",
                 "invalid_credentials": "Room Numer / Last Name is incorrect",
                 "no_plan_selected": "No bill plan selected",
+                "no_plans_available": "No available plans",
                 "blank_access_code": "Access Code is required",
                 "invalid_access_code": "Access Code is invalid"
             }

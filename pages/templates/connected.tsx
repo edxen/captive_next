@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 
-import { fetchAPI, getCurrentTranslation } from "@/components/utils";
+import { getCurrentTranslation } from "@/components/utils";
 import { StyledButton, StyledTitle, StyledInstructions, StyledList } from '@/styles/styled';
 import { SiteContext } from '@/components/context';
 import Waiting from './waiting';

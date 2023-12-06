@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect, useContext } from 'react';
+import { ChangeEvent, useEffect, useContext } from 'react';
 import { useRouter } from "next/router";
 
 import { fetchAPI, FetchAPI, getCurrentTranslation } from "@/components/utils";

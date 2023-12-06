@@ -1,98 +1,25 @@
-Captive Portal Next
-Stacks: HTML5, CSS-in-JS, TypeScript, NextJS, ExpressJS
+## API Endpoint Overview
 
-Render of Captive Portal that runs on actual API
+### Method Explanation:
 
----
-#### Site API
-Description: to control display in captive portal
-```
-{
-    login_options: {
-        authentication: boolean;
-        access_code: boolean;
-        }
-    },
-    bill_plans?: [
-        	{
-    	    uuid: string;
-    		plan_name: string;
-    	    duration: number; [minutes]
-    		type: string; [free, prepaid, voucher]
-    		amount: number;
-        },
-        ...
-    ],
-    signed_in: {
-        status: boolean;
-        guest?: {
-            full_name: string;
-            first_name: string;
-            last_name: string;
-            code: string;
-        }
-    },
-    connected?: {
-        status: boolean;
-        bill_plan?: {
-    		plan_name: string;
-    	    duration: number; [minutes]
-    		type: string; [free, prepaid, voucher]
-    		amount: number;
-		}
-    }
-}
-```
+#### `POST` Method:
+This API endpoint handles HTTP POST requests sent to a specific route. It executes different functionalities based on the provided `action` parameter.
 
+### Action Explanation:
 
-#### PMS API
- Description: to check / verify guest records
-```
-[
-    {  
-        uuid: string;
-        room_number: number;
-        full_name: string;
-        first_name: string;
-        last_name: string;
-        code: string;
-    },
-    ...
-]
-```
+#### `signin`:
+- **Purpose:** Handles user sign-in functionality.
+- **Operation:** Validates user-provided credentials (room number and last name) against records fetched from a data source (probably a database).
+- **Response:** Returns a success status and guest details if the provided credentials match any existing record.
 
-#### Access Code API
- Description: to check / verify access code list
-```
-[
-    {
-        uuid: number;
-        access_code: string;
-        bill_plan: string;
-    },
-    ...
-]
-```
+#### `get_plans`:
+- **Purpose:** Retrieves available plans.
+- **Operation:** Fetches plans from a data source and filters plans based on a specified type (e.g., 'guest_only').
+- **Response:** Returns a success status and a list of plans based on the filtering criteria.
 
-#### Bill Plans API
-Description: list of available bill plans
-```
-[
-	{
-	    uuid: string;
-		plan_name: string;
-	    duration: number; [minutes]
-		type: string; [free, prepaid, voucher]
-		amount: number;
-    }
-]
-```
+#### `connect`:
+- **Purpose:** Connects a user based on a selected plan or voucher.
+- **Operation:** Retrieves a selected plan or validates a voucher to return the associated plan.
+- **Response:** Returns a success status and details of the selected plan or associated plan with the voucher.
 
-#### Submit API
-Description: to run when credentials are submitted, will compare submit data against PMS records
-```
-{
-    room_number: number;
-    last_name: string;
-}
-```
+Each action within the `POST` method performs distinct operations based on the received request parameters (`action`, `type`, `uuid`, `code`) and data fetched from external sources (e.g., `plansPath`, `voucherPath`). The responses include relevant data or status to indicate the success or failure of the requested operation.

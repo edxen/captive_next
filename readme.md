@@ -22,3 +22,22 @@ This project enabled me to deepen my understanding of TypeScript, Next.js, and t
 
 ## Conclusion
 Developing this captive portal allowed me to strengthen my skills in TypeScript, Next.js, Firebase, and styled components while addressing the need for a user-friendly authentication system. The project showcases my ability to build functional and responsive web applications while focusing on scalability and maintainability.
+
+## Testing
+Refer to below information for navigating the webpage:
+
+### Guest Login Table
+
+| Full Name      | Room Number | Last Name |
+|----------------|-------------|-----------|
+| Richard Smith  | 1001        | Smith     |
+| Alexis Smith   | 1002        | Smith     |
+| Albert Shmuck  | 1005        | Shmuck    |
+
+### Access Code Table
+
+| Access Code | Associated Plan Name       | Duration (minutes) |
+|-------------|---------------------------|-----------------|
+| 123456      | Standard Voucher Plan      | 30              |
+| 111111      | Standard Voucher Plan      | 30              |
+| 999999      | Premium Voucher Plan       | 60              |

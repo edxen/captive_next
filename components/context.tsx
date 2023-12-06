@@ -7,7 +7,9 @@ const defaultSite: Site = {
     },
     status: {
         signed_in: false,
-        connected: false
+        connected: false,
+        loading: false,
+        error: ""
     },
     plans: [],
     guest: {} as Guest,

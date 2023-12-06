@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 import { fetchAPI, getCurrentTranslation } from "@/components/utils";
 import { StyledInputGroup, StyledError, StyledButton, StyledTitle, StyledInstructions, StyledDivider } from '@/styles/styled';
+import { SiteContext } from '@/components/context';
 import Waiting from './waiting';
-import { SiteContext } from '../_app';
 
 const texts = getCurrentTranslation();
 
@@ -15,40 +15,50 @@ interface Credentials {
 }
 
 const Authentication = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>('');
     const [credentials, setCredentials] = useState<Credentials>({ room_number: '', last_name: '' });
+    const { site, setSite } = useContext(SiteContext);
     const router = useRouter();
 
-    const handlePageChange = () => {
-        setIsLoading(true);
+    const updateStatus = (obj: Partial<Status>) => {
+        setSite((prevSite) => ({ ...prevSite, status: { ...prevSite.status, ...obj } }));
     };
+
+    const updateSite = (obj: Partial<Site>) => {
+        setSite((prevSite) => ({ ...prevSite, ...obj }));
+    };
+
+    const handlePageChange = () => {
+        updateStatus({ loading: true });
+    };
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setCredentials((prevCredentials) => ({ ...prevCredentials, [e.target.id]: e.target.value }));
-        setErrorMessage('');
+        updateStatus({ error: '' });
     };
 
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setErrorMessage('');
+        updateStatus({ error: '' });
 
         const emptyCredentials: boolean = Object.values(credentials).some(credential => credential === '');
         if (emptyCredentials) {
-            setErrorMessage(texts.error.blank_credentials);
+            updateStatus({ error: texts.error.blank_credentials });
         } else {
-            setIsLoading(true);
+            updateStatus({ loading: true });
             const data = await fetchAPI({ target: "handler", method: "POST", body: { action: 'signin', ...credentials } });
             if (data.success) {
-                router.push(`/templates/plan_select?gid=${data.guest.uuid}`);
+                updateStatus({ error: '', signed_in: true });
+                updateSite({ guest: data.guest });
+                const redirectPath: string = '/templates/plan_select';
+                router.push(redirectPath);
             } else {
-                setErrorMessage(texts.error.invalid_credentials);
-                setIsLoading(false);
+                updateStatus({ loading: false, error: texts.error.invalid_credentials });
             }
         }
     };
 
     return (
-        isLoading
+        site.status.loading
             ? <Waiting />
             : <>
                 <form onSubmit={handleSignIn}>
@@ -60,13 +70,13 @@ const Authentication = () => {
                     </StyledInstructions>
                     {
                         Object.keys(credentials).map((credential, index: number) => (
-                            <StyledInputGroup key={index} value={errorMessage}>
+                            <StyledInputGroup key={index} value={site.status.error}>
                                 <label>{texts.authentication[`label_${credential}`]}</label>
                                 <input id={credential} onChange={handleInputChange} defaultValue={credentials[credential as keyof Credentials]} placeholder={texts.authentication[`placeholder_${credential}`]} />
                             </StyledInputGroup>
                         ))
                     }
-                    <StyledError>{errorMessage}</StyledError>
+                    <StyledError>{site.status.error}</StyledError>
                     <StyledButton>{texts.general.sign_in}</StyledButton>
                 </form>
 

@@ -11,8 +11,8 @@ export interface Credentials {
     last_name: string;
 }
 
-type TypeTypes = 'guest' | 'code' | 'credentials' | 'plan' | 'all';
-type ActionTypes = 'signin' | 'connect';
+type TypeTypes = 'guest_only' | 'code' | 'credentials' | 'plan' | 'all';
+type ActionTypes = 'signin' | 'get_plans' | 'connect';
 
 export interface Body {
     action: ActionTypes;

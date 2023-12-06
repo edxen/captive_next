@@ -24,17 +24,14 @@ const Billplan = () => {
     const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
         const uuid = parseInt(event.target.value.replace('plan_', ''));
         const getPlan = site.plans.filter((plan) => plan.uuid === uuid)[0];
-        if (getPlan) {
-            updateSite({ plan: getPlan });
-        }
+        if (getPlan) updateSite({ plan: getPlan });
     };
 
     const handleConnect = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!site.plan?.uuid) {
-            updateStatus({ error: texts.error.no_plan_selected });
-        } else {
+        if (!site.plan?.uuid) updateStatus({ error: texts.error.no_plan_selected });
+        else {
             updateStatus({ loading: true });
             const body: FetchAPI['body'] = { action: "connect", type: "plan", uuid: site.plan?.uuid };
             const data = await fetchAPI({ target: "handler", method: "POST", body });
@@ -51,7 +48,7 @@ const Billplan = () => {
         const fetchSite = async () => {
             if (router.isReady) {
                 if (site.status.signed_in) {
-                    const data = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'plans', type: 'guest' } });
+                    const data = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'get_plans', type: 'guest_only' } });
                     updateStatus({ loading: false });
                     if (data.plans?.length) {
                         updateSite({ plans: data.plans, plan: data.plans[0] });
@@ -59,7 +56,8 @@ const Billplan = () => {
                         updateStatus({ error: texts.error.no_plans_available });
                     }
                 } else {
-                    // router.push('/');
+                    updateStatus({ loading: true });
+                    router.push('/');
                 }
             } else {
                 updateStatus({ loading: true });

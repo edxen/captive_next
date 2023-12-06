@@ -56,9 +56,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         switch (req.method) {
             case "POST":
                 switch (action) {
-                    case "signin": // for when user is signing in, check if credentials matched with the records
+                    case "signin": // for when user is signing in, check each record if provided credentials matched 
                         pmsData = await loadData(pmsPath);
-                        if (credentials !== undefined && credentials.room_number !== undefined) {
+                        if (credentials?.room_number) {
                             const { room_number, last_name } = credentials;
                             const roomNumber = parseInt(room_number.toString(), 10);
                             if (!isNaN(roomNumber)) {
@@ -68,22 +68,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         }
                         res.status(200).json({ message: 'This is a POST request', success, guest });
                         break;
-                    case "plan":
+
+                    // retrieve all plans available
+                    case "get_plans":
                         success = true;
-                        plansData = await loadData(plansPath);
-                        selectedPlan = plansData.filter((list) => list.uuid === plan)[0];
-                        res.status(200).json({ message: 'This is a POST request', success, plan: selectedPlan });
-                        break;
-                    case "plans":
-                        success = true;
-                        plansData = await loadData(plansPath);
-                        if (type === 'guest') {
-                            plans = plansData.filter((plan) => plan.type !== 'voucher');
-                        } else if (type === 'all') {
-                            plans = plansData;
+                        plans = await loadData(plansPath);
+
+                        // only return guest relevant plans
+                        if (plans && type === 'guest_only') {
+                            plans = plans.filter((plan) => plan.type !== 'voucher');
                         }
                         res.status(200).json({ message: 'This is a POST request', success, plans });
                         break;
+
                     case "connect":
                         plansData = await loadData(plansPath);
                         const getPlan = (uuid: string) => plansData?.filter((plan) => plan.uuid === uuid)[0] as Plan;

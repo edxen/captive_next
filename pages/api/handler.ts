@@ -81,29 +81,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         res.status(200).json({ message: 'This is a POST request', success, plans });
                         break;
 
+                    // connect user based on selected plan or voucher
                     case "connect":
-                        plansData = await loadData(plansPath);
-                        const getPlan = (uuid: string) => plansData?.filter((plan) => plan.uuid === uuid)[0] as Plan;
+                        if (uuid) {
+                            const uuidAsNum = parseInt(uuid.toString(), 10);
+                            const getPlan = (uuid: number) => plansData?.filter((plan) => plan.uuid === uuid)[0] as Plan;
+                            const getVoucher = (uuid: number) => vouchersData?.filter((plan) => plan.uuid === uuid)[0] as Voucher;
 
-                        switch (type) {
-                            case 'plan':
-                                success = true;
-                                selectedPlan = getPlan(plan);
-                                break;
-
-                            case 'code':
-                                vouchersData = await loadData(voucherPath);
-                                const found = vouchersData.filter((voucher) => voucher.code === code)[0];
-                                if (found) {
+                            switch (type) {
+                                // return selected plan
+                                case 'plan':
                                     success = true;
-                                    selectedPlan = getPlan(found.uuid);
-                                }
-                                selectedPlan.code = code;
-                                break;
+                                    plansData = await loadData(plansPath);
+                                    selectedPlan = getPlan(uuidAsNum);
+                                    break;
+
+                                // validate voucher and return associated plan
+                                case 'code':
+                                    vouchersData = await loadData(voucherPath);
+                                    const voucher = getVoucher(uuidAsNum);
+                                    if (voucher.uuid) {
+                                        success = true;
+                                        selectedPlan = getPlan(voucher.uuid);
+                                        selectedPlan.code = code;
+                                    }
+                                    break;
+                            }
                         }
                         res.status(200).json({ message: 'This is a POST request', success, plan: selectedPlan });
-
                         break;
+
                     default:
                         res.status(400).json({ message: `invalid action`, success });
                         break;

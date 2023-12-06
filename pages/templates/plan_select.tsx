@@ -36,6 +36,7 @@ const Billplan = () => {
             const body: FetchAPI['body'] = { action: "connect", type: "plan", uuid: site.plan?.uuid };
             const data = await fetchAPI({ target: "handler", method: "POST", body });
             if (data.success) {
+                updateStatus({ connected: true });
                 const redirectPath: string = '/templates/connected';
                 router.push(redirectPath);
             } else {

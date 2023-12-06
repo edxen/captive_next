@@ -48,7 +48,7 @@ const Billplan = () => {
     };
 
     useEffect(() => {
-        const fetchSite = async () => {
+        const toggleLoading = async () => {
             if (router.isReady) {
                 if (site.status.signed_in) {
                     const data = await fetchAPI({ target: "handler", method: 'POST', body: { action: 'get_plans', type: 'guest_only' } });
@@ -66,8 +66,8 @@ const Billplan = () => {
                 updateStatus({ loading: true });
             }
         };
-        fetchSite();
-    }, [router, site, updateSite, updateStatus]);
+        toggleLoading();
+    }, [router]);  // eslint-disable-line react-hooks/exhaustive-deps *disabled to stop seeing warning about adding updateStatus as dependency array
 
     return (
         site.status.loading

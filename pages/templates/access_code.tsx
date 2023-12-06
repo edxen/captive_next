@@ -49,12 +49,15 @@ const AccessCode = () => {
     };
 
     useEffect(() => {
-        if (router.isReady) {
-            updateStatus({ loading: false });
-        } else {
-            updateStatus({ loading: true });
-        }
-    }, [router, updateStatus]);
+        const toggleLoading = () => {
+            if (router.isReady) {
+                updateStatus({ loading: false });
+            } else {
+                updateStatus({ loading: true });
+            }
+        };
+        toggleLoading();
+    }, [router]);  // eslint-disable-line react-hooks/exhaustive-deps *disabled to stop seeing warning about adding updateStatus as dependency array
 
     return (
         site.status.loading

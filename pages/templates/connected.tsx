@@ -22,19 +22,16 @@ const Connected = () => {
     };
 
     useEffect(() => {
-        const fetchSite = async () => {
+        const toggleLoading = async () => {
             if (router.isReady) {
-                if (site.status.connected) {
-                    updateStatus({ loading: false });
-                } else {
-                    router.push('/');
-                }
+                if (site.status.connected) updateStatus({ loading: false });
+                else router.push('/');
             } else {
                 updateStatus({ loading: true });
             }
         };
-        fetchSite();
-    }, [router, site, updateStatus]);
+        toggleLoading();
+    }, [router]);  // eslint-disable-line react-hooks/exhaustive-deps *disabled to stop seeing warning about adding updateStatus as dependency array
 
     const interpolateText = (text: string, reference: string): string => {
         const replacedMessage: string = text.replace(/\{([^{}]+)\}/g, reference);

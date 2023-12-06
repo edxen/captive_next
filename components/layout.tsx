@@ -2,7 +2,6 @@ import React from 'react';
 
 import { getCurrentTranslation } from './utils';
 import { StyledContainer, StyledContent, StyledHeader, StyledFooter, StyledLogo } from '@/styles/styled';
-import Waiting from '@/pages/templates/waiting';
 
 const texts = getCurrentTranslation();
 
@@ -11,15 +10,12 @@ interface LayoutProps {
     children?: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ isLoading, children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <StyledContainer>
             <Header />
             <StyledContent>
-                {isLoading
-                    ? <Waiting />
-                    : <>{children}</>
-                }
+                {children}
             </StyledContent>
             <Footer />
         </StyledContainer>

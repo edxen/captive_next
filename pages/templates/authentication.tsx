@@ -1,13 +1,11 @@
-import Head from 'next/head';
 import { ChangeEvent, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { fetchAPI, getCurrentTranslation } from "@/components/utils";
 import { StyledInputGroup, StyledError, StyledButton, StyledTitle, StyledInstructions, StyledDivider } from '@/styles/styled';
+import { HeadMeta, fetchAPI, getCurrentTranslation } from "@/components/utils";
 import { SiteContext } from '@/components/context';
-
-import { Credentials } from '@/components/utils';
+import { Credentials } from '@/interface/utils';
 
 import Waiting from './waiting';
 
@@ -23,7 +21,7 @@ const Authentication = () => {
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setCredentials((prevCredentials) => ({ ...prevCredentials, [e.target.id]: e.target.value }));
+        setCredentials((prevCredentials: Credentials) => ({ ...prevCredentials, [e.target.id]: e.target.value }));
         updateStatus({ error: '' });
     };
 
@@ -62,6 +60,7 @@ const Authentication = () => {
 
     return (
         <>
+            <HeadMeta page='guest_login' />
             {
                 site.status.loading
                     ? <Waiting />

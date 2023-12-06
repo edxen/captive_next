@@ -1,0 +1,38 @@
+{
+    "guest_login": {
+        "title": "Guest Login - OutLast Resort",
+        "description": "Welcome to our Outlast Resort's guest login page. Enter your room number and last name to access exclusive amenities and personalized services during your stay. Enjoy a seamless and secure login experience for a memorable stay at our luxurious resort.",
+        "keywords": "hotel resort, guest login, room number, last name, amenities, personalized services",
+        "noindex": "index, follow"
+    },
+    "access_code": {
+        "title": "Access Code Login - OutLast Resort",
+        "description": "Access our Outlast Resort's amenities by entering your unique access code. Enjoy personalized services during your stay at our luxurious resort.",
+        "keywords": "hotel resort, access code login, amenities, personalized services",
+        "noindex": "index, follow"
+    },
+    "plan_select": {
+        "title": "Select Your Plan - OutLast Resort",
+        "description": "Choose your desired plan for a delightful stay at our Outlast Resort. Explore exclusive amenities and services tailored to your preferences.",
+        "keywords": "hotel resort, select plan, amenities, personalized services",
+        "noindex": "index, follow"
+    },
+    "waiting": {
+        "title": "Waiting - OutLast Resort",
+        "description": "Please wait while we process your request. Enjoy a moment of relaxation while we connect you to our premium services at Outlast Resort.",
+        "keywords": "hotel resort, waiting page, processing request",
+        "noindex": "noindex"
+    },
+    "connected": {
+        "title": "Connected - OutLast Resort",
+        "description": "You're now connected to our exclusive amenities and services at Outlast Resort. Relax and indulge in a memorable experience tailored just for you.",
+        "keywords": "hotel resort, connected, amenities, personalized services",
+        "noindex": "index, follow"
+    },
+    "error": {
+        "title": "Error - OutLast Resort",
+        "description": "Oops! Something went wrong. We apologize for the inconvenience. Contact us for assistance at Outlast Resort.",
+        "keywords": "hotel resort, error page, contact us",
+        "noindex": "noindex"
+    }
+}

@@ -2,8 +2,9 @@ import { ChangeEvent, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { fetchAPI, FetchAPI, getCurrentTranslation } from '@/components/utils';
 import { StyledButton, StyledError, StyledDivider, StyledTitle, StyledInputGroup, StyledInstructions } from '@/styles/styled';
+import { fetchAPI, getCurrentTranslation, HeadMeta } from '@/components/utils';
+import { FetchAPI } from '@/interface/utils';
 import { SiteContext } from '@/components/context';
 import Waiting from './waiting';
 
@@ -61,34 +62,39 @@ const AccessCode = () => {
     }, [router]);
 
     return (
-        site.status.loading
-            ? <Waiting />
-            : <>
-                <StyledTitle>
-                    {texts.access_code.title}
-                </StyledTitle>
-                <StyledInstructions>
-                    {texts.access_code.instructions}
-                </StyledInstructions>
-                <form onSubmit={handleConnect}>
-                    <StyledInputGroup value={site.status.error}>
-                        <label>{texts.access_code.label}</label>
-                        <input onChange={handleInputChange} value={accessCode} placeholder={texts.access_code.placeholder}></input>
-                    </StyledInputGroup>
-                    <StyledError>{site.status.error}</StyledError>
-                    <StyledButton>{texts.general.connect}</StyledButton>
-                </form>
+        <>
+            <HeadMeta page='access_code' />
+            {
+                site.status.loading
+                    ? <Waiting />
+                    : <>
+                        <StyledTitle>
+                            {texts.access_code.title}
+                        </StyledTitle>
+                        <StyledInstructions>
+                            {texts.access_code.instructions}
+                        </StyledInstructions>
+                        <form onSubmit={handleConnect}>
+                            <StyledInputGroup value={site.status.error}>
+                                <label>{texts.access_code.label}</label>
+                                <input onChange={handleInputChange} value={accessCode} placeholder={texts.access_code.placeholder}></input>
+                            </StyledInputGroup>
+                            <StyledError>{site.status.error}</StyledError>
+                            <StyledButton>{texts.general.connect}</StyledButton>
+                        </form>
 
-                <StyledDivider>
-                    {texts.general.or_via}
-                </StyledDivider>
+                        <StyledDivider>
+                            {texts.general.or_via}
+                        </StyledDivider>
 
-                <Link href="/templates/authentication">
-                    <StyledButton onClick={handlePageChange}>
-                        {texts.general.login_guest}
-                    </StyledButton>
-                </Link>
-            </>
+                        <Link href="/templates/authentication">
+                            <StyledButton onClick={handlePageChange}>
+                                {texts.general.login_guest}
+                            </StyledButton>
+                        </Link>
+                    </>
+            }
+        </>
     );
 };
 

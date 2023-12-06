@@ -1,5 +1,6 @@
+import { HeadMeta } from '@/components/utils';
+import { StyledInstructions } from '@/styles/styled';
 import styled, { keyframes } from 'styled-components';
-import { StyledInstructions } from '../../styles/styled';
 
 const spin = keyframes`
     0% {
@@ -28,10 +29,13 @@ const Center = styled.div`
 
 const Waiting = () => {
     return (
-        <Center>
-            <Loader />
-            <StyledInstructions>Please wait</StyledInstructions>
-        </Center>
+        <>
+            <HeadMeta page='waiting' />
+            <Center>
+                <Loader />
+                <StyledInstructions>Please wait</StyledInstructions>
+            </Center>
+        </>
     );
 };
 

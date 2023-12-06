@@ -62,3 +62,25 @@ export interface Texts {
         [key: string]: Translations;
     };
 }
+
+type PageType = 'guest_login' | 'access_code' | 'plan_select' | 'waiting' | 'connected' | 'error';
+
+export interface HeadMetaType {
+    page: PageType;
+}
+
+interface MetaTagType {
+    title: string;
+    description: string;
+    keywords: string;
+    noindex: string;
+}
+
+export interface MetaDataType {
+    guest_login: MetaTagType;
+    access_code: MetaTagType;
+    plan_select: MetaTagType;
+    waiting: MetaTagType;
+    connected: MetaTagType;
+    error: MetaTagType;
+}

@@ -47,18 +47,10 @@ const Authentication = () => {
         }
     };
 
-    const { flag, setFlag } = useContext(SiteContext);
-
-    const toggleFlag = () => {
-        setFlag(!flag);
-    };
-
     return (
         isLoading
             ? <Waiting />
             : <>
-                <StyledButton onClick={toggleFlag}>Toggle</StyledButton>
-                {flag ? 'show' : 'dont show'}
                 <form onSubmit={handleSignIn}>
                     <StyledTitle>
                         {texts.authentication.title}

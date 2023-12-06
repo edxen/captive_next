@@ -41,18 +41,10 @@ const AccessCode = () => {
         }
     };
 
-    const { flag, setFlag } = useContext(SiteContext);
-    const toggleFlag = () => {
-        setFlag(!flag);
-    };
-
     return (
         isLoading
             ? <Waiting />
             : <>
-                <StyledButton onClick={toggleFlag}>Toggle</StyledButton>
-                {flag ? 'show' : 'dont show'}
-
                 <StyledTitle>
                     {texts.access_code.title}
                 </StyledTitle>
